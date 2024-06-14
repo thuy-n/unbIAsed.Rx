@@ -83,10 +83,10 @@ def profile():
 
     return render_template("profile.html", user=current_user)
 
-@auth.route('/favorites')
+@auth.route('/saved')
 @login_required
-def favorites():
-    return render_template('favorites.html', user=current_user)
+def saved():
+    return render_template('saved.html', user=current_user)
  
 @auth.route('/about')
 def about():
