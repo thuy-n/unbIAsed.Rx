@@ -1,3 +1,2 @@
-![logo](unbIAsed.Rx/assets/transparent_logo.png)
-# unbIAsed.Rx
+![logo](assets/transparent_logo.png)
 AI4Good Lab Project
