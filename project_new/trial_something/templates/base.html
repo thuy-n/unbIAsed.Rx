@@ -98,6 +98,10 @@
               </li>
             </ul>
             <ul class="navbar-nav ms-auto align-items-center">
+              <form class="d-flex">
+                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                <button class="btn custom-btn" type="submit">Search</button>
+              </form>
               <a class="nav-item nav-link" style="color: #F2EDF5" id="login" href="/login">Login</a>
               <a class="nav-item nav-link" style="color: #F2EDF5" id="signUp" href="/sign-up">Sign Up</a>
             </ul>
@@ -124,9 +128,6 @@
         {% endif %}
   
     </nav>
-
-    
-
 
     {% with messages = get_flashed_messages(with_categories=true) %} {% if
     messages %} {% for category, message in messages %} {% if category ==
@@ -168,7 +169,7 @@
                     <h5>Contact Us</h5> 
                     <ul class="list-unstyled"> 
                         <li>Email: <a href="mailto:unbIAsed.rx@gmail.com" class="email-link">unbIAsed.rx@gmail.com</a></li> 
-                        <li>Address: Montreal, Qc, Canada</li> 
+                        <li>Address: Montreal, QC, Canada</li> 
                     </ul> 
                 </div> 
     
