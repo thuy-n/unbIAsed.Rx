@@ -1,0 +1,77 @@
+{% extends "base.html" %} {% block title %}Home{% endblock %} {% block content
+  %}
+  <div class="display-6 my-3" align="center">
+    Home Page
+  </div>
+  <ul class="list-group list-group-flush" id="notes">
+    {% for note in user.notes %}
+    <li class="list-group-item">
+      {{ note.data }}
+      <button type="button" class="btn-close"  aria-label="Close" onClick="deleteNote({{ note.id }});">
+      </button>
+    </li>
+    {% endfor %}
+  </ul>
+  <form method="POST">
+    <textarea name="note" id="note" class="form-control"></textarea>
+    <br />
+    <div align="center">
+      <button type="submit" class="btn btn-primary">Add Note</button>
+    </div>
+  </form>
+
+  <footer class="footer p-5 mt-auto "> 
+    <div class="container"> 
+        <div class="row "> 
+            <div class="col-md-3 " > 
+                <h5>
+                    <a  class="link-underline-opacity-0" href="/" style="--bs-link-hover-color-rgb: 246, 174, 164;">
+                        <img src="static/images/logo.png" alt="unbIAsed.Rx" style="width: 200px;">
+                    </a>
+                </h5>
+            </div> 
+            <div class="col-md-3"> 
+                <h5>About Us</h5> 
+                <ul class="list-unstyled list-group"> 
+                    <li><a class="dropdown-item list-group-item-action" href="../about#whoWe" style="--bs-link-hover-color-rgb: 246, 174, 164;">Who are we?</a></li>
+                    <li><a class="dropdown-item list-group-item-action" href="../about#meetTeam" style="--bs-link-hover-color-rgb: 246, 174, 164;">Meet the team</a></li>
+                </ul>
+            </div> 
+            <div class="col-md-3"> 
+                <h5>Contact Us</h5> 
+                <ul class="list-unstyled"> 
+                    <li>Email: <a href="mailto:unbIAsed.rx@gmail.com" class="email-link">unbIAsed.rx@gmail.com</a></li> 
+                    <li>Address: Montreal, Qc, Canada</li> 
+                </ul> 
+            </div> 
+            
+        </div> 
+        <hr> 
+        <div class="row"> 
+            <div class="col-md-6"> 
+                <p>© 2024 unbIAsed-Rx.ca. All rights reserved.</p> 
+            </div> 
+            <div class="col-md-6 text-end"> 
+                <ul class="list-inline footer-links"> 
+                    <li class="list-inline-item"> 
+                        <a href="#" class="text-white"> 
+                            Privacy Policy 
+                        </a> 
+                    </li> 
+                    <li class="list-inline-item"> 
+                        <a href="#" class="text-white"> 
+                            Terms of Service 
+                        </a> 
+                    </li> 
+                    <li class="list-inline-item"> 
+                        <a href="#" class="text-white"> 
+                            Sitemap 
+                        </a> 
+                    </li> 
+                </ul> 
+            </div> 
+        </div> 
+    </div> 
+</footer> 
+
+  {% endblock %}
