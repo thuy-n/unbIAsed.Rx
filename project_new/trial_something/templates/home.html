@@ -1,9 +1,7 @@
-{% extends "base.html" %} {% block title %}Home{% endblock %} {% block content
+{% extends "base.html" %} {% block title %}Dashboard{% endblock %} {% block content
   %}
-  <div class="display-6 my-3" align="center">
-    Home Page
-  </div>
-  <ul class="list-group list-group-flush" id="notes">
+
+  <!-- <ul class="list-group list-group-flush" id="notes">
     {% for note in user.notes %}
     <li class="list-group-item">
       {{ note.data }}
@@ -18,9 +16,35 @@
     <div align="center">
       <button type="submit" class="btn btn-primary">Add Note</button>
     </div>
-  </form>
+  </form> -->
+  <br>
+  <div class="card" style="background-color:#CEE3EA; ">
+    <div class="card-body">
+      <h4 class="card-title">Drug/medicine name</h4>
+      <h5 class="card-subtitle mb-2 text-body-secondary">Affected area</h5>
+      <dl class="row">
+        <dt class="col-sm-3">Condition</dt>
+        <dd class="col-sm-9">Description of physical condition and side effects.</dd>
 
-  <button type="button" class="btn btn-primary" onClick="window.location.href='/saved';">Save</button>
+        <dt class="col-sm-3">Ratio female:male</dt>
+        <dd class="col-sm-9">Ratio (number) of numbers from clinical trials.</dd>
+
+        <dt class="col-sm-3">Severity</dt>
+        <dd class="col-sm-9">Description of severity of condition.</dd>
+
+        <dt class="col-sm-3">Side effects</dt>
+        <dd class="col-sm-9">Description of potential side effects.</dd>
+
+        <dt class="col-sm-3">Probability of risks</dt>
+        <dd class="col-sm-9">Description of probability of risks for female vs male.</dd>
+        
+      </dl>
+
+      <button type="button" class="btn btn-primary" onClick="window.location.href='/saved';">Save</button>
+    </div>
+  </div>
+
+
 
   {% endblock %}
 
