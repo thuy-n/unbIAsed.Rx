@@ -50,8 +50,24 @@ def home():
     # db.session.add(drug)
     # db.session.commit()
 
-
-
+    if (os.path.isfile("information.csv")):
+        data= pd.read_csv("information.csv")
+        for i in range(len(data)):
+            name = data['name'][i]
+            condition = data['condition'][i]
+            area_affected = data['area_affected'][i]
+            ratio = data['ratio'][i]
+            severity = data['severity'][i]
+            side_effects = data['side_effects'][i]
+            risk = data['risk'][i]
+            description = data['description'][i]
+            drug = Drugs.query.filter_by(name=name, condition=condition, area_affected=area_affected, ratio=ratio, 
+                severity=severity, side_effects=side_effects, risk=risk, description=description).first()
+            if not drug:
+                new_drug = Drugs(name=name, condition=condition, area_affected=area_affected, ratio=ratio, 
+                severity=severity, side_effects=side_effects, risk=risk, description=description, user_id=current_user.id)
+                db.session.add(new_drug)
+                db.session.commit()
 
     return render_template("home.html", user=current_user) 
    

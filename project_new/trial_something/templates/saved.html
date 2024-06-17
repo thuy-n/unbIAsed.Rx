@@ -3,5 +3,24 @@
     <div class="display-6 my-3" align="center">
         Saved Page
     </div>
+
+    <div class="card" style="background-color:#CEE3EA; " id="cardContainer">
+        <div id="savedContainer" class="card-body"></div>
+    </div>
    
+    <script>
+        window.onload = function() {
+          var savedCard = localStorage.getItem('savedCard');
+          if (savedCard) {
+            document.getElementById('savedContainer').innerHTML += savedCard;
+            document.getElementById('unsaveButton').addEventListener('click', function() {
+              document.getElementById('savedContainer').innerHTML = '';
+              localStorage.removeItem('savedCard');
+              document.getElementById('cardContainer').style.display = 'none';
+            });
+          } else {
+            document.getElementById('cardContainer').style.display = 'none';
+          }
+        };
+    </script>
 {% endblock %}
