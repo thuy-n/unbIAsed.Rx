@@ -10,6 +10,29 @@
   </head>
 
   <style>
+    @media screen and (max-width: 750px) {
+        .responsive-text {
+            font-size: small;
+        }
+    }
+    @media screen and (max-width: 768px) {
+        .responsive-text {
+            font-size: medium; /* Adjust this value as needed */
+        }
+    }
+    .carousel-item  {
+      height: 300px;  /* Adjust as needed */
+     
+    }
+    .carousel-caption {
+      bottom:0px;
+    }
+    .carousel-item img {
+      width: 30%;  /* Adjust as needed */
+      height: 200px;  /* Adjust as needed */
+      object-fit: contain;
+      
+    }
     .card-img-top {
         width: 100%;
         height: 250px;
@@ -20,9 +43,18 @@
         color: white;
     }
     .btn-start:hover {
-        background-color: rgb(246, 174, 164);
+        background-color: rgb(236, 142, 130);
         color: white;
     }
+    .btn-delete {
+        background-color: rgb(236, 142, 130);
+        color: white;
+    }
+    .btn-delete:hover {
+        background-color: red;
+        color: white;
+    }
+
 
     .dropdown-item:hover {
         color: rgb(246, 174, 164);
@@ -30,6 +62,14 @@
     .email-link:hover{
       color: rgb(246, 174, 164);
     } 
+    .readMore {
+      margin:0px;
+      padding:0px;
+      color:#376EFF;
+    }
+    .readMore:hover {
+      color: rgb(246, 174, 164);
+    }
     .custom-btn {
       background-color: #364A5D;
       border-color: #B6E7EC;
@@ -55,6 +95,9 @@
     #intro-example {
       height: 400px;
     }
+    .offcanvas {
+    height: 75vh !important;
+}
   </style>
 
   <body >
@@ -183,9 +226,13 @@
             </div> 
             <br>
             <div class="row"> 
-                <div class="col text-secondary fst-italic"> 
-                    <p>Disclamer: All information provided is for educational purposes only, and is not intended for medical adivce, diagnosis, or treatment.</p> 
-                </div> 
+              <div class="col text-secondary fst-italic"> 
+                <p>Disclamer: All information provided is for educational purposes only, and is not intended for medical advice, diagnosis, or treatment. Read more 
+                    <button class="btn readMore" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasTop" aria-controls="offcanvasTop" style="vertical-align: baseline; padding: 0;">
+                    here
+                    </button>
+                </p> 
+            </div> 
             </div> 
             <hr> 
             <div class="row"> 
@@ -195,6 +242,34 @@
             </div> 
         </div> 
     </footer> 
+    </div>
+
+    <div class="offcanvas offcanvas-top" tabindex="-1" id="offcanvasTop" aria-labelledby="offcanvasTopLabel">
+      <div class="offcanvas-header">
+        <h5 id="offcanvasTopLabel">Disclamer</h5>
+        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+      </div>
+      <div class="offcanvas-body">
+       <p> ​​unbIAsed.Rx is not affiliated with any pharmaceutical companies and does not endorse drugs, 
+        diagnose patients, or recommend therapy. This resource is designed to assist licensed healthcare 
+        practitioners in caring for their patients, provide consumers with drug-specific information, 
+        and raise awareness of sex disparities in pharmaceuticals and the underrepresentation of women and 
+        gender-diverse individuals in clinical trials. The absence of a warning for a given drug or 
+        combination thereof in no way should be construed to indicate that the drug or combination is 
+        safe, effective or appropriate for any given patient. Every effort has been made to ensure that 
+        the information provided is accurate, up-to-date and complete, but no guarantee is made to that 
+        effect as the drug information contained herein may be time sensitive.</p>
+      
+
+      <p>Always consult with a healthcare professional before making any medical decisions or changes 
+        to your treatment plan. The information on this site is not a substitute for professional medical 
+        advice and healthcare practitioners should use their professional judgment in using the 
+        information provided. </p>
+
+      <p>By using this product, you acknowledge and accept these disclaimers and limitations.</p>
+
+
+      </div>
     </div>
 
     <script

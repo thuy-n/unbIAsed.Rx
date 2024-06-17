@@ -10,7 +10,10 @@ views = Blueprint('views', __name__)
 
 @views.route('/')
 def opening():
-    return render_template('opening.html', user=current_user)
+    logged_in = False
+    if current_user.is_authenticated:
+        logged_in = True
+    return render_template('opening.html', logged_in=logged_in, user=current_user)
 
 @views.route('/home') 
 def home():
