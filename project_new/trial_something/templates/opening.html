@@ -5,7 +5,7 @@
     <div class="p-5 mb-4 lc-block">
         <div class="lc-block">
             <div editable="rich">
-                <p class="fw-bolder display-4" style="color: #364A5D">For Improved Drug Safety</p>
+                <p class="fw-bolder display-5" style="color: #364A5D">For Improved Drug Safety</p>
             </div>
         </div>
         <div class="lc-block col-md-8">
@@ -18,31 +18,31 @@
         </div>
         <div class="lc-block">
             <br>
-            <a class="btn btn-start" href="/sign-up" role="button">Start today!</a>
+            <a class="btn btn-start" role="button" id="startTodayButton">Start today!</a>
         </div>
     </div>
 </div>
 
 
-<div class="container p-5 bg-body mt-md-n6 position-relative rounded" >
+<div class="container p-5 mt-md-n6 position-relative rounded" style="background-color: #CEE3EA;">
     <div class="row" >
         <div class="col-md-4 text-center align-self-center">
             <div class="lc-block border-lg-end border-2 ">
                 <div editable="rich">
-                    <p class="display-4 text-secondary">Our Goal</p>
+                    <p class="display-5 text-secondary">Our Goal</p>
                 </div>
             </div><!-- /lc-block -->
         </div><!-- /col -->
         <div class="col-md-8">
             <div class="lc-block ">
                 <div editable="rich">
-                    <p class="display-4">Self-advocacy: Knowledge is Power</p>
+                    <p class="display-6">Self-advocacy: Knowledge is Power</p>
                 </div>
             </div><!-- /lc-block -->
         </div><!-- /col -->
     </div>
     <div class="row">
-        <div class="col-md-9 offset-md-4">
+        <div class="col-md-8 offset-md-4">
             <div class="lc-block mt-5">
                 <div editable="rich">
                     <p class="lead text-secondary"> 
@@ -69,26 +69,26 @@
         </div><!-- /col -->
     </div>
 </div>
-
-<div class="container p-5 bg-body mt-md-n6 position-relative rounded" >
+<br>
+<div class="container p-5 mt-md-n6 position-relative rounded" style="background-color: #CEE3EA;">
     <div class="row" >
         <div class="col-md-4 text-center align-self-center">
             <div class="lc-block border-lg-end border-2 ">
                 <div editable="rich">
-                    <p class="display-4 text-secondary">Impact</p>
+                    <p class="display-5 text-secondary">Impact</p>
                 </div>
             </div><!-- /lc-block -->
         </div><!-- /col -->
         <div class="col-md-8">
             <div class="lc-block ">
                 <div editable="rich">
-                    <p class="display-4">More Equitable and Effective Healthcare for All</p>
+                    <p class="display-6">More Equitable and Effective Healthcare for All</p>
                 </div>
             </div><!-- /lc-block -->
         </div><!-- /col -->
     </div>
     <div class="row">
-        <div class="col-md-9 offset-md-4">
+        <div class="col-md-8 offset-md-4">
             <div class="lc-block mt-5">
                 <ul>
                 <div editable="rich">
@@ -118,5 +118,88 @@
     </div>
 </div>
 
+<br>
+<div class="container p-5 mt-md-n6 position-relative rounded" style="background-color: #CEE3EA;">
+    <div class="row" >
+        <div class="col-md-4 text-center align-self-center">
+            <div class="lc-block border-lg-end border-2 ">
+                <div editable="rich">
+                    <p class="display-5 text-secondary">Shocking Facts</p>
+                </div>
+            </div><!-- /lc-block -->
+        </div><!-- /col -->
+        <div class="col-md-8">
+            <div class="lc-block ">
+                <div editable="rich">
+                    <p class="display-6">Why This Topic Is So Important</p>
+                </div>
+            </div><!-- /lc-block -->
+        </div><!-- /col -->
+    </div>
+    <div class="row">
+        <div class="col-md-8 offset-md-4">
+            <div class="lc-block mt-5">
+                <ul>
+                <div editable="rich">
+                    <li><p class="lead text-secondary"> 
+                        Shocking facts will go here
+                        &nbsp;
+                    </p></li>
+
+                </div>
+                </ul>
+            </div><!-- /lc-block -->
+        </div><!-- /col -->
+    </div>
+</div>
+
+<br>
+<div class="container p-5 mt-md-n6 position-relative rounded" style="background-color: #CEE3EA;">
+    <div class="row" >
+        <div class="col-md-4 text-center align-self-center">
+            <div class="lc-block border-lg-end border-2 ">
+                <div editable="rich">
+                    <p class="display-5 text-secondary">Sponsors</p>
+                </div>
+            </div><!-- /lc-block -->
+        </div><!-- /col -->
+        <div class="col-md-8">
+            <div class="lc-block ">
+                <div editable="rich">
+                    <p class="display-6">Thank you to all of the AI4Good Lab Sponsors!</p>
+                </div>
+            </div><!-- /lc-block -->
+        </div><!-- /col -->
+    </div>
+    <div class="row">
+        <div class="col-md-8 offset-md-4">
+            <div class="lc-block mt-5">
+                <ul>
+                <div editable="rich">
+                    <li><p class="lead text-secondary"> 
+                        List sponsors here
+                        &nbsp;
+                    </p></li>
+
+                </div>
+                </ul>
+            </div><!-- /lc-block -->
+        </div><!-- /col -->
+    </div>
+</div>
+
+<script>
+    window.onload = function() {
+      var startTodayButton = document.getElementById('startTodayButton');
+      startTodayButton.addEventListener('click', function(event) {
+        if (localStorage.getItem('loggedIn')) {
+          event.preventDefault();
+          alert('Already logged in');
+        } else {
+          window.location.href = '/sign-up'; // Replace '/signup' with the actual URL of your sign-up page
+        }
+      });
+    };
+</script>
    
 {% endblock %}
