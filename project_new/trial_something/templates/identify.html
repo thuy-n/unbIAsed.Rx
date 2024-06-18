@@ -1,0 +1,51 @@
+{% extends "base.html" %} {% block title %}Settings{% endblock %} 
+{% block content %}
+
+<div class="container">
+    <h2 class="display-6 text-center my-3">Identify Pill</h2>
+
+    <div class="lead py-5 mb-4 rounded-3 shadow" style="background-color: #CEE3EA;padding:20px;">
+        <p>The identification of a pill is a crucial aspect of medical Safety
+            and precautions. This software uses CNN Machine-Learning model to identify 
+            the pill based on the image provided.
+        </p>
+
+    </div>
+
+    <form id="pill-identify-form" enctype="multipart/form-data" class="mb-3">
+        <div class="mb-3">
+            <label for="pill-image" class="form-label">Upload Pill Image</label>
+            <input type="file" class="form-control" id="pill-image" name="pill-image" accept="image/*" capture>
+        </div>
+        <button type="submit" class="btn btn-start">Start</button>
+    </form>
+
+    <div id="pill-info" class="mt-3"></div> <!-- Placeholder for pill information -->
+</div>
+
+    
+    
+<script>
+    document.getElementById('pill-identify-form').addEventListener('submit', function(event) {
+        event.preventDefault();
+        var formData = new FormData(event.target);
+        fetch('/identify-pill', {
+            method: 'POST',
+            body: formData
+        }).then(function(response) {
+            if (response.ok) {
+                return response.json();
+            } else {
+                throw new Error('Error: ' + response.statusText);
+            }
+        }).then(function(data) {
+            console.log('Pill identified:', data);
+            // Display the pill information
+            document.getElementById('pill-info').textContent = 'Pill identified: ' + data;
+        }).catch(function(error) {
+            console.error('Error:', error);
+        });
+    });
+</script>
+
+{% endblock %}

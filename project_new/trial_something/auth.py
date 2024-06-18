@@ -1,4 +1,5 @@
-from flask import Blueprint, render_template, request, flash, redirect, url_for
+import os
+from flask import Blueprint, jsonify, render_template, request, flash, redirect, url_for
 from .models import User, Note, Drugs
 from werkzeug.security import generate_password_hash, check_password_hash
 from . import db   #means from __init__.py import db
@@ -174,3 +175,18 @@ def search():
         return redirect(url_for('views.home'))
 
     return render_template("search_results.html", results=results, user=current_user)
+
+@auth.route('/identify', methods=['POST'])
+def identify():
+    if 'pill-image' not in request.files:
+        return jsonify(error='No file part'), 400
+    file = request.files['pill-image']
+    if file.filename == '':
+        return jsonify(error='No selected file'), 400
+    if file:
+        filename = result_pill(file.filename)
+        filepath = os.path.join('/tmp', filename)
+        file.save(filepath)
+        pill_class = db.predict(filepath)  # Replace with your actual ML model prediction method
+        return jsonify(pill_class=pill_class)
+    return render_template("identify.html", user=current_user)
