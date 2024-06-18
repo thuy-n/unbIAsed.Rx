@@ -1,0 +1,70 @@
+{% extends "base.html" %} {% block title %}Dashboard{% endblock %} {% block content
+  %}
+
+
+<div class="display-6 my-3" align="center">
+    Search Results
+</div>
+
+{% for result in results %}
+<div class="card" style="background-color:#CEE3EA;">
+  <div class="card-body">
+      <div id="cardContainer" >
+          <h4 class="card-title">{{ result.name }}</h4>
+          <div>
+              <h5 class="card-subtitle mb-2 text-body-secondary">{{ result.area_affected }}</h5>
+              <dl class="row">
+                  <dt class="col-sm-3">Condition</dt>
+                  <dd class="col-sm-9">{{ result.condition }}</dd>
+
+                  <dt class="col-sm-3">Ratio female:male</dt>
+                  <dd class="col-sm-9">{{ result.ratio }}</dd>
+
+                  <dt class="col-sm-3">Severity</dt>
+                  <dd class="col-sm-9">{{ result.severity}}</dd>
+
+                  <dt class="col-sm-3">Side effects</dt>
+                  <dd class="col-sm-9">{{ result.side_effects }}</dd>
+
+                  <dt class="col-sm-3">Probability of risk</dt>
+                  <dd class="col-sm-9">{{ result.risk }}</dd>
+              </dl>
+              <form action="{{ url_for('views.save_drug') if not result.is_saved else url_for('views.unsave_drug') }}" method="post">
+                <input type="hidden" name="drug_id" value="{{ result.id }}">
+                <button type="submit" class="btn btn-start">
+                    {% if current_user.is_authenticated %}
+                        {{ 'Unsave' if result.is_saved else 'Save' }}
+                    {% else %}
+                        Save
+                    {% endif %}
+                </button>
+              </form>
+          </div>
+      </div>
+  </div>
+</div>
+<br>
+{% endfor %} 
+
+
+  
+
+  <script>
+    document.getElementById('saveButton').addEventListener('click', function() {
+      var cardContainer = document.getElementById('cardContainer');
+      var parser = new DOMParser();
+      var doc = parser.parseFromString(cardContainer.outerHTML, 'text/html');
+      var saveButton = doc.getElementById('saveButton');
+      saveButton.textContent = 'Unsave';
+      saveButton.id = 'unsaveButton';
+      localStorage.setItem('savedCard', doc.body.innerHTML);
+      window.location.href = 'saved';
+    });
+  </script>
+
+  {% endblock %}
+
+
+
+  
+

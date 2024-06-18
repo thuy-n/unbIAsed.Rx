@@ -1,56 +1,52 @@
 {% extends "base.html" %} {% block title %}Dashboard{% endblock %} {% block content
   %}
 
+
   <div class="display-6 my-3" align="center">
     Dashboard
 </div>
 
-  <!-- <ul class="list-group list-group-flush" id="notes">
-    {% for note in user.notes %}
-    <li class="list-group-item">
-      {{ note.data }}
-      <button type="button" class="btn-close"  aria-label="Close" onClick="deleteNote({{ note.id }});">
-      </button>
-    </li>
-    {% endfor %}
-  </ul>
-  <form method="POST">
-    <textarea name="note" id="note" class="form-control"></textarea>
-    <br />
-    <div align="center">
-      <button type="submit" class="btn btn-primary">Add Note</button>
-    </div>
-  </form> -->
-  <div class="card" style="background-color:#CEE3EA; ">
+{% for drug in drugs %}
+<div class="card" style="background-color:#CEE3EA;">
     <div class="card-body">
-      <div id="cardContainer" >
-        <h4 class="card-title">Drug/medicine name</h4>
-        <h5 class="card-subtitle mb-2 text-body-secondary">Affected area</h5>
-        <dl class="row">
-          <dt class="col-sm-3">Condition</dt>
-          <dd class="col-sm-9">Description of physical condition and side effects.</dd>
+        <div id="cardContainer" >
+            <h4 class="card-title">{{ drug.name }}</h4>
+            <div>
+                <h5 class="card-subtitle mb-2 text-body-secondary">{{ drug.area_affected }}</h5>
+                <dl class="row">
+                    <dt class="col-sm-3">Condition</dt>
+                    <dd class="col-sm-9">{{ drug.condition }}</dd>
 
-          <dt class="col-sm-3">Ratio female:male</dt>
-          <dd class="col-sm-9">Ratio (number) of numbers from clinical trials.</dd>
+                    <dt class="col-sm-3">Ratio female:male</dt>
+                    <dd class="col-sm-9">{{ drug.ratio }}</dd>
 
-          <dt class="col-sm-3">Severity</dt>
-          <dd class="col-sm-9">Description of severity of condition.</dd>
+                    <dt class="col-sm-3">Severity</dt>
+                    <dd class="col-sm-9">{{ drug.severity}}</dd>
 
-          <dt class="col-sm-3">Side effects</dt>
-          <dd class="col-sm-9">Description of potential side effects.</dd>
+                    <dt class="col-sm-3">Side effects</dt>
+                    <dd class="col-sm-9">{{ drug.side_effects }}</dd>
 
-          <dt class="col-sm-3">Probability of risks</dt>
-          <dd class="col-sm-9">Description of probability of risks for female vs male.</dd>
-          
-        </dl>
-
-        <button type="button" id="saveButton" class="btn btn-start">Save</button>
-      </div>
+                    <dt class="col-sm-3">Probability of risk</dt>
+                    <dd class="col-sm-9">{{ drug.risk }}</dd>
+                </dl>
+                <form action="{{ url_for('views.save_drug') if not drug.is_saved else url_for('views.unsave_drug') }}" method="post">
+                  <input type="hidden" name="drug_id" value="{{ drug.id }}">
+                  <button type="submit" class="btn btn-start">
+                      {% if current_user.is_authenticated %}
+                          {{ 'Unsave' if drug.is_saved else 'Save' }}
+                      {% else %}
+                          Save
+                          {{ drug.is_saved == True }}
+                      {% endif %}
+                  </button>
+                </form>
+            </div>
+        </div>
     </div>
-  </div>
-
+</div>
+<br>
+{% endfor %}
   
-
   <script>
     document.getElementById('saveButton').addEventListener('click', function() {
       var cardContainer = document.getElementById('cardContainer');

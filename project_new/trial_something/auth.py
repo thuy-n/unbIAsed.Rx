@@ -1,5 +1,5 @@
 from flask import Blueprint, render_template, request, flash, redirect, url_for
-from .models import User
+from .models import User, Note, Drugs
 from werkzeug.security import generate_password_hash, check_password_hash
 from . import db   #means from __init__.py import db
 from flask_login import login_user, login_required, logout_user, current_user
@@ -86,7 +86,8 @@ def profile():
 @auth.route('/saved')
 @login_required
 def saved():
-    return render_template('saved.html', user=current_user)
+    drugs = Drugs.query.filter_by(is_saved=True).all()
+    return render_template("saved.html", drugs=drugs, user=current_user)
  
 @auth.route('/about')
 def about():
@@ -152,3 +153,24 @@ def delete_account():
         flash("An error occurred while trying to delete your account.")
         return redirect(url_for('auth.profile'))
 
+
+@auth.route('/search', methods=['GET', 'POST'])
+def search():
+    search_term = None
+    if request.method == 'POST':
+        search_term = request.form.get('query')
+    else:
+        search_term = request.args.get('query')
+
+    if search_term == "":
+        flash("Please enter a search term.", category='error')
+        return redirect(url_for('views.home'))
+
+    
+    results = Drugs.query.filter(Drugs.name.contains(search_term)).all()
+
+    if not results:
+        flash("No drug found with that name.", category='error')
+        return redirect(url_for('views.home'))
+
+    return render_template("search_results.html", results=results, user=current_user)

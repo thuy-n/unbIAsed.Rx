@@ -10,16 +10,15 @@ class Note(db.Model):
 
 class Drugs(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(100)) #medicine name
+    name = db.Column(db.String(100), nullable=False) #medicine name, must have something
     condition = db.Column(db.String(10000)) #condition the medicine is for
     area_affected = db.Column(db.String(500)) #area the medicine is for
-    description = db.Column(db.String(10000))
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     ratio = db.Column(db.String(50)) #ratio female:male
     severity = db.Column(db.String(50)) #severity of the condition
     side_effects = db.Column(db.String(500)) #side effects of the medicine
     risk = db.Column(db.String(50)) #risk of the medicine
-
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    is_saved = db.Column(db.Boolean, default=False)
 
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
@@ -30,6 +29,6 @@ class User(db.Model, UserMixin):
     notes = db.relationship('Note')
     age = db.Column(db.String(50))
     sexe = db.Column(db.String(50))
-    drugs = db.relationship('Drugs')
+    drugs = db.relationship('Drugs', backref='user', lazy=True)
     
     

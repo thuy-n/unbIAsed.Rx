@@ -1,0 +1,4 @@
+﻿name,condition,area_affected,ratio,severity,side_effects,risk
+Drug1,Condition1,Area1,Ratio1,Severity1,Effects1,Risk1
+Drug2,Condition2,Area2,Ratio2,Severity2,Effects2,Risk2
+Drug3,Condition3,Area3,Ratio3,Severity3,Effects3,Risk3
