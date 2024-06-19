@@ -1,0 +1,48 @@
+Metadata-Version: 2.1
+Name: sqlalchemy-searchable
+Version: 2.1.0
+Summary: Provides fulltext search capabilities for declarative SQLAlchemy models.
+Project-URL: Code, https://github.com/falcony-io/sqlalchemy-searchable
+Project-URL: Documentation, https://sqlalchemy-searchable.readthedocs.io/
+Project-URL: Issue Tracker, http://github.com/falcony-io/sqlalchemy-searchable/issues
+Author-email: Konsta Vesterinen <konsta@fastmonkeys.com>
+License-Expression: BSD-3-Clause
+License-File: LICENSE
+Classifier: Environment :: Web Environment
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: BSD License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Topic :: Internet :: WWW/HTTP :: Dynamic Content
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Requires-Python: >=3.8
+Requires-Dist: sqlalchemy-utils>=0.40.0
+Requires-Dist: sqlalchemy>=1.4
+Description-Content-Type: text/x-rst
+
+SQLAlchemy-Searchable
+=====================
+
+|Version Status| |Downloads|
+
+Fulltext searchable models for SQLAlchemy. Only supports PostgreSQL
+
+
+Resources
+---------
+
+- `Documentation <https://sqlalchemy-searchable.readthedocs.io/>`_
+- `Issue Tracker <http://github.com/falcony-io/sqlalchemy-searchable/issues>`_
+- `Code <http://github.com/falcony-io/sqlalchemy-searchable/>`_
+
+
+.. |Version Status| image:: https://img.shields.io/pypi/v/SQLAlchemy-Searchable.svg
+   :target: https://pypi.python.org/pypi/SQLAlchemy-Searchable/
+.. |Downloads| image:: https://img.shields.io/pypi/dm/SQLAlchemy-Searchable.svg
+   :target: https://pypi.python.org/pypi/SQLAlchemy-Searchable/

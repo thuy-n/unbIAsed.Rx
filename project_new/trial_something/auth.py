@@ -7,6 +7,9 @@ from flask_login import login_user, login_required, logout_user, current_user
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, ValidationError
 from wtforms.validators import DataRequired, Email
+from werkzeug.utils import secure_filename
+from sqlalchemy import text, func, create_engine
+from fuzzywuzzy import process
 
 
 auth = Blueprint('auth', __name__)
@@ -155,9 +158,9 @@ def delete_account():
         return redirect(url_for('auth.profile'))
 
 
+
 @auth.route('/search', methods=['GET', 'POST'])
 def search():
-    search_term = None
     if request.method == 'POST':
         search_term = request.form.get('query')
     else:
@@ -167,26 +170,78 @@ def search():
         flash("Please enter a search term.", category='error')
         return redirect(url_for('views.home'))
 
-    
-    results = Drugs.query.filter(Drugs.name.contains(search_term)).all()
+    # Perform a case-insensitive pattern search
+    search_term = '%' + search_term + '%'
+    results = Drugs.query.filter(Drugs.name.ilike(search_term)).all()
 
     if not results:
-        flash("No drug found with that name.", category='error')
-        return redirect(url_for('views.home'))
+        # If no exact match is found, find the closest match
+        all_drugs = Drugs.query.all()
+        all_drug_names = [drug.name for drug in all_drugs]
+        closest_match_name = process.extractOne(search_term, all_drug_names)[0]
+        closest_match = Drugs.query.filter_by(name=closest_match_name).first()
+        if closest_match:
+            results = [closest_match]
+        else:
+            flash("No drug found with that name.", category='error')
+            return redirect(url_for('views.home'))
 
     return render_template("search_results.html", results=results, user=current_user)
+   
+    # search_term = None
+    # if request.method == 'POST':
+    #     search_term = request.form.get('query')
+    # else:
+    #     search_term = request.args.get('query')
 
-@auth.route('/identify', methods=['POST'])
+    # if search_term == "":
+    #     flash("Please enter a search term.", category='error')
+    #     return redirect(url_for('views.home'))
+
+    
+    # results = Drugs.query.filter(Drugs.name.contains(search_term)).all()
+
+    # if not results:
+    #     flash("No drug found with that name.", category='error')
+    #     return redirect(url_for('views.home'))
+
+    # return render_template("search_results.html", results=results, user=current_user)
+
+
+@auth.route('/identify', methods=['GET','POST'])
 def identify():
-    if 'pill-image' not in request.files:
-        return jsonify(error='No file part'), 400
-    file = request.files['pill-image']
-    if file.filename == '':
-        return jsonify(error='No selected file'), 400
-    if file:
-        filename = result_pill(file.filename)
-        filepath = os.path.join('/tmp', filename)
-        file.save(filepath)
-        pill_class = db.predict(filepath)  # Replace with your actual ML model prediction method
-        return jsonify(pill_class=pill_class)
-    return render_template("identify.html", user=current_user)
+    if request.method == 'POST':
+        image_file = request.files.get('uploaded-image')
+        label_file = request.files.get('uploaded-label')
+        button_clicked = request.form.get('submit-button')
+
+        # Check if at least one file was uploaded
+        if image_file is None and label_file is None:
+            flash('Either an image or a label file must be uploaded', 'error')
+            return render_template("identify.html", user=current_user)
+
+        # Process the image file if the 'image' button was clicked and a file was uploaded
+        if button_clicked == 'image' and image_file and image_file.filename != '':
+            image_filename = secure_filename(image_file.filename)
+            image_filepath = os.path.join('/tmp', image_filename)
+            image_file.save(image_filepath)
+            # Add your image processing code here
+            flash('Image successfully identified', 'success')
+
+
+        # Process the label file if the 'label' button was clicked and a file was uploaded
+        elif button_clicked == 'label' and label_file and label_file.filename != '':
+            label_filename = secure_filename(label_file.filename)
+            label_filepath = os.path.join('/tmp', label_filename)
+            label_file.save(label_filepath)
+            # Add your label processing code here
+            flash('Label successfully identified', 'success')
+
+
+        else:
+            flash('No file was uploaded', 'error')
+
+        return render_template("identify.html", user=current_user)
+
+    else:
+        return render_template("identify.html", user=current_user)

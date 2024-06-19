@@ -23,6 +23,14 @@
         background-color: rgb(236, 142, 130);
         color: white;
     }
+    .btn-med {
+        background-color: #364A5D;
+        color: white;
+    }
+    .btn-med:hover {
+        background-color: #CEE3EA;
+        color: #364A5D;
+    }
     .btn-delete {
         background-color: rgb(236, 142, 130);
         color: white;
@@ -104,6 +112,11 @@
       object-fit: contain;
       
     }
+    .flash-message {
+      display: none;
+      color: red;
+      /* Add other styles as needed */
+    }
     
         
   </style>
@@ -126,7 +139,7 @@
               <a class="nav-item nav-link " style="color: #F2EDF5;" id="opening" href="/"><img src="static/images/pill_circle.png" alt="unbIAsed.Rx" style="width: 45px;"></a>
               <a class="nav-item nav-link" style="color: #F2EDF5;" id="home" href="/home">Dashboard</a>
               <a class="nav-item nav-link" style="color: #F2EDF5;" id="saved" href="/saved">Saved</a>
-              <a class="nav-item nav-link" style="color: #F2EDF5;" id="identify" href="/identify">Identify</a>
+              <a class="nav-item nav-link" method="GET" style="color: #F2EDF5;" id="identify" href="/identify">Identify</a>
               <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" style="color: #F2EDF5;" data-bs-toggle="dropdown" href="/about" role="button" aria-expanded="false">About Us</a>
                 <ul class="dropdown-menu dropdown-menu-dark" style="background-color: #2d3d4b;">
@@ -141,7 +154,7 @@
               <a class="nav-item nav-link" style="color: #F2EDF5" id="opening" href="/"><img src="static/images/pill_circle.png" alt="unbIAsed.Rx" style="width: 45px; "></a>
               <a class="nav-item nav-link" style="color: #F2EDF5" id="opening" href="/home">Dashboard</a>
               <a class="nav-item nav-link" style="color: #F2EDF5;" id="saved" href="/saved">Saved</a>
-              <a class="nav-item nav-link" style="color: #F2EDF5;" id="identify" href="/identify">Identify</a>
+              <a class="nav-item nav-link" method="GET" style="color: #F2EDF5;" id="identify" href="/identify">Identify</a>
               <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" style="color: #F2EDF5;" data-bs-toggle="dropdown" href="/about" role="button" aria-expanded="false">About Us</a>
                 <ul class="dropdown-menu dropdown-menu-dark" style="background-color: #2d3d4b;">

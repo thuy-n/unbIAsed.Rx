@@ -2,6 +2,7 @@ from . import db
 from flask_login import UserMixin
 from sqlalchemy.sql import func
 
+
 class Note(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     data = db.Column(db.String(10000))
@@ -19,6 +20,8 @@ class Drugs(db.Model):
     risk = db.Column(db.String(50)) #risk of the medicine
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     is_saved = db.Column(db.Boolean, default=False)
+
+
 
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)

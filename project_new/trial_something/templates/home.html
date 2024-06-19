@@ -6,6 +6,15 @@
     Dashboard
 </div>
 
+<div class="lead mb-4 rounded-3 text-center" style="width:50%;margin-left:auto;margin-right:auto;">
+  <p>Don't know the name of the drug? No problem! Just upload the image of 
+    the drug and we will identify it for you.
+  </p>
+
+  <a href="{{ url_for('auth.identify') }}" class="btn btn-start responsive-text" role="button" id="startTodayButton">Identify Medicine</a>
+
+</div>
+
 {% for drug in drugs %}
 <div class="card shadow " style="background-color:#CEE3EA;">
     <div class="card-body">
@@ -58,6 +67,8 @@
       localStorage.setItem('savedCard', doc.body.innerHTML);
       window.location.href = 'saved';
     });
+
+   
   </script>
 
   {% endblock %}
