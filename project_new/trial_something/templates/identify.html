@@ -13,6 +13,10 @@
             </div>
             <img id="image-preview" src="" alt="Image Preview" style="display: none;padding-bottom:20px;" >
             <button type="submit" class="btn btn-start" name="submit-button" value="image">Identify Image</button>
+            <br><br>
+            {{ text }}
+            
+            <div id="learn-more-button" style="display: none;padding-top:30px;"></div>
         </div>
         <br>
         <div>
@@ -25,21 +29,42 @@
             <button type="submit" class="btn btn-start" name="submit-button" value="label">Identify Label</button>    
         </div>
          </form>
-
-    <!-- <div id="pill-info" class="mt-3"></div> Placeholder for pill information -->
-
 </div>
 
     
     
 <script>
+    window.onload = function() {
+        var wordFound = "{{ word }}";
+        if (wordFound) {
+            showLearnMoreButton(wordFound);
+        }
+
+        function showLearnMoreButton(drugName) {
+            // Create a new button element
+            var btn = document.createElement("button");
+            btn.innerHTML = "Learn More";
+            btn.className = "btn btn-start";
+            
+            // Set the button's click event to redirect to the dashboard page
+            btn.onclick = function() {
+                window.href = "/home";
+            };
+            
+            // Insert the button into the "learn-more-button" div
+            var div = document.getElementById("learn-more-button");
+            div.style.display = "block";  // Show the button
+            div.innerHTML = "";  // Clear any existing content
+            div.appendChild(btn);
+        }
+    }
+
     function displayImage(input, previewId) {
         if (input.files && input.files[0]) {
             var reader = new FileReader();
 
             reader.onload = function(e) {
                 document.getElementById(previewId).style.display = 'block';
-                document.getElementById(previewId).style.width = '200px';
                 document.getElementById(previewId).style.height = '200px';
                 document.getElementById(previewId).src = e.target.result;
             }
@@ -53,7 +78,6 @@
         reader.onload = function(e) {
             var image = document.getElementById('uploaded-image');
             image.src = e.target.result;
-            image.style.width = '200px';  // Set the width of the image
             image.style.height = '200px'; // Set the height of the image
             image.style.display = 'block';  // Make the image visible
         }
@@ -65,7 +89,6 @@
         reade2r.onload = function(e) {
             var image2 = document.getElementById('uploaded-label');
             image2.src = e.target.result;
-            image2.style.width = '200px';  // Set the width of the image
             image2.style.height = '200px'; // Set the height of the image
             image2.style.display = 'block';  // Make the image visible
         }

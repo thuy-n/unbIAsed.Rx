@@ -1,5 +1,7 @@
 import os
-from flask import Blueprint, jsonify, render_template, request, flash, redirect, url_for
+import re
+from flask import Blueprint, jsonify, render_template, request, flash, redirect, session, url_for
+import pandas as pd
 from .models import User, Note, Drugs
 from werkzeug.security import generate_password_hash, check_password_hash
 from . import db   #means from __init__.py import db
@@ -8,9 +10,17 @@ from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, ValidationError
 from wtforms.validators import DataRequired, Email
 from werkzeug.utils import secure_filename
-from sqlalchemy import text, func, create_engine
 from fuzzywuzzy import process
-
+from PIL import Image
+import pytesseract
+from dotenv import load_dotenv
+import cv2
+import nltk
+from nltk.tokenize import word_tokenize
+from nltk.tag import pos_tag
+from nltk.corpus import stopwords
+from nltk.stem import PorterStemmer
+nltk.download('stopwords')
 
 auth = Blueprint('auth', __name__)
 
@@ -25,11 +35,15 @@ def login():
             flash('Please fill in all fields.', category='error')
         elif user:
             if check_password_hash(user.password, password):
-                flash('Logged in successfully!', category='success')
                 login_user(user, remember=True)
                 return redirect(url_for('views.home'))
-            else:
+            elif not check_password_hash(user.password, password):
                 flash('Incorrect password, try again.', category='error')
+
+                return redirect(url_for('auth.login'))
+            else:
+                flash('Email does not exist.', category='error')
+                return redirect(url_for('auth.login'))
         else:
             flash('Email does not exist.', category='error')
 
@@ -65,11 +79,11 @@ def profile():
             value = request.form.get('value')
 
             # Update the selected field of the user
-            if field == '1' and value:  # First Name
-                user.first_name = value
-            elif field == '2' and value:  # Last Name
-                user.last_name = value
-            elif field == '3' and value:  # Age
+
+            # Commit the changes to the database
+            db.session.commit()
+
+            if field == '3' and value:  # Age
                 user.age = value
             elif field =='4' and value: #Sexe
                 value = value.capitalize()
@@ -208,9 +222,29 @@ def search():
     # return render_template("search_results.html", results=results, user=current_user)
 
 
+def preprocess(sentence):
+    # Remove punctuation
+    sentence = re.sub(r'[^\w\s]', '', sentence)
+    # Convert to lowercase
+    sentence = sentence.lower()
+    # Tokenize
+    words = sentence.split()
+    # Remove stopwords
+    words = [word for word in words if word not in stopwords.words('english')]
+    # Stemming
+    stemmer = PorterStemmer()
+    words = [stemmer.stem(word) for word in words]
+    # Join words back into sentence
+    sentence = ' '.join(words)
+    return sentence
+
 @auth.route('/identify', methods=['GET','POST'])
 def identify():
+    sentence = ""
+    text=""
+    word=""
     if request.method == 'POST':
+        
         image_file = request.files.get('uploaded-image')
         label_file = request.files.get('uploaded-label')
         button_clicked = request.form.get('submit-button')
@@ -225,9 +259,45 @@ def identify():
             image_filename = secure_filename(image_file.filename)
             image_filepath = os.path.join('/tmp', image_filename)
             image_file.save(image_filepath)
-            # Add your image processing code here
-            flash('Image successfully identified', 'success')
+            
+            pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
+            img = cv2.imread(image_filepath)
+            img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
 
+            boxes = pytesseract.image_to_data(img)
+
+            for i, box in enumerate(boxes.splitlines()):
+                if i==0:
+                    continue
+                box = box.split()
+                if len(box) == 12:
+                    sentence += box[11] + " "
+
+            session["sentence"] = sentence
+
+            sentence = preprocess(sentence)
+            #read csv
+            BASE_DIR = os.path.dirname(os.path.abspath(__file__))  # Get the directory of the current file
+            csv_file = os.path.join(BASE_DIR, 'combined_drug_disease_studies.csv')  # Join the base directory with the file name
+            df = pd.read_csv(csv_file)
+            meds = df.iloc[:,0].tolist()
+
+            meds.append('dobutamin')
+
+            for word in sentence.split():
+                if word in meds:
+                    flash('Image successfully identified', 'success')
+                    text=word + 'has been found!'
+                    break
+                else:
+                    text = 'This drug is not currently in our database.'
+
+            if sentence == "":
+                flash('No text was found in the image', 'error')
+            
+            os.remove(image_filepath)
+
+        
 
         # Process the label file if the 'label' button was clicked and a file was uploaded
         elif button_clicked == 'label' and label_file and label_file.filename != '':
@@ -236,12 +306,13 @@ def identify():
             label_file.save(label_filepath)
             # Add your label processing code here
             flash('Label successfully identified', 'success')
+            os.remove(label_filepath)
 
 
         else:
             flash('No file was uploaded', 'error')
 
-        return render_template("identify.html", user=current_user)
+        return render_template("identify.html", user=current_user, text=text, word=word)
 
     else:
-        return render_template("identify.html", user=current_user)
+        return render_template("identify.html", user=current_user, text=text, word=word)

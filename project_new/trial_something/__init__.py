@@ -1,8 +1,10 @@
+import os
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from os import path
+from flask_dropzone import Dropzone
+from flask_session import Session
 from flask_login import LoginManager
-from sqlalchemy import Table, Column, Integer, String, MetaData, Text
 
 
 db = SQLAlchemy()
@@ -12,8 +14,8 @@ def create_app():
     app = Flask(__name__)
     app.config['SECRET_KEY'] = 'hjshjhdjah kjshkjdhjs'
     app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{DB_NAME}'
+    
     db.init_app(app)
-
 
     from .views import views
     from .auth import auth

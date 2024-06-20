@@ -40,13 +40,17 @@
                 </dl>
                 <form action="{{ url_for('views.save_drug') if not drug.is_saved else url_for('views.unsave_drug') }}" method="post">
                   <input type="hidden" name="drug_id" value="{{ drug.id }}">
-                  <button type="submit" class="btn btn-start">
-                      {% if current_user.is_authenticated %}
-                          {{ 'Unsave' if drug.is_saved else 'Save' }}
+                    {% if current_user.is_authenticated %}
+                    <!-- If user is logged in, show the save/unsave button -->
+                      {% if drug.is_saved %}
+                          <button type = "submit" class="unsave-drug btn btn-start" data-drug="{{ drug.id }}">Unsave</button>
                       {% else %}
-                          Save
-                          {{ drug.is_saved == True }}
+                          <button type = "submit" class="save-drug btn btn-start" data-drug="{{ drug.id }}">Save</button>
                       {% endif %}
+                    {% else %}
+                      <!-- If user is not logged in, show only the save button which redirects to login -->
+                      <a href="{{ url_for('auth.login') }}" class="btn btn-start"><button>Save</button></a>
+                    {% endif %}
                   </button>
                 </form>
             </div>
