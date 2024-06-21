@@ -43,13 +43,13 @@
                     {% if current_user.is_authenticated %}
                     <!-- If user is logged in, show the save/unsave button -->
                       {% if drug.is_saved %}
-                          <button type = "submit" class="unsave-drug btn btn-start" data-drug="{{ drug.id }}">Unsave</button>
+                          <a type = "submit" class="unsave-drug btn btn-start" data-drug="{{ drug.id }}">Unsave</a>
                       {% else %}
-                          <button type = "submit" class="save-drug btn btn-start" data-drug="{{ drug.id }}">Save</button>
+                          <a type = "submit" class="save-drug btn btn-start" data-drug="{{ drug.id }}">Save</a>
                       {% endif %}
                     {% else %}
                       <!-- If user is not logged in, show only the save button which redirects to login -->
-                      <a href="{{ url_for('auth.login') }}" class="btn btn-start"><button>Save</button></a>
+                      <a href="{{ url_for('auth.login') }}" class="btn btn-start">Save</a>
                     {% endif %}
                   </button>
                 </form>

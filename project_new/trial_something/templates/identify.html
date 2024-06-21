@@ -1,62 +1,46 @@
-{% extends "base.html" %} {% block title %}Settings{% endblock %} 
+{% extends "base.html" %} {% block title %}Identify{% endblock %} 
 {% block content %}
 
 
 <div class="container">
+    <form id="label-identify-form" enctype="multipart/form-data" method="POST" action="{{ url_for('auth.identify') }}" class="mb-3">
+        <div>
+            <h2 class="display-6 text-center my-3">Identify Label</h2>
+            <div class="mb-3">
+                <label for="label-image" class="form-label">Upload Label Image</label>
+                <input type="file" class="form-control" id="label-image" name="uploaded-label-image" accept="image/*", capture onchange="displayImage(this, 'label-image-preview');">
+            </div>
+            <img id="label-image-preview" src="" alt="Label Image Preview" style="display: none;padding-bottom:20px;" >
+            <button type="submit" class="btn btn-start" name="submit-button1" value="label" >Identify Label</button>
+            <a id="moreButton" class="btn btn-start" onclick="goSearch()">Show Results</a>
+            <br><br>
+            {{ text }}
+        </div>
+    </form>   
+
+    <br>
 
     <form id="pill-identify-form" enctype="multipart/form-data" method="POST" action="{{ url_for('auth.identify') }}" class="mb-3">
         <div>
             <h2 class="display-6 text-center my-3">Identify Pill</h2>
             <div class="mb-3">
                 <label for="pill-image" class="form-label">Upload Pill Image</label>
-                <input type="file" class="form-control" id="pill-image" name="uploaded-image" accept="image/*" capture onchange="displayImage(this, 'image-preview')">
+                <input type="file" class="form-control" id="pill-image" name="uploaded-pill-image" accept="image/*", capture onchange="displayImage(this, 'pill-image-preview');">
             </div>
-            <img id="image-preview" src="" alt="Image Preview" style="display: none;padding-bottom:20px;" >
-            <button type="submit" class="btn btn-start" name="submit-button" value="image">Identify Image</button>
-            <br><br>
-            {{ text }}
-            
-            <div id="learn-more-button" style="display: none;padding-top:30px;"></div>
+            <img id="pill-image-preview" src="" alt="Pill Image Preview" style="display: none;padding-bottom:20px;" >
+            <button type="submit" class="btn btn-start" name="submit-button2" value="pill">Identify Pill</button>
+            <a id="moreButton" class="btn btn-start" onclick="goSearch()">Show Results</a>
         </div>
-        <br>
-        <div>
-            <h2 class="display-6 text-center my-3">Identify Label</h2>
-            <div class="mb-3">
-                <label for="pill-label" class="form-label">Upload Pill Label</label>
-                <input type="file" class="form-control" id="pill-label" name="uploaded-label" accept="image/*" capture onchange="displayImage(this, 'label-preview')">
-            </div>
-            <img id="label-preview" src="" alt="Label Preview" style="display: none;padding-bottom:20px;">
-            <button type="submit" class="btn btn-start" name="submit-button" value="label">Identify Label</button>    
-        </div>
-         </form>
+    </form>
+    
+
 </div>
-
     
-    
-<script>
-    window.onload = function() {
-        var wordFound = "{{ word }}";
-        if (wordFound) {
-            showLearnMoreButton(wordFound);
-        }
+<script> 
+    var search_term = "{{ something }}";
 
-        function showLearnMoreButton(drugName) {
-            // Create a new button element
-            var btn = document.createElement("button");
-            btn.innerHTML = "Learn More";
-            btn.className = "btn btn-start";
-            
-            // Set the button's click event to redirect to the dashboard page
-            btn.onclick = function() {
-                window.href = "/home";
-            };
-            
-            // Insert the button into the "learn-more-button" div
-            var div = document.getElementById("learn-more-button");
-            div.style.display = "block";  // Show the button
-            div.innerHTML = "";  // Clear any existing content
-            div.appendChild(btn);
-        }
+    function goSearch() {
+        window.location.href = "/search?term=" + encodeURIComponent(search_term);
     }
 
     function displayImage(input, previewId) {

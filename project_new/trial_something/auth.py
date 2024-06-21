@@ -21,6 +21,7 @@ from nltk.tag import pos_tag
 from nltk.corpus import stopwords
 from nltk.stem import PorterStemmer
 nltk.download('stopwords')
+import difflib
 
 auth = Blueprint('auth', __name__)
 
@@ -65,7 +66,6 @@ class UpdateUserForm(FlaskForm):
     def validate_email(self, email):
         if User.query.filter_by(email=email.data).first():
             raise ValidationError('This email has been registered already!')
-
 
 @auth.route('/profile', methods=['GET', 'POST'])
 @login_required
@@ -114,7 +114,6 @@ def about():
 @auth.route('/settings')
 def settings():
     return render_template('settings.html', user=current_user)
-
 
 @auth.route('/sign-up', methods=['GET', 'POST'])
 def sign_up():
@@ -171,8 +170,6 @@ def delete_account():
         flash("An error occurred while trying to delete your account.")
         return redirect(url_for('auth.profile'))
 
-
-
 @auth.route('/search', methods=['GET', 'POST'])
 def search():
     if request.method == 'POST':
@@ -185,6 +182,7 @@ def search():
         return redirect(url_for('views.home'))
 
     # Perform a case-insensitive pattern search
+    search_term = str(search_term) if search_term is not None else ''
     search_term = '%' + search_term + '%'
     results = Drugs.query.filter(Drugs.name.ilike(search_term)).all()
 
@@ -201,31 +199,11 @@ def search():
             return redirect(url_for('views.home'))
 
     return render_template("search_results.html", results=results, user=current_user)
-   
-    # search_term = None
-    # if request.method == 'POST':
-    #     search_term = request.form.get('query')
-    # else:
-    #     search_term = request.args.get('query')
-
-    # if search_term == "":
-    #     flash("Please enter a search term.", category='error')
-    #     return redirect(url_for('views.home'))
-
-    
-    # results = Drugs.query.filter(Drugs.name.contains(search_term)).all()
-
-    # if not results:
-    #     flash("No drug found with that name.", category='error')
-    #     return redirect(url_for('views.home'))
-
-    # return render_template("search_results.html", results=results, user=current_user)
-
 
 def preprocess(sentence):
     # Remove punctuation
     sentence = re.sub(r'[^\w\s]', '', sentence)
-    # Convert to lowercase
+    # Convert to uppercase
     sentence = sentence.lower()
     # Tokenize
     words = sentence.split()
@@ -242,12 +220,15 @@ def preprocess(sentence):
 def identify():
     sentence = ""
     text=""
-    word=""
+    word=None
+    something=""
     if request.method == 'POST':
         
-        image_file = request.files.get('uploaded-image')
-        label_file = request.files.get('uploaded-label')
-        button_clicked = request.form.get('submit-button')
+        image_file = request.files.get('uploaded-pill-image')
+        label_file = request.files.get('uploaded-label-image')
+        button_clicked1 = request.form.get('submit-button1')
+        button_clicked2 = request.form.get('submit-button2')
+
 
         # Check if at least one file was uploaded
         if image_file is None and label_file is None:
@@ -255,13 +236,13 @@ def identify():
             return render_template("identify.html", user=current_user)
 
         # Process the image file if the 'image' button was clicked and a file was uploaded
-        if button_clicked == 'image' and image_file and image_file.filename != '':
-            image_filename = secure_filename(image_file.filename)
-            image_filepath = os.path.join('/tmp', image_filename)
-            image_file.save(image_filepath)
+        if button_clicked1 == 'label' and label_file and label_file.filename != '':
+            label_filename = secure_filename(label_file.filename)
+            label_filepath = os.path.join('/tmp', label_filename)
+            label_file.save(label_filepath)
             
             pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
-            img = cv2.imread(image_filepath)
+            img = cv2.imread(label_filepath)
             img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
 
             boxes = pytesseract.image_to_data(img)
@@ -276,43 +257,50 @@ def identify():
             session["sentence"] = sentence
 
             sentence = preprocess(sentence)
+            
             #read csv
             BASE_DIR = os.path.dirname(os.path.abspath(__file__))  # Get the directory of the current file
-            csv_file = os.path.join(BASE_DIR, 'combined_drug_disease_studies.csv')  # Join the base directory with the file name
+            csv_file = os.path.join(BASE_DIR, 'final_results.csv')  # Join the base directory with the file name
             df = pd.read_csv(csv_file)
-            meds = df.iloc[:,0].tolist()
-
-            meds.append('dobutamin')
+            df.iloc[1:,0] = df.iloc[1:,0].str.lower()
+            meds = df.iloc[1:,0].tolist()
 
             for word in sentence.split():
-                if word in meds:
+                print(word)
+                close_matches = difflib.get_close_matches(word, meds, n=1, cutoff=0.8)
+                if close_matches:
                     flash('Image successfully identified', 'success')
-                    text=word + 'has been found!'
+                    text = close_matches[0] + ' has been found!'
+                    something = close_matches[0]
                     break
+                    
                 else:
                     text = 'This drug is not currently in our database.'
 
             if sentence == "":
                 flash('No text was found in the image', 'error')
             
-            os.remove(image_filepath)
+            os.remove(label_filepath)
 
-        
 
         # Process the label file if the 'label' button was clicked and a file was uploaded
-        elif button_clicked == 'label' and label_file and label_file.filename != '':
-            label_filename = secure_filename(label_file.filename)
-            label_filepath = os.path.join('/tmp', label_filename)
-            label_file.save(label_filepath)
+        elif button_clicked2 == 'pill' and image_file and image_file.filename != '':
+            image_filename = secure_filename(image_file.filename)
+            image_filepath = os.path.join('/tmp', image_filename)
+            image_file.save(image_filepath)
             # Add your label processing code here
             flash('Label successfully identified', 'success')
-            os.remove(label_filepath)
+            os.remove(image_filepath)
 
 
         else:
             flash('No file was uploaded', 'error')
 
-        return render_template("identify.html", user=current_user, text=text, word=word)
+        return render_template("identify.html", user=current_user, text=text, word=word, something=something)
 
     else:
-        return render_template("identify.html", user=current_user, text=text, word=word)
+        return render_template("identify.html", user=current_user, word=word, something=something)
+
+@auth.route('/learn')
+def learn():
+    return render_template('learn.html', user=current_user)
