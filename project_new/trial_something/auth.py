@@ -269,12 +269,12 @@ def identify():
             meds = df.iloc[1:,0].tolist()
 
             for word in sentence.split():
-                print(word)
-                close_matches = difflib.get_close_matches(word, meds, n=1, cutoff=0.8)
+                close_matches = difflib.get_close_matches(word, meds, n=1, cutoff=0.9)
                 if close_matches:
                     flash('Image successfully identified', 'success')
                     text = close_matches[0] + ' has been found!'
                     something = close_matches[0]
+                    print(something)
                     break
                     
                 else:

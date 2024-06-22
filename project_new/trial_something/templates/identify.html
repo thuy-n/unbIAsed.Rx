@@ -55,7 +55,7 @@
     var search_term = "{{ something }}";
 
     function goSearch() {
-        window.location.href = "/search?term=" + encodeURIComponent(search_term);
+        window.location.href = "/search?query=" + encodeURIComponent(search_term);
     }
 
     function displayImage(input, previewId) {
