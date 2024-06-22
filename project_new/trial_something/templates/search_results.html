@@ -11,23 +11,27 @@
       <div id="cardContainer" >
           <h4 class="card-title">{{ result.name }}</h4>
           <div>
-              <h5 class="card-subtitle mb-2 text-body-secondary">{{ result.area_affected }}</h5>
-              <dl class="row">
-                  <dt class="col-sm-3">Condition</dt>
-                  <dd class="col-sm-9">{{ result.condition }}</dd>
+            <h5 class="card-subtitle mb-2 text-body-secondary">Used For: {{ result.disease }}</h5>
+            <br>
+            <div class="row">
+              <div class="col-sm-6 h6">
+                Sex Distribution in Clinical Studies
+              </div>
+              
+              <div class="col-sm-6 h6">
+                Disease Prevalence
+              </div>
+             
+          </div>
 
-                  <dt class="col-sm-3">Ratio female:male</dt>
-                  <dd class="col-sm-9">{{ result.ratio }}</dd>
-
-                  <dt class="col-sm-3">Severity</dt>
-                  <dd class="col-sm-9">{{ result.severity}}</dd>
-
-                  <dt class="col-sm-3">Side effects</dt>
-                  <dd class="col-sm-9">{{ result.side_effects }}</dd>
-
-                  <dt class="col-sm-3">Probability of risk</dt>
-                  <dd class="col-sm-9">{{ result.risk }}</dd>
-              </dl>
+          <div class="row">
+            <div class="col-sm-6">
+              <img style="height:250px;width:auto" src="{{ result.prevalence }}" alt="{{ result.name }}">
+            </div>
+            <div class="col-sm-6">
+              <img style="height:250px;width:auto" src="{{ result.path_prevalence }}" alt="Disease Prevalence">
+            </div>
+          </div>
               <form action="{{ url_for('views.save_drug') if not result.is_saved else url_for('views.unsave_drug') }}" method="post">
                 <input type="hidden" name="drug_id" value="{{ result.id }}">
                 <button type="submit" class="btn btn-start">
@@ -37,6 +41,7 @@
                         Save
                     {% endif %}
                 </button>
+                <button type="button" class="btn btn-start" id="calcRisk" onclick="window.location.href='{{ url_for('auth.identify') }}#identify-risk';">Identify Risk</button> 
               </form>
           </div>
       </div>

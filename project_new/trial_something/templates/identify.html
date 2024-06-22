@@ -8,7 +8,7 @@
             <h2 class="display-6 text-center my-3">Identify Label</h2>
             <div class="mb-3">
                 <label for="label-image" class="form-label">Upload Label Image</label>
-                <input type="file" class="form-control" id="label-image" name="uploaded-label-image" accept="image/*", capture onchange="displayImage(this, 'label-image-preview');">
+                <input type="file" class="form-control" id="label-image" name="uploaded-label-image" accept="image/*" capture onchange="displayImage(this, 'label-image-preview');">
             </div>
             <img id="label-image-preview" src="" alt="Label Image Preview" style="display: none;padding-bottom:20px;" >
             <button type="submit" class="btn btn-start" name="submit-button1" value="label" >Identify Label</button>
@@ -30,6 +30,21 @@
             <img id="pill-image-preview" src="" alt="Pill Image Preview" style="display: none;padding-bottom:20px;" >
             <button type="submit" class="btn btn-start" name="submit-button2" value="pill">Identify Pill</button>
             <a id="moreButton" class="btn btn-start" onclick="goSearch()">Show Results</a>
+        </div>
+    </form>
+
+    <br>
+
+    <form id="identify-risk" enctype="multipart/form-data" method="POST" action="{{ url_for('auth.identify') }}" class="mb-3">
+        <div>
+            <h2 class="display-6 text-center my-3">Identify Risk</h2>
+            <div class="mb-3">
+                <label for="drug" class="form-label">Enter Drug/Disease Pair</label>
+                <input type="text" class="form-control" id="drug" name="drug" placeholder="Enter Drug" required>
+                <br>
+                <input type="text" class="form-control" id="disease" name="disease" placeholder="Enter Disease" required>
+            </div>
+            <button type="submit" class="btn btn-start" name="submit-button2" value="risk">Calculate Risk</button>
         </div>
     </form>
     

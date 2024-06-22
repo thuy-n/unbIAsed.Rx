@@ -22,6 +22,7 @@ from nltk.corpus import stopwords
 from nltk.stem import PorterStemmer
 nltk.download('stopwords')
 import difflib
+from sqlalchemy import or_
 
 auth = Blueprint('auth', __name__)
 
@@ -184,7 +185,9 @@ def search():
     # Perform a case-insensitive pattern search
     search_term = str(search_term) if search_term is not None else ''
     search_term = '%' + search_term + '%'
-    results = Drugs.query.filter(Drugs.name.ilike(search_term)).all()
+    # results = Drugs.query.filter(Drugs.name.ilike(search_term)).all()
+    results = Drugs.query.filter(or_(Drugs.name.ilike(search_term), Drugs.disease.ilike(search_term))).all()
+
 
     if not results:
         # If no exact match is found, find the closest match
