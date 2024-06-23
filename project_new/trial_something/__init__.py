@@ -6,7 +6,6 @@ from flask_dropzone import Dropzone
 from flask_session import Session
 from flask_login import LoginManager
 
-
 db = SQLAlchemy()
 DB_NAME = "database.db"
 

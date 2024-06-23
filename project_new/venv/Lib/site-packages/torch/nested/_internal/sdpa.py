@@ -1,5 +1,4 @@
 import logging
-import math
 from typing import Optional, Tuple
 
 import torch
@@ -12,9 +11,9 @@ from torch.backends.cuda import (
     math_sdp_enabled,
     mem_efficient_sdp_enabled,
     SDPAParams,
-    SDPBackend,
 )
 
+from torch.nn.attention import SDPBackend
 from .nested_tensor import NestedTensor
 
 log = logging.getLogger(__name__)
@@ -218,21 +217,6 @@ def _check_for_seq_len_0_nested(params: SDPAParams, debug=False) -> bool:
     return True
 
 
-def _check_requires_grad_nested(params: SDPAParams, debug=False) -> bool:
-    if (
-        params.query.requires_grad
-        or params.key.requires_grad
-        or params.value.requires_grad
-    ):
-        # TODO: This can be done, it just isn't written yet
-        if debug:
-            log.warning(
-                "Memory efficient attention currently doesn't support training with NT inputs."
-            )
-        return False
-    return True
-
-
 def _can_use_flash_sdpa_jagged(params: SDPAParams, debug=False) -> bool:
     constraints = (
         _check_batch_size_nested,
@@ -247,7 +231,6 @@ def _can_use_flash_sdpa_jagged(params: SDPAParams, debug=False) -> bool:
 
 def _can_use_efficient_sdpa_jagged(params: SDPAParams, debug=False) -> bool:
     constraints = (
-        _check_requires_grad_nested,
         _check_batch_size_nested,
         _check_for_seq_len_0_nested,
     )
@@ -357,7 +340,7 @@ def _is_safe_to_get_storage_as_tensor(tensor: torch.Tensor):
     # Returns a boolean indicating if contiguous needs to be called for input
     assert isinstance(tensor, NestedTensor)
     offsets = tensor.offsets()
-    strides = tensor._stride
+    strides = tensor._strides
 
     n_tensors = offsets.size(0) - 1
     if n_tensors <= 1:
@@ -619,7 +602,8 @@ def _pad_last_dim(
 
 # TODO: coalesce with torch/nn/utils/attention.py
 def _calculate_scale(query, scale):
-    softmax_scale = scale if scale is not None else math.sqrt(1.0 / query.size(-1))
+    # TODO: Investigate why math.sqrt() isn't properly handled by Dynamo?
+    softmax_scale = scale if scale is not None else torch.sym_sqrt(1.0 / query.size(-1))
     return softmax_scale
 
 
@@ -709,9 +693,12 @@ def jagged_scaled_dot_product_attention(
             False,
             scale=og_scale,
         )
-
         # Reshape output to convert nnz to batch_size and seq_len
-        attention = NestedTensor(attention, **output_nt_info).transpose(1, 2)
+        from torch.nested._internal.nested_tensor import nested_view_from_values_offsets
+
+        attention = nested_view_from_values_offsets(
+            attention.squeeze(0), output_nt_info["offsets"]
+        ).transpose(1, 2)
         return _post_process_flash_output(attention, og_size)
     elif backend_choice == SDPBackend.EFFICIENT_ATTENTION:
         (
@@ -721,7 +708,7 @@ def jagged_scaled_dot_product_attention(
             cumulative_sequence_length_q,
             cumulative_sequence_length_kv,
             max_seqlen_batch_q,
-            _,
+            max_seqlen_batch_kv,
             output_nt_info,
         ) = _sdpa_nested_preprocessing(query, key, value)
         (
@@ -739,6 +726,7 @@ def jagged_scaled_dot_product_attention(
             cumulative_sequence_length_q,
             cumulative_sequence_length_kv,
             max_seqlen_batch_q,
+            max_seqlen_batch_kv,
             dropout_p,
             int(is_causal),
             compute_logsumexp,
@@ -746,11 +734,46 @@ def jagged_scaled_dot_product_attention(
         )
 
         # Reshape output to convert nnz to batch_size and seq_len
-        return NestedTensor(attention.squeeze(0), **output_nt_info).transpose(1, 2)
+        from torch.nested._internal.nested_tensor import nested_view_from_values_offsets
+
+        return nested_view_from_values_offsets(
+            attention.squeeze(0), output_nt_info["offsets"]
+        ).transpose(1, 2)
     elif backend_choice == SDPBackend.MATH:
-        return torch._scaled_dot_product_attention_math(
+        # save the offsets and shape of the inputs, so we can reshape the final output
+        # query @ key = attn: [B, D1, j0, D'] @ [B, D1, D' j1] = [B, D1, j0, j1]
+        # attn @ value = out: [B, D1, j0, j1] @ [B, D1, j1, D2] = [B, D1, j0, D2]
+        offsets = query.offsets()
+        d1 = query._size[1]
+        d2 = value._size[-1]
+
+        # convert jagged layout Nested Tensor to strided layout Nested Tensor
+        # which support the math implementation of SDPA
+        def get_strided_layout_nested_tensor(jagged_layout_nt):
+            lengths = jagged_layout_nt._offsets[1:] - jagged_layout_nt._offsets[:-1]
+            transpose = torch.transpose(jagged_layout_nt, 1, 2)
+            tensor_list = transpose.values().split(list(lengths), dim=0)
+            strided_nt = torch.nested.as_nested_tensor(list(tensor_list))
+            strided_nt = strided_nt.transpose(1, 2).contiguous()
+            return strided_nt
+
+        query = get_strided_layout_nested_tensor(query)
+        key = get_strided_layout_nested_tensor(key)
+        value = get_strided_layout_nested_tensor(value)
+
+        attn_out = torch._scaled_dot_product_attention_math(
             query, key, value, attn_mask, dropout_p, is_causal, scale=scale
         )[0]
+
+        from torch.nested._internal.nested_tensor import nested_view_from_values_offsets
+
+        # convert strided layout Nested Tensor back to jagged layout Nested Tensor
+        attn_out = attn_out.transpose(1, 2).contiguous().values()
+        attn_out = attn_out.view(-1, d1, d2)
+        attn_out = nested_view_from_values_offsets(attn_out, offsets)
+        attn_out = attn_out.transpose(1, 2)
+
+        return attn_out
     else:
         raise RuntimeError(
             "No viable backend for scaled_dot_product_attention was found."

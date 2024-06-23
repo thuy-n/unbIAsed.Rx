@@ -9,6 +9,7 @@ import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import numpy as np
+from sqlalchemy import func
 
 views = Blueprint('views', __name__)
 
@@ -19,9 +20,22 @@ def opening():
         logged_in = True
     return render_template('opening.html', logged_in=logged_in, user=current_user)
 
-@views.route('/home') 
+@views.route('/home', methods=['GET', 'POST']) 
 def home():
     disease_prevalence = None
+
+    if request.method == 'POST':
+        drug_filter = request.form.get('drug_filter')
+
+        if drug_filter:
+            filtered_drugs = Drugs.query.filter(Drugs.disease.ilike(f'%{drug_filter}%')).all()
+            
+        if drug_filter == "ALL":
+            filtered_drugs = Drugs.query.all()
+
+        
+        return render_template("home.html", drugs=filtered_drugs, user=current_user, disease_prevalence=disease_prevalence)
+    
     if not Drugs.query.first():  # Check if the database is empty
         BASE_DIR = os.path.dirname(os.path.abspath(__file__))  # Get the directory of the current file
         csv_file = os.path.join(BASE_DIR, 'final_results.csv')  # Join the base directory with the file name
@@ -57,9 +71,9 @@ def home():
         db.session.commit()
 
     drugs = Drugs.query.all()
-    
     return render_template("home.html", drugs=drugs, user=current_user, disease_prevalence=disease_prevalence)
 
+    
 @views.route('/save-drug', methods=['POST'])
 @login_required
 def save_drug():

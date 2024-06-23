@@ -23,6 +23,69 @@ from nltk.stem import PorterStemmer
 nltk.download('stopwords')
 import difflib
 from sqlalchemy import or_
+import torch
+from typing import Callable, Any, Optional
+import zipfile
+from torch.utils.data import Dataset, DataLoader
+import torch.nn as nn
+import torch
+import numpy as np
+from torchvision.transforms import transforms
+from torchvision.models import shufflenet_v2_x0_5, ShuffleNet_V2_X0_5_Weights
+import tqdm
+from sklearn import model_selection
+import matplotlib.pyplot as plt
+from sklearn.preprocessing import LabelEncoder
+from torchmetrics.classification import MulticlassConfusionMatrix, Accuracy
+import timm
+from albumentations import (
+    Compose, Normalize, Resize, RandomResizedCrop, RandomCrop, HorizontalFlip, VerticalFlip,
+    Rotate, ShiftScaleRotate, Transpose
+)
+# from albumentations.augmentations.transforms import RandomBrightness
+from albumentations.pytorch import ToTensorV2
+from torchmetrics.classification import MulticlassConfusionMatrix, Accuracy
+import timm
+from albumentations import (
+    Compose, Normalize, Resize, RandomResizedCrop, RandomCrop, HorizontalFlip, VerticalFlip,
+    Rotate, ShiftScaleRotate, Transpose
+    )
+from albumentations.pytorch import ToTensorV2
+
+class BaselineModel(nn.Module):
+    def __init__(self, num_classes: int, model_type = 'shuffleNet'):
+        super().__init__()
+        self.model_type = model_type
+        if model_type == 'shuffleNet':
+          self.model = shufflenet_v2_x0_5(weights=ShuffleNet_V2_X0_5_Weights.DEFAULT)
+          self.model.fc = nn.Linear(self.model.fc.in_features, num_classes)
+        elif model_type == 'ResNext':
+          self.model = timm.create_model('resnext50_32x4d', pretrained=True)
+          n_features = self.model.fc.in_features
+          self.model.fc = nn.Linear(n_features, num_classes)
+        elif model_type == 'resnet50':
+          backbone = timm.create_model(model_type, pretrained=True)
+          n_features = backbone.fc.in_features
+          self.backbone = nn.Sequential(*backbone.children())[:-2]
+          self.classifier = nn.Linear(n_features, num_classes)
+          self.pool = nn.AdaptiveAvgPool2d((1, 1))
+
+    def forward(self, x):
+      if self.model_type != 'resnet50':
+        return self.model(x)
+      elif self.model_type == 'resnet50':
+        x = self.backbone(x)
+        feats = x
+        x = self.pool(feats).view(x.size(0), -1)
+        x = self.classifier(x)
+        return x
+
+    @staticmethod
+    def load(filename: str):
+        checkpoint = torch.load(filename)
+        model = BaselineModel(checkpoint["num_classes"])
+        model.load_state_dict(checkpoint["params"])
+        return model
 
 auth = Blueprint('auth', __name__)
 
@@ -188,15 +251,16 @@ def search():
     # results = Drugs.query.filter(Drugs.name.ilike(search_term)).all()
     results = Drugs.query.filter(or_(Drugs.name.ilike(search_term), Drugs.disease.ilike(search_term))).all()
 
-
     if not results:
-        # If no exact match is found, find the closest match
+    # If no exact match is found, find the closest match
         all_drugs = Drugs.query.all()
         all_drug_names = [drug.name for drug in all_drugs]
-        closest_match_name = process.extractOne(search_term, all_drug_names)[0]
-        closest_match = Drugs.query.filter_by(name=closest_match_name).first()
-        if closest_match:
-            results = [closest_match]
+        closest_match_result = process.extractOne(search_term, all_drug_names)
+        if closest_match_result:  # Check if closest_match_result is not None
+            closest_match_name = closest_match_result[0]
+            closest_match = Drugs.query.filter_by(name=closest_match_name).first()
+            if closest_match:
+                results = [closest_match]
         else:
             flash("No drug found with that name.", category='error')
             return redirect(url_for('views.home'))
@@ -218,6 +282,42 @@ def preprocess(sentence):
     # Join words back into sentence
     sentence = ' '.join(words)
     return sentence
+
+def predict_with_cnn(image_path, model_path, input_width, input_height):
+    # Define the transformation chain
+    transform = Compose([
+        RandomResizedCrop(input_height, input_width),
+        Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
+        ToTensorV2()
+    ])
+    print('Processing image')
+    if torch.cuda.is_available():
+        device = 'cuda'
+    else:
+        device = 'cpu'
+
+    # Load image and preprocess
+    image = cv2.imread(image_path)
+    augmented = transform(image=image)
+    image = augmented['image']  # Apply transformations
+    image = image.unsqueeze(0)  # Add batch dimension
+    print('Done processing image')
+
+    # Load the model
+    model = BaselineModel(10, 'resnet50')
+    # model = torch.load(model_path, map_location=torch.device(device))
+    model.load_state_dict(torch.load(model_path, map_location=torch.device(device)))
+    model.eval()
+
+    # Make prediction
+    with torch.no_grad():
+        output = model(image.to(device))
+
+    # Interpret results as classification
+    probs = torch.nn.functional.softmax(output, dim=1)
+    predicted_class = torch.argmax(probs, dim=1).item()
+    return predicted_class
+
 
 @auth.route('/identify', methods=['GET','POST'])
 def identify():
@@ -274,7 +374,7 @@ def identify():
                     flash('Image successfully identified', 'success')
                     text = close_matches[0] + ' has been found!'
                     something = close_matches[0]
-                    print(something)
+                    print
                     break
                     
                 else:
@@ -291,9 +391,26 @@ def identify():
             image_filename = secure_filename(image_file.filename)
             image_filepath = os.path.join('/tmp', image_filename)
             image_file.save(image_filepath)
-            # Add your label processing code here
+
+            # Define the class dictionary
+            class_dict = {'Alaxan': 0, 'Bactidol': 1, 'Biogesic': 2, 'Lamictal': 3, 'DayZinc': 4, 'Rivaroxaban': 5,
+                'Fish Oil': 6, 'Kremil S': 7, 'Medicol': 8, 'Neozep': 9}
+            
+            # Create a reverse dictionary
+            reverse_class_dict = {v: k for k, v in class_dict.items()}
+
+            # Example usage
+            model_path = r'C:\Users\anbgo\coding_projects_flask\GitHub-Rx\project_new\trial_something\resnet50-2.pt'
+            input_width = 224  # Replace with your model's input width
+            input_height = 224  # Replace with your model's input height
+            predicted_class = predict_with_cnn(image_filepath, model_path, input_width, input_height)
+            predicted_class_name = reverse_class_dict[predicted_class]
+            print(f"Predicted class: {predicted_class_name}")
+
             flash('Label successfully identified', 'success')
             os.remove(image_filepath)
+
+            return render_template("identify.html", user=current_user, text=text, word=word, something=something, pill=predicted_class_name)
 
 
         else:

@@ -3,8 +3,43 @@
 
 
   <div class="display-6 my-3" align="center">
-    Browse
-</div>
+    Browse  <a class="btn btn-start" data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+      <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-filter" viewBox="0 0 16 16">
+        <path d="M6 10.5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1-.5-.5m-2-3a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5m-2-3a.5.5 0 0 1 .5-.5h11a.5.5 0 0 1 0 1h-11a.5.5 0 0 1-.5-.5"/>
+      </svg>
+    </a>
+  </div>
+
+  <div class="collapse" id="collapseExample">
+    <form action="/home" method="POST" id="myForm" >
+      <div class="card card-body">
+        Want to filter the browse page content? No problem! Just select the filters below and click on the "Apply Filter" button.<br>
+        <br>
+        <label for="diseaseFilter">Filter by Disease:</label>
+        <select class="form-select" aria-label="Default select example" id="drug_filter" name="drug_filter">
+          <option selected>Select Filter</option>
+          <option value="ALL">All Drugs</option>
+          <option value="ASTHMA">Asthma</option>
+          <option value="DEMENTIA">Dementia</option>
+          <option value="DIABETES">Diabetes</option>
+          <option value="HYPERTENSION">Hypertension</option>
+          <option value="EPILEPSY">Epilepsy</option>
+          <option value="HEART FAILURE">Heart Failure</option>
+          <option value="ISCHEMIC HEART DISEASE">Ischemic Heart Disease</option>
+          <option value="MYOCARDIAL INFARCTION">Myocardial Infarction</option>
+          <option value="SCHIZOPHRENIA">Schizophrenia</option>
+          <option value="STROKE">Stroke</option>
+          <option value="PARKINSON'S">Parkinson's</option>
+          <option value="MULTIPLE SCLEROSIS">Multiple Sclerosis</option>
+          <option value="CHRONIC OBSTRUCTIVE PULMONARY DISEASE">Chronic Obstructive Pulmonary Disease</option>
+        </select>
+        <br>
+
+        <button type="submit" value="Submit" class="btn btn-start mb-3" style="width:125px">Apply Filter</button>
+      </div>
+    </form>
+    <br>
+  </div>
 
 <div class="lead mb-4 rounded-3 text-center" style="width:50%;margin-left:auto;margin-right:auto;">
   <p>Don't know the name of the drug? No problem! Just upload the image of 
@@ -19,7 +54,7 @@
 <div class="card shadow " style="background-color:#CEE3EA;">
     <div class="card-body">
         <div id="cardContainer" >
-            <h4 class="card-title">{{ drug.name }}</h4>
+            <h4 class="card-title">{{ drug.name.replace("_", " ") }}</h4>
             <div>
                 <h5 class="card-subtitle mb-2 text-body-secondary">Used For: {{ drug.disease }}</h5>
                 <br>
@@ -77,6 +112,10 @@
       window.location.href = 'saved';
     });
 
+    function submitForm() {
+      // Handle form submission here
+      document.getElementById('myForm').submit();
+    }
    
   </script>
 

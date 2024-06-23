@@ -15,10 +15,8 @@ from typing import Any, Dict, List, Optional, Tuple, Union
 import torch
 import torch.utils._pytree as pytree
 from torch import Tensor
-from torch._logging import getArtifactLogger
 from torch._subclasses.functional_tensor import FunctionalTensor
 from torch.fx.experimental.symbolic_shapes import is_concrete_int
-from .functional_utils import _get_mutation_type
 from .schemas import (
     BackwardSignature,
     GraphSignature,
@@ -30,8 +28,6 @@ from .schemas import (
 from .utils import strict_zip
 
 zip = strict_zip
-
-aot_graphs_log = getArtifactLogger(__name__, "aot_graphs")
 
 
 def remove_dupe_metadata(
@@ -151,14 +147,6 @@ def create_synthetic_base_metadata(
             m.input_info[x].mutations_under_no_grad_or_inference_mode
             for x in outer_indices
         )
-        mutation_type = _get_mutation_type(
-            m.keep_input_mutations,
-            mutates_data,
-            mutates_metadata,
-            mutations_hidden_from_autograd,
-            mutations_under_no_grad_or_inference_mode,
-            requires_grad,
-        )
 
         inpt_info = InputAliasInfo(
             # If len(outer_indices) > 1, then this input is a synthetic base.
@@ -176,7 +164,7 @@ def create_synthetic_base_metadata(
             mutations_under_no_grad_or_inference_mode=mutations_under_no_grad_or_inference_mode,
             is_leaf=any_leaf,
             requires_grad=requires_grad,
-            mutation_type=mutation_type,
+            keep_input_mutations=m.keep_input_mutations,
         )
         input_infos.append(inpt_info)
 
@@ -206,21 +194,33 @@ def create_synthetic_base_metadata(
         )
         for outer_idx in outer_aliased_arg_idx_with_metadata_mutations
     ]
-    existing_output_infos = [
-        OutputAliasInfo(
-            output_type=o.output_type,
-            raw_type=o.raw_type,
-            dynamic_dims=o.dynamic_dims,
-            # Map the input idx pre-synthetic-bases to the new idx post-synthetic-bases
-            base_idx=None  # type: ignore[arg-type]
+    existing_output_infos = []
+    for o in m.output_info:
+        new_base_idx = (
+            None
             if o.base_idx is None
-            else synthetic_base_info[o.base_idx]
-            if isinstance(synthetic_base_info[o.base_idx], int)
-            else synthetic_base_info[o.base_idx][0],  # type: ignore[index]
-            requires_grad=o.requires_grad,
+            else (
+                synthetic_base_info[o.base_idx]
+                if isinstance(synthetic_base_info[o.base_idx], int)
+                else synthetic_base_info[o.base_idx][0]  # type: ignore[index]
+            )
         )
-        for o in m.output_info
-    ]
+        # If base_idx is changed for OutputType.is_input, we need to update the output type to reflect the change
+        new_output_type = (
+            OutputType.alias_of_input
+            if o.output_type == OutputType.is_input and o.base_idx != new_base_idx
+            else o.output_type
+        )
+        existing_output_infos.append(
+            OutputAliasInfo(
+                output_type=new_output_type,
+                raw_type=o.raw_type,
+                dynamic_dims=o.dynamic_dims,
+                # Map the input idx pre-synthetic-bases to the new idx post-synthetic-bases
+                base_idx=new_base_idx,  # type: ignore[arg-type]
+                requires_grad=o.requires_grad,
+            )
+        )
 
     inner_mutated_tangents = [
         x
@@ -251,6 +251,13 @@ def create_synthetic_base_metadata(
     )
 
 
+def _get_last_mem_address(x):
+    out = x.storage_offset()
+    for size, stride in zip(x.size(), x.stride()):
+        out += (size - 1) * stride
+    return out
+
+
 # Assumption: x and y are known to share a storage, and we are trying to determine
 # if their memory is actually completely disjoint, based on sizes/strides/storage_offset
 def _tensors_definitely_do_not_overlap(x, y):
@@ -270,6 +277,11 @@ def _tensors_definitely_do_not_overlap(x, y):
         else:
             # definitely no overlap
             return True
+
+    # Short-circuit: if last memory address of x is < start of y, then not overlapping.
+    x_last = _get_last_mem_address(x)
+    if x_last < y.storage_offset():
+        return True
 
     if x.dim() == 2 and y.dim() == 2 and x.stride(1) == 1 and y.stride(1) == 1:
         # This cases is needed for the shampoo optimizer.
@@ -362,9 +374,10 @@ def create_graph_signature(
     graph_output_names = _graph_output_names(fx_g)
 
     num_params_buffers = len(param_names) + len(buffer_names)
+    num_tokens = len(fw_metadata.tokens)
     # We have enough restrictions on the graph (no de-duping, synthetic bases, etc),
     # Such that # graph inps = # user inps + # params + # buffers
-    num_user_args = len(graph_input_names) - num_params_buffers
+    num_user_args = len(graph_input_names) - num_params_buffers - num_tokens
 
     if trace_joint:
         assert num_user_fw_outs is not None
@@ -399,7 +412,9 @@ def create_graph_signature(
     else:
         backward_signature = None
         num_user_fw_outs = (
-            len(graph_output_names) - fw_metadata.num_mutated_inp_runtime_indices
+            len(graph_output_names)
+            - fw_metadata.num_mutated_inp_runtime_indices
+            - num_tokens
         )
 
     return GraphSignature.from_tracing_metadata(

@@ -29,7 +29,9 @@
             </div>
             <img id="pill-image-preview" src="" alt="Pill Image Preview" style="display: none;padding-bottom:20px;" >
             <button type="submit" class="btn btn-start" name="submit-button2" value="pill">Identify Pill</button>
-            <a id="moreButton" class="btn btn-start" onclick="goSearch()">Show Results</a>
+            <a id="moreButton" class="btn btn-start" onclick="goSearch2()">Show Results</a>
+            <br><br>
+            {{ pill }}
         </div>
     </form>
 
@@ -53,9 +55,14 @@
     
 <script> 
     var search_term = "{{ something }}";
+    var search_term2 = "{{ pill }}";
 
     function goSearch() {
         window.location.href = "/search?query=" + encodeURIComponent(search_term);
+    }
+
+    function goSearch2() {
+        window.location.href = "/search?query=" + encodeURIComponent(search_term2);
     }
 
     function displayImage(input, previewId) {
