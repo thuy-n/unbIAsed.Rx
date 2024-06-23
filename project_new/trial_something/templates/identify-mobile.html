@@ -1,0 +1,106 @@
+{% extends "base-mobile.html" %} {% block title %}Identify{% endblock %} 
+{% block content %}
+
+
+<div class="container">
+    <form id="label-identify-form" enctype="multipart/form-data" method="POST" action="{{ url_for('auth.identify') }}" class="mb-3">
+        <div>
+            <h2 class="display-6 text-center my-3">Identify Label</h2>
+            <div class="mb-3">
+                <label for="label-image" class="form-label">Upload Label Image</label>
+                <input type="file" class="form-control" id="label-image" name="uploaded-label-image" accept="image/*" capture onchange="displayImage(this, 'label-image-preview');">
+            </div>
+            <img id="label-image-preview" src="" alt="Label Image Preview" style="display: none;padding-bottom:20px;" >
+            <button type="submit" class="btn btn-start" name="submit-button1" value="label" >Identify Label</button>
+            <a id="moreButton" class="btn btn-start" onclick="goSearch()">Show Results</a>
+            <br><br>
+            {{ text }}
+        </div>
+    </form>   
+
+    <br>
+
+    <form id="pill-identify-form" enctype="multipart/form-data" method="POST" action="{{ url_for('auth.identify') }}" class="mb-3">
+        <div>
+            <h2 class="display-6 text-center my-3">Identify Pill</h2>
+            <div class="mb-3">
+                <label for="pill-image" class="form-label">Upload Pill Image</label>
+                <input type="file" class="form-control" id="pill-image" name="uploaded-pill-image" accept="image/*", capture onchange="displayImage(this, 'pill-image-preview');">
+            </div>
+            <img id="pill-image-preview" src="" alt="Pill Image Preview" style="display: none;padding-bottom:20px;" >
+            <button type="submit" class="btn btn-start" name="submit-button2" value="pill">Identify Pill</button>
+            <a id="moreButton" class="btn btn-start" onclick="goSearch2()">Show Results</a>
+            <br><br>
+            {{ pill }}
+        </div>
+    </form>
+
+    <br>
+
+    <form id="identify-risk" enctype="multipart/form-data" method="POST" action="{{ url_for('auth.identify') }}" class="mb-3">
+        <div>
+            <h2 class="display-6 text-center my-3">Identify Risk</h2>
+            <div class="mb-3">
+                <label for="drug" class="form-label">Enter Drug/Disease Pair</label>
+                <input type="text" class="form-control" id="drug" name="drug" placeholder="Enter Drug" required>
+                <br>
+                <input type="text" class="form-control" id="disease" name="disease" placeholder="Enter Disease" required>
+            </div>
+            <button type="submit" class="btn btn-start" name="submit-button2" value="risk">Calculate Risk</button>
+        </div>
+    </form>
+    
+
+</div>
+    
+<script> 
+    var search_term = "{{ something }}";
+    var search_term2 = "{{ pill }}";
+
+    function goSearch() {
+        window.location.href = "/search?query=" + encodeURIComponent(search_term);
+    }
+
+    function goSearch2() {
+        window.location.href = "/search?query=" + encodeURIComponent(search_term2);
+    }
+
+    function displayImage(input, previewId) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function(e) {
+                document.getElementById(previewId).style.display = 'block';
+                document.getElementById(previewId).style.height = '200px';
+                document.getElementById(previewId).src = e.target.result;
+            }
+
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+
+    document.getElementById('pill-image').addEventListener('change', function() {
+        var reader = new FileReader();
+        reader.onload = function(e) {
+            var image = document.getElementById('uploaded-image');
+            image.src = e.target.result;
+            image.style.height = '200px'; // Set the height of the image
+            image.style.display = 'block';  // Make the image visible
+        }
+        reader.readAsDataURL(this.files[0]);
+    });
+
+    document.getElementById('label-image').addEventListener('change', function() {
+        var reader2 = new FileReader();
+        reade2r.onload = function(e) {
+            var image2 = document.getElementById('uploaded-label');
+            image2.src = e.target.result;
+            image2.style.height = '200px'; // Set the height of the image
+            image2.style.display = 'block';  // Make the image visible
+        }
+        reader2.readAsDataURL(this.files[0]);
+    });
+    
+</script>
+
+{% endblock %}

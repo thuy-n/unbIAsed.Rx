@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <title>{% block title %}Home{% endblock %}</title>
+  </head>
+
+  <style>
+    .card-img-top {
+        width: 100%;
+        height: 250px;
+        object-fit: cover;
+    }
+    .btn-start {
+        background-color: #364A5D;
+        color: white;
+    }
+    .btn-start:hover {
+        background-color: rgb(236, 142, 130);
+        color: white;
+    }
+    .btn-med {
+        background-color: #364A5D;
+        color: white;
+    }
+    .btn-med:hover {
+        background-color: #CEE3EA;
+        color: #364A5D;
+    }
+    .btn-delete {
+        background-color: rgb(236, 142, 130);
+        color: white;
+    }
+    .btn-delete:hover {
+        background-color: red;
+        color: white;
+    }
+
+    .dropdown-item:hover {
+        color: rgb(246, 174, 164);
+    }
+    .email-link:hover{
+      color: rgb(246, 174, 164);
+    } 
+    .readMore {
+      margin:0px;
+      padding:0px;
+      color:#376EFF;
+    }
+    .readMore:hover {
+      color: rgb(246, 174, 164);
+    }
+    .custom-btn {
+      background-color: #364A5D;
+      border-color: #B6E7EC;
+      color: #B6E7EC;
+    }
+
+    .custom-btn:hover {
+      background-color: #B6E7EC;
+      border-color: #B6E7EC;
+      color: #364A5D;
+    }
+
+    .custom-btn:active {
+      background-color: #B6E7EC;
+      border-color: #B6E7EC;
+      color: #ffffff;
+    }
+
+    #intro-example {
+      height: 400px;
+    }
+    .offcanvas {
+      height: 75vh !important;
+    }
+    .carousel-item-height {
+      height: 400px; /* Adjust this value as needed */
+    }
+    @media (max-width: 850px) {
+      .carousel-item-height {
+        height: 400px !important; /* Adjust this value as needed */
+      }
+    }
+   
+    @media screen and (max-width: 750px) {
+        .responsive-text {
+            font-size: small;
+        }
+    }
+    @media screen and (max-width: 768px) {
+        .responsive-text {
+            font-size: medium; /* Adjust this value as needed */
+        }
+    }
+    .carousel-item  {
+      height: 300px;  /* Adjust as needed */
+     
+    }
+    .carousel-item img {
+      width: 30%;  /* Adjust as needed */
+      height: 100px;  /* Adjust as needed */
+      object-fit: contain;
+      
+    }
+    .flash-message {
+      display: none;
+      color: red;
+      /* Add other styles as needed */
+    }
+    #offcanvas {
+      height: 100vh !important; /* Sets the height to be 100% of the viewport height */
+    }
+    
+  </style>
+
+  <body >
+    <nav class="navbar navbar-dark fixed-top" style="background-color: #364A5D;width:100%;position:fixed;top:0;left:0;z-index: 1050;">
+      <button
+        class="navbar-toggler"
+        type="button"
+        data-bs-toggle="offcanvas"
+        data-bs-target="#offcanvas"
+        aria-controls="offcanvas">
+          <span class="navbar-toggler-icon" ></span>
+      </button>
+      <ul class="navbar-nav" style="position:fixed; right:15px">
+        <form class="d-flex" action="/search" method="GET">
+          <input class="form-control me-2" type="text" name="query" placeholder="Search" aria-label="Search" >
+          <button class="btn custom-btn" type="submit" id="searchButton">Search</button>
+        </form>
+      </ul>
+
+      <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvas" style="background-color: #364A5D;width:50%;height:100%">
+        <div class="offcanvas-header">
+          <a class="nav-item nav-link" style="color: #F2EDF5;" id="opening" href="/"><img src="static/images/pill_circle.png" alt="unbIAsed.Rx" style="width: 45px;"></a>
+          <a class="nav-item nav-link" style="color: #F2EDF5;" id="opening" href="/"><h5 class="offcanvas-title ms-2" style="color: #F2EDF5;" id="offcanvasExampleLabel">Menu</h5></a>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        
+        <div class="offcanvas-body" style="margin-top:-20px">
+          
+            {% if user.is_authenticated %}
+            <ul class="navbar-nav mx-3">
+              <a class="nav-item nav-link" style="color: #F2EDF5;" id="home" href="/home">Browse</a>
+              <a class="nav-item nav-link" style="color: #F2EDF5;" id="saved" href="/saved">Saved</a>
+              <a class="nav-item nav-link" method="GET" style="color: #F2EDF5;" id="identify" href="/identify">Identify</a>
+              <a class="nav-item nav-link" method="GET" style="color: #F2EDF5;" id="learn" href="/learn">Learn More</a>
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" style="color: #F2EDF5;" data-bs-toggle="dropdown" href="/about" role="button" aria-expanded="false">About Us</a>
+                <ul class="dropdown-menu dropdown-menu-dark" style="background-color: #2d3d4b;">
+                  <li><a class="dropdown-item" href="../about#whoWe">Who are we?</a></li>
+                  <li><a class="dropdown-item" href="../about#meetTeam">Meet the team</a></li>
+                  
+                </ul>
+              </li>
+            </ul>
+            {% else %}
+            <ul class="navbar-nav mx-3">
+              <a class="nav-item nav-link" style="color: #F2EDF5" id="opening" href="/home">Browse</a>
+              <a class="nav-item nav-link" style="color: #F2EDF5;" id="saved" href="/saved">Saved</a>
+              <a class="nav-item nav-link" method="GET" style="color: #F2EDF5;" id="identify" href="/identify">Identify</a>
+              <a class="nav-item nav-link" method="GET" style="color: #F2EDF5;" id="learn" href="/learn">Learn More</a>
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" style="color: #F2EDF5;" data-bs-toggle="dropdown" href="/about" role="button" aria-expanded="false">About Us</a>
+                <ul class="dropdown-menu dropdown-menu-dark" style="background-color: #2d3d4b;">
+                  <li><a class="dropdown-item" href="../about#whoWe">Who are we?</a></li>
+                  <li><a class="dropdown-item" href="../about#meetTeam">Meet the team</a></li>
+                </ul>
+              </li>
+            </ul>
+            <ul class="navbar-nav mx-3">
+              <a class="nav-item nav-link" style="color: #F2EDF5" id="login" href="/login">Login</a>
+              <a class="nav-item nav-link" style="color: #F2EDF5" id="signUp" href="/sign-up">Sign Up</a>
+            </ul>
+            {% endif %}
+         
+
+        {% if user.is_authenticated %}
+        <ul class="navbar-nav mx-3">
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" style="color: #F2EDF5" href="/" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Account</a>
+            <ul class="dropdown-menu dropdown-menu-dark dropdown-menu-end" style="background-color: #2d3d4b;" aria-labelledby="navbarDarkDropdownMenuLink" data-bs-display="static">
+              <li><a class="dropdown-item " href="/profile">Profile</a></li>
+              <!-- <li><a class="dropdown-item" href="/settings">Settings</a></li> -->
+              <li><a class="dropdown-item" href="/logout">Logout</a></li>
+            </ul>
+          </li>
+          
+        </ul>
+        {% endif %}
+      </div>
+
+      
+  
+    </nav>
+
+    {% with messages = get_flashed_messages(with_categories=true) %} {% if
+    messages %} {% for category, message in messages %} {% if category ==
+    'error' %}
+    <div class="alert alert-danger alter-dismissable fade show" role="alert" style="margin-top:60px;margin-bottom:-60px">
+      {{ message }}
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+      </button>
+    </div>
+    {% else %}
+    <div class="alert alert-success alter-dismissable fade show" role="alert" style="margin-top:60px;margin-bottom:-60px">
+      {{ message }}
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+      </button>
+    </div>
+    {% endif %} {% endfor %} {% endif %} {% endwith %}
+
+    <div class="container" style="padding-top:60px;width:100%;overflow-x: hidden;">{% block content %} {% endblock %}</div>
+
+    <div class="container2">
+      <footer class="footer p-5 mt-auto" style="font-size:80%"> 
+        <div class="container"> 
+            <div class="row"> 
+                <div class="col-lg-3 col-sm-6" > 
+                    <h5>
+                        <a  class="link-underline-opacity-0" href="/" style="--bs-link-hover-color-rgb: 246, 174, 164;">
+                            <img src="static/images/logo.png" alt="unbIAsed.Rx" style="width: 200px;">
+                        </a>
+                    </h5>
+                </div> 
+                <div class="col-lg-2 col-sm-6" > 
+                    <h6>About Us</h6> 
+                    <ul class="list-unstyled list-group"> 
+                        <li><a class="dropdown-item list-group-item-action" href="../about#whoWe" style="--bs-link-hover-color-rgb: 246, 174, 164;">Who are we?</a></li>
+                        <li><a class="dropdown-item list-group-item-action" href="../about#meetTeam" style="--bs-link-hover-color-rgb: 246, 174, 164;">Meet the team</a></li>
+                    </ul>
+                </div> 
+                <div class="col-lg-3 col-sm-6"> 
+                    <h6>Contact Us</h6> 
+                    <ul class="list-unstyled"> 
+                        <li>Email: <a href="mailto:unbIAsed.rx@gmail.com" class="email-link">unbIAsed.rx@gmail.com</a></li> 
+                        <li>Address: Montreal, QC, Canada</li> 
+                    </ul> 
+                </div> 
+    
+                <div class="col-lg-4 col-sm-6"> 
+                    <h6>Feedback</h6> 
+                    <ul class="list-unstyled"> 
+                        <li>We welcome any questions and suggestions on how we can improve our website!</li> 
+                    </ul> 
+                </div> 
+                
+            </div> 
+            <br>
+            <div class="row"> 
+              <div class="col text-secondary fst-italic"> 
+                <p>Disclamer: All information provided is for educational purposes only, and is not intended for medical advice, diagnosis, or treatment. Read more 
+                    <button class="btn readMore" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasTop" aria-controls="offcanvasTop" style="vertical-align: baseline; padding: 0;">
+                    here
+                    </button>
+                </p> 
+            </div> 
+            </div> 
+            <hr> 
+            <div class="row"> 
+                <div class="col-md-6"> 
+                    <p>© 2024 unbIAsed-Rx.ca. All rights reserved.</p> 
+                </div> 
+            </div> 
+        </div> 
+    </footer> 
+    </div>
+
+    <div class="offcanvas offcanvas-top pt-5" tabindex="-1" id="offcanvasTop" aria-labelledby="offcanvasTopLabel">
+      <div class="offcanvas-header">
+        <h5 id="offcanvasTopLabel">Disclamer</h5>
+        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+      </div>
+      <div class="offcanvas-body">
+       <p> ​​unbIAsed.Rx is not affiliated with any pharmaceutical companies and does not endorse drugs, 
+        diagnose patients, or recommend therapy. This resource is designed to assist licensed healthcare 
+        practitioners in caring for their patients, provide consumers with drug-specific information, 
+        and raise awareness of sex disparities in pharmaceuticals and the underrepresentation of women and 
+        gender-diverse individuals in clinical trials. The absence of a warning for a given drug or 
+        combination thereof in no way should be construed to indicate that the drug or combination is 
+        safe, effective or appropriate for any given patient. Every effort has been made to ensure that 
+        the information provided is accurate, up-to-date and complete, but no guarantee is made to that 
+        effect as the drug information contained herein may be time sensitive.</p>
+      
+
+      <p>Always consult with a healthcare professional before making any medical decisions or changes 
+        to your treatment plan. The information on this site is not a substitute for professional medical 
+        advice and healthcare practitioners should use their professional judgment in using the 
+        information provided. </p>
+
+      <p>By using this product, you acknowledge and accept these disclaimers and limitations.</p>
+
+
+      </div>
+    </div>
+
+    <script
+      src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+      integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+      integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      src="https://maxcdn.bootstrapcdn.com/bootstrap/5.3.3/js/bootstrap.min.js"
+      integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+      crossorigin="anonymous"
+    ></script>
+
+{% block javascript %}
+  <script type="text/javascript">
+    function deleteNote(noteId) {
+      fetch("/delete-note", {
+        method: "POST",
+        body: JSON.stringify({ noteId: noteId }),
+      }).then((_res) => {
+        window.location.href = "/";
+      });
+    }
+
+   
+   
+  </script>
+{% endblock %}
+  </body>
+</html>

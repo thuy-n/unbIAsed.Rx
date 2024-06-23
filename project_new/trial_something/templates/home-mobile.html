@@ -1,4 +1,4 @@
-{% extends "base.html" %} {% block title %}Browse{% endblock %} {% block content
+{% extends "base-mobile.html" %} {% block title %}Browse{% endblock %} {% block content
   %}
 
 
@@ -10,9 +10,9 @@
     </a>
   </div>
 
-  <div class="collapse" id="collapseExample">
+  <div class="collapse " id="collapseExample">
     <form action="/home" method="POST" id="myForm" >
-      <div class="card card-body">
+      <div class="card card-body align-items-center">
         Want to filter the browse page content? No problem! Just select the filters below and click on the "Apply Filter" button.<br>
         <br>
         <label for="diseaseFilter">Filter by Condition Prevalence:</label>
@@ -40,7 +40,7 @@
     <br>
   </div>
 
-<div class="lead mb-4 rounded-3 text-center" style="width:50%;margin-left:auto;margin-right:auto;">
+<div class="lead mb-4 rounded-3 text-center" style="width:80%;margin-left:auto;margin-right:auto;">
   <p>Don't know the name of the drug? No problem! Just upload the image of 
     the drug and we will identify it for you.
   </p>

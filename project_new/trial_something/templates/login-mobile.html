@@ -1,0 +1,37 @@
+{% extends "base-mobile.html" %} {% block title %}Login{% endblock %} 
+{% block content %}
+  <div class="display-6 my-3" align="center">
+    Login
+  </div>
+  <div align="center">
+    New to this site? 
+    <a href="/sign-up" class="email-link">Sign Up</a>
+  </div>
+  <br>
+  <form method="POST">
+    <div class="form-group">
+      <label for="email">Email Address</label>
+      <input
+        type="email"
+        class="form-control"
+        id="email"
+        name="email"
+        placeholder="Enter email"
+      />
+    </div>
+    <div class="form-group">
+      <label for="password">Password</label>
+      <input
+        type="password"
+        class="form-control"
+        id="password"
+        name="password"
+        placeholder="Enter password"
+      />
+    </div>
+    <br />
+    <button type="submit" class="btn btn-start">Login</button>
+  </form>
+
+   
+  {% endblock %}

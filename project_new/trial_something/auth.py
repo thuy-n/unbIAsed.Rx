@@ -112,6 +112,9 @@ def login():
         else:
             flash('Email does not exist.', category='error')
 
+    user_agent = request.headers.get('User-Agent').lower()
+    if 'mobile' in user_agent:
+        return render_template("login-mobile.html", user=current_user)
     return render_template("login.html", user=current_user)
 
 @auth.route('/logout')
@@ -167,20 +170,29 @@ def profile():
         except Exception as e:
             print("Error updating user age: ", e)
 
+    user_agent = request.headers.get('User-Agent').lower()
+    if 'mobile' in user_agent:
+        return render_template("profile-mobile.html", user=current_user)
     return render_template("profile.html", user=current_user)
 
 @auth.route('/saved')
 @login_required
 def saved():
     drugs = Drugs.query.filter_by(is_saved=True).all()
+    user_agent = request.headers.get('User-Agent').lower()
+    if 'mobile' in user_agent:
+        return render_template("saved-mobile.html", drugs=drugs, user=current_user)
     return render_template("saved.html", drugs=drugs, user=current_user)
  
 @auth.route('/about')
 def about():
+    user_agent = request.headers.get('User-Agent').lower()
+    if 'mobile' in user_agent:
+        return render_template('about-mobile.html', user=current_user)
     return render_template('about.html', user=current_user)
 
-@auth.route('/settings')
-def settings():
+# @auth.route('/settings')
+# def settings():
     return render_template('settings.html', user=current_user)
 
 @auth.route('/sign-up', methods=['GET', 'POST'])
@@ -212,6 +224,9 @@ def sign_up():
             flash('Account created!', category='success')
             return redirect(url_for('views.home'))
 
+    user_agent = request.headers.get('User-Agent').lower()
+    if 'mobile' in user_agent:
+        return render_template("sign_up-mobile.html", user=current_user)
     return render_template("sign_up.html", user=current_user)
 
 @auth.route('/delete_account', methods=['GET','POST'])
@@ -268,7 +283,10 @@ def search():
         else:
             flash("No drug found with that name.", category='error')
             return redirect(url_for('views.home'))
-
+    
+    user_agent = request.headers.get('User-Agent').lower()
+    if 'mobile' in user_agent:
+        return render_template("search_results-mobile.html", results=results, user=current_user)
     return render_template("search_results.html", results=results, user=current_user)
 
 def preprocess(sentence):
@@ -340,6 +358,9 @@ def identify():
         # Check if at least one file was uploaded
         if image_file is None and label_file is None:
             flash('Either an image or a label file must be uploaded', 'error')
+            user_agent = request.headers.get('User-Agent').lower()
+            if 'mobile' in user_agent:
+                return render_template("identify-mobile.html", user=current_user)
             return render_template("identify.html", user=current_user)
 
         # Process the image file if the 'image' button was clicked and a file was uploaded
@@ -414,17 +435,29 @@ def identify():
             flash('Pill successfully identified', 'success')
             os.remove(image_filepath)
 
+        
+            user_agent = request.headers.get('User-Agent').lower()
+            if 'mobile' in user_agent:
+                return render_template("identify-mobile.html", user=current_user, text=text, word=word, something=something, pill=predicted_class_name) 
             return render_template("identify.html", user=current_user, text=text, word=word, something=something, pill=predicted_class_name)
 
 
         else:
             flash('No file was uploaded', 'error')
-
+        user_agent = request.headers.get('User-Agent').lower()
+        if 'mobile' in user_agent:
+            return render_template("identify-mobile.html", user=current_user, text=text, word=word, something=something)    
         return render_template("identify.html", user=current_user, text=text, word=word, something=something)
 
     else:
+        user_agent = request.headers.get('User-Agent').lower()
+        if 'mobile' in user_agent:
+            return render_template("identify-mobile.html", user=current_user, word=word, something=something)   
         return render_template("identify.html", user=current_user, word=word, something=something)
 
 @auth.route('/learn')
 def learn():
+    user_agent = request.headers.get('User-Agent').lower()
+    if 'mobile' in user_agent:
+        return render_template('learn-mobile.html', user=current_user)
     return render_template('learn.html', user=current_user)

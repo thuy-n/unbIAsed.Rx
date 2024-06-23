@@ -18,7 +18,13 @@ def opening():
     logged_in = False
     if current_user.is_authenticated:
         logged_in = True
-    return render_template('opening.html', logged_in=logged_in, user=current_user)
+    
+    user_agent = request.headers.get('User-Agent').lower()
+    if 'mobile' in user_agent:
+        return render_template('opening-mobile.html', logged_in=logged_in, user=current_user)
+    else:
+        return render_template('opening.html', logged_in=logged_in, user=current_user)
+
 
 @views.route('/home', methods=['GET', 'POST']) 
 def home():
@@ -33,7 +39,9 @@ def home():
         if drug_filter == "ALL":
             filtered_drugs = Drugs.query.all()
 
-        
+        user_agent = request.headers.get('User-Agent').lower()
+        if 'mobile' in user_agent:
+            return render_template("home-mobile.html", drugs=filtered_drugs, user=current_user, disease_prevalence=disease_prevalence)
         return render_template("home.html", drugs=filtered_drugs, user=current_user, disease_prevalence=disease_prevalence)
     
     if not Drugs.query.first():  # Check if the database is empty
@@ -71,6 +79,10 @@ def home():
         db.session.commit()
 
     drugs = Drugs.query.all()
+
+    user_agent = request.headers.get('User-Agent').lower()
+    if 'mobile' in user_agent:
+        return render_template("home-mobile.html", drugs=drugs, user=current_user, disease_prevalence=disease_prevalence)
     return render_template("home.html", drugs=drugs, user=current_user, disease_prevalence=disease_prevalence)
 
     

@@ -1,0 +1,170 @@
+{% extends "base-mobile.html" %} 
+{% block title %}Profile{% endblock %} 
+{% block content %}
+  <div class="display-6 my-3" align="center">
+    Profile Page
+  </div>
+   
+    <div class="shadow p-3 mb-5 bg-body rounded">
+      <form action="/profile" method="POST" id="myForm" onsubmit="event.preventDefault(); submitForm();">
+        <div class="mb-3">
+          <label for="email" class="form-label">Email</label>
+          <input type="email" class="form-control" readonly="readonly" name="email" value="{{ current_user.email }}" required>   
+        </div>  
+        
+        <div class="mb-3">
+          <label for="email" class="form-label">First Name</label>
+          <input type="text" class="form-control" readonly="readonly" id="first_name" name="first_name" value="{{ current_user.first_name }}" required>
+        </div>
+
+        <div class="mb-3">
+          <label for="email" class="form-label">Last Name</label>
+          <input type="text" class="form-control" readonly="readonly" id="last_name" name="last_name" value="{{ current_user.last_name }}" required>
+        </div>
+
+        <div class="mb-3" id="ages">
+          <label for="Age" class="form-label" >Age</label>
+          <input type="text" class="form-control" readonly="readonly" id="age-display" name="age" value="{{ current_user.age }}" required>
+        </div>
+
+        <div class="mb-3" id="sexe">
+          <label for="sexe" class="form-label" >Sex</label>
+          <input type="text" class="form-control" readonly="readonly" id="sexe-display" name="sexe" value="{{ current_user.sexe }}" required>
+        </div>
+
+        <div class="mb-3">
+          <button type="button" class="btn btn-start" id="update" aria-controls="collapseExample" onclick="showInput()">Add/update information</button>
+          <button type="button" class="btn btn-delete" id="delete" onclick="confirmDelete()">Delete Account</button>
+        </div>
+
+        
+        <select class="form-select" aria-label="Default select example" id="select-group" style="display: none;" onchange="showInputField(this.value)">
+          <option selected>Select information</option>
+          <option value="1">First Name</option>
+          <option value="2">Last Name</option>
+          <option value="3">Age</option>
+          <option value="4">Sex</option>
+        </select>
+      
+
+        <br>
+        
+        <div class="mb-3" id="input-field" style="display: none;">
+          <label for="value" class="form-label" id="input-label"></label>
+          <input type="text" class="form-control " id="input-value" name="value" required oninput="showSaveButton()">
+        </div>
+
+        <!-- <div class="mb-3" id="input-group" style="display: none;">
+          <label for="value" class="form-label" id="label">Age</label>
+          <input type="text" class="form-control" id="age-input" name="value" required oninput="showSaveButton()">
+        </div> -->
+      
+        <input type="hidden" id="field" name="field">
+
+        <div class="mb-3" id="save-button" style="display: none;">
+          <input type="submit" class="btn btn-start" id="update" value="Submit">
+        </div>
+    </form>
+       
+  </div>
+
+
+
+  <script>
+    function confirmDelete() {
+      var confirmDelete = confirm("Are you sure you want to delete your account? This action cannot be undone.");
+      if (confirmDelete) {
+        window.location.href = "/delete_account";
+      }
+    }
+    
+
+    function showInput() {
+      document.getElementById('select-group').style.display = 'block';
+    }
+    
+
+    function showInputField(value) {
+      var label = document.getElementById('input-label');
+      var inputField = document.getElementById('input-field');
+
+      switch(value) {
+        case '1':
+          label.innerText = 'First Name';
+          inputField.placeholder = 'Enter first name';
+          break;
+        case '2':
+          label.innerText = 'Last Name';
+          inputField.placeholder = 'Enter last name';
+          break;
+        case '3':
+          label.innerText = 'Age (years)';
+          inputField.placeholder = 'Enter age in years';
+          break;
+        case '4':
+          label.innerText = 'Sex (Male/Female)';
+          inputField.placeholder = 'Enter sex (Male/Female)'; //sex vs gender
+          break;
+        default:
+          label.innerText = '';
+      }
+
+      if (label.innerText !== '') {
+        inputField.style.display = 'block';
+      } else {
+        inputField.style.display = 'none';
+      }
+      document.getElementById('field').value = value;
+    }
+
+
+    function submitForm() {
+      // Handle form submission here
+      // After form is submitted, hide the input group
+      // document.getElementById("input-group").style.display = "none";
+      // document.getElementById("save-button").style.display = "none";
+      // updateProfileFields();
+
+      if (document.getElementById('input-value').value !== '') {
+        // Submit the form normally
+        document.getElementById('myForm').submit();
+      }
+    }
+
+
+    function showSaveButton() {
+      if (document.getElementById('input-value').value !== '') {
+        document.getElementById('save-button').style.display = 'block';
+      } else {
+        document.getElementById('save-button').style.display = 'none';
+      }
+     
+    }
+
+
+    function updateProfileFields() {
+      var value = document.getElementById('input-value').value;
+      var field = document.getElementById('field').value;
+
+      switch(field) {
+        case '1':  // First Name
+          document.getElementById('first_name').value = value;
+          break;
+        case '2':  // Last Name
+          document.getElementById('last_name').value = value;
+          break;
+        case '3':  // Age
+          document.getElementById('age-display').value = value;
+          break;
+        case '4':  // sexe
+          document.getElementById('sexe-display').value = value;
+          break;
+      }
+    }
+
+    function resetForm() {
+      document.getElementById('myForm').reset();
+    }
+  </script>
+
+{% endblock %}
