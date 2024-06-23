@@ -371,7 +371,7 @@ def identify():
             for word in sentence.split():
                 close_matches = difflib.get_close_matches(word, meds, n=1, cutoff=0.9)
                 if close_matches:
-                    flash('Image successfully identified', 'success')
+                    flash('Label successfully identified', 'success')
                     text = close_matches[0] + ' has been found!'
                     something = close_matches[0]
                     print
@@ -407,7 +407,7 @@ def identify():
             predicted_class_name = reverse_class_dict[predicted_class]
             print(f"Predicted class: {predicted_class_name}")
 
-            flash('Label successfully identified', 'success')
+            flash('Pill successfully identified', 'success')
             os.remove(image_filepath)
 
             return render_template("identify.html", user=current_user, text=text, word=word, something=something, pill=predicted_class_name)
