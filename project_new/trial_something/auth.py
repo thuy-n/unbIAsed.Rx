@@ -149,6 +149,10 @@ def profile():
 
             if field == '3' and value:  # Age
                 user.age = value
+            elif field == '2' and value:  # Last Name
+                user.last_name = value
+            elif field == '1' and value:  # First Name
+                user.first_name = value
             elif field =='4' and value: #Sexe
                 value = value.capitalize()
                 if value == 'Female' or value == 'Male':
