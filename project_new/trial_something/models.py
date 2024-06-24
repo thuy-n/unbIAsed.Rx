@@ -2,6 +2,14 @@ from . import db
 from flask_login import UserMixin
 from sqlalchemy.sql import func
 
+class Info(db.Model):
+    #info for studies
+    id = db.Column(db.Integer, primary_key=True)
+    NCT = db.Column(db.String(50), unique=True) #NCT number
+    num_men = db.Column(db.Integer) #number of
+    num_women = db.Column(db.Integer)
+    num_participants = db.Column(db.Integer)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
 class Note(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -20,7 +28,6 @@ class Drugs(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     is_saved = db.Column(db.Boolean, default=False)
 
-
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(150), unique=True) #no user can have the same email as another
@@ -31,5 +38,6 @@ class User(db.Model, UserMixin):
     age = db.Column(db.String(50))
     sexe = db.Column(db.String(50))
     drugs = db.relationship('Drugs', backref='user', lazy=True)
+    info = db.relationship('Info', backref='user', lazy=True)
     
     

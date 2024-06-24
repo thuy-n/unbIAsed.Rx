@@ -1,0 +1,131 @@
+Metadata-Version: 2.1
+Name: pytrials
+Version: 1.0.0
+Summary: Python wrapper around the clinicaltrials.gov API
+Home-page: https://github.com/jvfe/pytrials
+Author: João Vitor F. Cavalcante
+Author-email: jvfe@ufrn.edu.br
+License: BSD license
+Keywords: pytrials clinical-trials clinical trials tabular text-mining text opendata
+Classifier: Development Status :: 2 - Pre-Alpha
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: BSD License
+Classifier: Natural Language :: English
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.7
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Requires-Python: >=3.7
+License-File: LICENSE
+License-File: AUTHORS.rst
+Requires-Dist: requests
+
+========
+pytrials
+========
+
+
+.. image:: https://img.shields.io/pypi/v/pytrials.svg
+        :target: https://pypi.python.org/pypi/pytrials
+
+.. image:: https://github.com/jvfe/pytrials/workflows/pytest/badge.svg
+        :target: https://github.com/jvfe/pytrials/actions
+
+.. image:: https://img.shields.io/pypi/l/pytrials
+        :target: https://github.com/jvfe/pytrials/blob/master/LICENSE
+
+.. image:: https://readthedocs.org/projects/pytrials/badge/?version=latest
+        :target: https://pytrials.readthedocs.io/en/latest/?badge=latest
+        :alt: Documentation Status
+
+
+
+
+Python wrapper around the clinicaltrials.gov API.
+Documentation for the API can be found here: https://clinicaltrials.gov/api/
+
+
+* Free software: BSD license
+* Documentation: https://pytrials.readthedocs.io.
+
+
+Tutorial
+--------
+To install::
+
+    $ pip install pytrials
+
+Basic Usage
+^^^^^^^^^^^
+::
+
+    from pytrials.client import ClinicalTrials
+
+    ct = ClinicalTrials()
+
+    # Get 50 full studies related to Coronavirus and COVID in csv format.
+    ct.get_full_studies(search_expr="Coronavirus+COVID", max_studies=50)
+
+    # Get the NCTId, Condition and Brief title fields from 1000 studies related to Coronavirus and Covid, in csv format.
+    corona_fields = ct.get_study_fields(
+        search_expr="Coronavirus+COVID",
+        fields=["NCT Number", "Conditions", "Study Title"],
+        max_studies=1000,
+        fmt="csv",
+    )
+
+    # Read the csv data in Pandas
+    import pandas as pd
+
+    pd.DataFrame.from_records(corona_fields[1:], columns=corona_fields[0])
+
+Credits
+-------
+
+This package was created with Cookiecutter_ and the `audreyr/cookiecutter-pypackage`_ project template.
+
+.. _Cookiecutter: https://github.com/audreyr/cookiecutter
+.. _`audreyr/cookiecutter-pypackage`: https://github.com/audreyr/cookiecutter-pypackage
+
+
+=======
+History
+=======
+
+0.1.0 (2020-07-06)
+------------------
+
+* First release on PyPI.
+
+0.1.2 (2020-07-11)
+------------------
+
+* Minor fixes
+
+0.2.0 (2021-04-24)
+------------------
+
+* Improved test suite
+* Added get_study_count function
+
+0.2.1 (2023-07-09)
+------------------
+
+* Add classic prefix to url - #10
+* Raise error if API status is not ok - #11
+
+0.3.0 (2023-07-09)
+------------------
+
+* Add min_rnk option to get_study_fields - #12
+
+
+1.0.0 (2024-05-01)
+------------------
+
+Migrates to version 2.0 of the ClinicalTrials API
+
+* Add support for the new API version
+* Add support for the new API fields
+* **Remove get_study_count function**
+* Allow CSV format in full_studies

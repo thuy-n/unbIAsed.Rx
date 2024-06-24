@@ -354,7 +354,6 @@ def identify():
         button_clicked1 = request.form.get('submit-button1')
         button_clicked2 = request.form.get('submit-button2')
 
-
         # Check if at least one file was uploaded
         if image_file is None and label_file is None:
             flash('Either an image or a label file must be uploaded', 'error')
