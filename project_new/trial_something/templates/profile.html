@@ -22,13 +22,9 @@
           <input type="text" class="form-control" readonly="readonly" id="last_name" name="last_name" value="{{ current_user.last_name }}" required>
         </div>
 
-        <div class="mb-3" id="ages">
-          <label for="Age" class="form-label" >Age</label>
-          <input type="text" class="form-control" readonly="readonly" id="age-display" name="age" value="{{ current_user.age }}" required>
-        </div>
 
         <div class="mb-3" id="sexe">
-          <label for="sexe" class="form-label" >Sex</label>
+          <label for="sexe" class="form-label" >Sex (optional)</label>
           <input type="text" class="form-control" readonly="readonly" id="sexe-display" name="sexe" value="{{ current_user.sexe }}" required>
         </div>
 
@@ -42,7 +38,6 @@
           <option selected>Select information</option>
           <option value="1">First Name</option>
           <option value="2">Last Name</option>
-          <option value="3">Age</option>
           <option value="4">Sex</option>
         </select>
       

@@ -51,6 +51,7 @@ from albumentations import (
     Rotate, ShiftScaleRotate, Transpose
     )
 from albumentations.pytorch import ToTensorV2
+from trial_something.views import get_model
 
 class BaselineModel(nn.Module):
     def __init__(self, num_classes: int, model_type = 'shuffleNet'):
@@ -312,7 +313,7 @@ def predict_with_cnn(image_path, model_path, input_width, input_height):
         Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
         ToTensorV2()
     ])
-    print('Processing image')
+    # print('Processing image')
     if torch.cuda.is_available():
         device = 'cuda'
     else:
@@ -323,7 +324,7 @@ def predict_with_cnn(image_path, model_path, input_width, input_height):
     augmented = transform(image=image)
     image = augmented['image']  # Apply transformations
     image = image.unsqueeze(0)  # Add batch dimension
-    print('Done processing image')
+    # print('Done processing image')
 
     # Load the model
     model = BaselineModel(10, 'resnet50')
@@ -347,20 +348,46 @@ def identify():
     text=""
     word=None
     something=""
+    prediction_risk = ""
+    result_string = ""
+
+    BASE_DIR = os.path.dirname(os.path.abspath(__file__))  # Get the directory of the current file
+    csv_file = os.path.join(BASE_DIR, 'final_results.csv')  # Join the base directory with the file name
+    df = pd.read_csv(csv_file)
+    df.iloc[1:,0] = df.iloc[1:,0].str.lower()
+    meds = df.iloc[1:,0].tolist()
+    
+    
     if request.method == 'POST':
         
         image_file = request.files.get('uploaded-pill-image')
         label_file = request.files.get('uploaded-label-image')
         button_clicked1 = request.form.get('submit-button1')
         button_clicked2 = request.form.get('submit-button2')
+        drug_search = ""
+        drug_menu = request.form.get('drugRiskSelect')
+
+        if drug_menu == 'input':
+            drug_search = request.form.get('drugRiskInput')
+        elif drug_menu == 'select':
+            drug_search = request.form.get('selectDrug')
+        else:
+            flash('Please select a valid option', 'error')
+            user_agent = request.headers.get('User-Agent').lower()
+            if 'mobile' in user_agent:
+                return render_template("identify-mobile.html", user=current_user,meds=meds)
+            return render_template("identify.html", user=current_user,meds=meds)
+
+        disease_search = request.form.get('diseaseRisk')
+        button_clicked3 = request.form.get('submit-button3')
 
         # Check if at least one file was uploaded
-        if image_file is None and label_file is None:
+        if image_file is None and label_file is None and drug_search == '' and disease_search == '':
             flash('Either an image or a label file must be uploaded', 'error')
             user_agent = request.headers.get('User-Agent').lower()
             if 'mobile' in user_agent:
-                return render_template("identify-mobile.html", user=current_user)
-            return render_template("identify.html", user=current_user)
+                return render_template("identify-mobile.html", user=current_user,meds=meds)
+            return render_template("identify.html", user=current_user,meds=meds)
 
         # Process the image file if the 'image' button was clicked and a file was uploaded
         if button_clicked1 == 'label' and label_file and label_file.filename != '':
@@ -398,7 +425,6 @@ def identify():
                     flash('Label successfully identified', 'success')
                     text = close_matches[0] + ' has been found!'
                     something = close_matches[0]
-                    print
                     break
                     
                 else:
@@ -417,7 +443,7 @@ def identify():
             image_file.save(image_filepath)
 
             # Define the class dictionary
-            class_dict = {'Alaxan': 0, 'Bactidol': 1, 'Biogesic': 2, 'Lamictal': 3, 'DayZinc': 4, 'Rivaroxaban': 5,
+            class_dict = {'Alaxan': 0, 'Bactidol': 1, 'Biogesic': 2, 'Lamictal': 4, 'DayZinc': 3, 'Rivaroxaban': 5,
                 'Fish Oil': 6, 'Kremil S': 7, 'Medicol': 8, 'Neozep': 9}
             
             # Create a reverse dictionary
@@ -429,7 +455,8 @@ def identify():
             input_height = 224  # Replace with your model's input height
             predicted_class = predict_with_cnn(image_filepath, model_path, input_width, input_height)
             predicted_class_name = reverse_class_dict[predicted_class]
-            print(f"Predicted class: {predicted_class_name}")
+            # print(f"Predicted class: {predicted_class_name}")
+            pill = predicted_class_name + " has been found!"
 
             flash('Pill successfully identified', 'success')
             os.remove(image_filepath)
@@ -437,22 +464,63 @@ def identify():
         
             user_agent = request.headers.get('User-Agent').lower()
             if 'mobile' in user_agent:
-                return render_template("identify-mobile.html", user=current_user, text=text, word=word, something=something, pill=predicted_class_name) 
-            return render_template("identify.html", user=current_user, text=text, word=word, something=something, pill=predicted_class_name)
+                return render_template("identify-mobile.html", user=current_user, text=text, word=word, something=something, pill=pill,meds=meds) 
+            return render_template("identify.html", user=current_user, text=text, word=word, something=something, pill=pill,meds=meds)
+        
+        elif button_clicked3 == 'risk':
+            drug_search = drug_search.upper()
+            disease_search = disease_search.upper()
+
+            if disease_search == '' or drug_search == '':
+                flash('Please fill in all fields', 'error')
+                user_agent = request.headers.get('User-Agent').lower()
+                if 'mobile' in user_agent:
+                    return render_template("identify-mobile.html", user=current_user, text=text, word=word, something=something, meds=meds)    
+                return render_template("identify.html", user=current_user, text=text, word=word, something=something, meds=meds)
+                    
+            if disease_search == 'SELECT CONDITION':
+                flash('Please select a valid condition', 'error')
+                user_agent = request.headers.get('User-Agent').lower()
+                if 'mobile' in user_agent:
+                    return render_template("identify-mobile.html", user=current_user, text=text, word=word, something=something, meds=meds)    
+                return render_template("identify.html", user=current_user, text=text, word=word, something=something, meds=meds)
 
 
+            prediction_risk = get_model(drug_search, disease_search)
+
+            # After extracting or validating prediction_risk
+            if prediction_risk is not None:
+                # Convert prediction_risk to string
+                prediction_risk = str(prediction_risk)
+            else:
+                print("prediction_risk is None or not in the expected format. Check get_model function and inputs.")
+
+            # Now prediction_risk is guaranteed to be a string when constructing result_string
+            result_string = f"The predicted risk for an adverse reaction to {drug_search} given {disease_search} is {prediction_risk} %."
+
+            user_agent = request.headers.get('User-Agent').lower()
+            if 'mobile' in user_agent:
+                return render_template("identify-mobile.html", user=current_user, text=text, word=word, something=something, result_string=result_string,meds=meds) 
+            return render_template("identify.html", user=current_user, text=text, word=word, something=something, result_string=result_string,meds=meds)
+            
         else:
-            flash('No file was uploaded', 'error')
+            if button_clicked1 == 'label' and not label_file:
+                flash('No file was uploaded', 'error')
+            if button_clicked2 == 'pill' and not image_file:
+                flash('No file was uploaded', 'error')
+            # if drug_search == '' or disease_search == '':
+            #     flash('Please fill in all fields', 'error')
+
         user_agent = request.headers.get('User-Agent').lower()
         if 'mobile' in user_agent:
-            return render_template("identify-mobile.html", user=current_user, text=text, word=word, something=something)    
-        return render_template("identify.html", user=current_user, text=text, word=word, something=something)
+            return render_template("identify-mobile.html", user=current_user, text=text, word=word, something=something,meds=meds)    
+        return render_template("identify.html", user=current_user, text=text, word=word, something=something,meds=meds)
 
     else:
         user_agent = request.headers.get('User-Agent').lower()
         if 'mobile' in user_agent:
-            return render_template("identify-mobile.html", user=current_user, word=word, something=something)   
-        return render_template("identify.html", user=current_user, word=word, something=something)
+            return render_template("identify-mobile.html", user=current_user, word=word, something=something,meds=meds)   
+        return render_template("identify.html", user=current_user, word=word, something=something,meds=meds)
 
 @auth.route('/learn')
 def learn():

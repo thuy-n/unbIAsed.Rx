@@ -3,6 +3,13 @@
 
 
 <div class="container">
+    <br>
+    <div class="text-secondary fst-italic" style="font-size:80%">
+        * Your privacy and data security are our top priorities. Please be assured that none of the 
+         images uploaded for medicine identification are stored or saved after the analysis is 
+         complete
+    </div>
+
     <form id="label-identify-form" enctype="multipart/form-data" method="POST" action="{{ url_for('auth.identify') }}" class="mb-3">
         <div>
             <h2 class="display-6 text-center my-3">Identify Label</h2>
@@ -14,7 +21,10 @@
             <button type="submit" class="btn btn-start" name="submit-button1" value="label" >Identify Label</button>
             <a id="moreButton" class="btn btn-start" onclick="goSearch()">Show Results</a>
             <br><br>
+            <div class="container position-relative rounded shadow {{ 'hidden' if text is none or text|length == 0 }}" 
+            style="background-color: #CEE3EA; {{ 'padding: 20px;' if text is not none and text|length > 0 }}">
             {{ text }}
+            </div>
         </div>
     </form>   
 
@@ -23,6 +33,10 @@
     <form id="pill-identify-form" enctype="multipart/form-data" method="POST" action="{{ url_for('auth.identify') }}" class="mb-3">
         <div>
             <h2 class="display-6 text-center my-3">Identify Pill</h2>
+            <div class="text-secondary fst-italic" style="font-size:80%">
+                * Please note that this pill recognition tool is a prototype designed to facilitate your search for drug information. Always double-check your medicine.
+            </div>
+            <br>
             <div class="mb-3">
                 <label for="pill-image" class="form-label">Upload Pill Image</label>
                 <input type="file" class="form-control" id="pill-image" name="uploaded-pill-image" accept="image/*", capture onchange="displayImage(this, 'pill-image-preview');">
@@ -31,29 +45,82 @@
             <button type="submit" class="btn btn-start" name="submit-button2" value="pill">Identify Pill</button>
             <a id="moreButton" class="btn btn-start" onclick="goSearch2()">Show Results</a>
             <br><br>
-            {{ pill }}
+            <div class="container position-relative rounded shadow {{ 'hidden' if pill is none or pill|length == 0 }}" 
+            style="background-color: #CEE3EA; {{ 'padding: 20px;' if pill is not none and pill|length > 0 }}">
+            {{ pill }} 
+            </div>
         </div>
     </form>
 
     <br>
 
-    <form id="identify-risk" enctype="multipart/form-data" method="POST" action="{{ url_for('auth.identify') }}" class="mb-3">
+    <form id="identify-risk-form" enctype="multipart/form-data" method="POST"  class="mb-3">
         <div>
             <h2 class="display-6 text-center my-3">Identify Risk</h2>
             <div class="mb-3">
-                <label for="drug" class="form-label">Enter Drug/Disease Pair</label>
-                <input type="text" class="form-control" id="drug" name="drug" placeholder="Enter Drug" required>
+                <label for="drug" class="form-label">Enter the drug name and its target condition to calculate the risk for <b>female patients</b></label>
+                <select class="form-select" aria-label="Default select example" id="drugRiskSelect" name="drugRiskSelect" onchange="toggleDrugInput()">
+                    <option selected value="menu">Select Drug Option</option>
+                    <option value="input">Input Drug</option>
+                    <option value="select">Select Drug</option>
+                </select>
                 <br>
-                <input type="text" class="form-control" id="disease" name="disease" placeholder="Enter Disease" required>
+                <input type="text" class="form-control mb-4" id="drugRiskInput" name="drugRiskInput" placeholder="Enter Drug" style="display: none;">
+                <select class="form-select mb-4" id="selectDrug" name="selectDrug" style="display: none;">
+                    <option selected>Drugs in Dataset</option>
+                    {% for med in meds %}
+                        <option value="{{ med }}">{{ med.capitalize() }}</option>
+                    {% endfor %}
+                </select>
+                
+                <select class="form-select" aria-label="Default select example" id="diseaseRisk" name="diseaseRisk">
+                    
+                        <option selected>Select Condition</option>
+                        <option value="ASTHMA">Asthma</option>
+                        <option value="DEMENTIA">Dementia</option>
+                        <option value="DIABETES">Diabetes</option>
+                        <option value="HYPERTENSION">Hypertension</option>
+                        <option value="EPILEPSY">Epilepsy</option>
+                        <option value="HEART FAILURE">Heart Failure</option>
+                        <option value="ISCHEMIC HEART DISEASE">Ischemic Heart Disease</option>
+                        <option value="MYOCARDIAL INFARCTION">Myocardial Infarction</option>
+                        <option value="SCHIZOPHRENIA">Schizophrenia</option>
+                        <option value="STROKE">Stroke</option>
+                        <option value="PARKINSON'S">Parkinson's</option>
+                        <option value="MULTIPLE SCLEROSIS">Multiple Sclerosis</option>
+                        <option value="CHRONIC OBSTRUCTIVE PULMONARY DISEASE">Chronic Obstructive Pulmonary Disease</option>
+                    
+                </select>
+                <!-- <input type="text" class="form-control" id="diseaseRisk" name="diseaseRisk" placeholder="Enter Condition" required> -->
             </div>
-            <button type="submit" class="btn btn-start" name="submit-button2" value="risk">Calculate Risk</button>
+            <button type="submit" class="btn btn-start" name="submit-button3" value="risk" >Calculate Risk</button>
+            <br><br>
+            <div class="container position-relative rounded shadow {{ 'hidden' if result_string is none or result_string|length == 0 }}" 
+            style="background-color: #CEE3EA; {{ 'padding: 20px;' if result_string is not none and result_string|length > 0 }}">
+            {{ result_string }}
+            </div>
+            
         </div>
     </form>
     
-
+    
 </div>
     
 <script> 
+    function toggleDrugInput() {
+        var selection = document.getElementById('drugRiskSelect').value;
+        if (selection === 'input') {
+            document.getElementById('drugRiskInput').style.display = 'block';
+            document.getElementById('selectDrug').style.display = 'none';
+        } else if (selection === 'select') {
+            document.getElementById('drugRiskInput').style.display = 'none';
+            document.getElementById('selectDrug').style.display = 'block';
+        } else {
+            document.getElementById('drugRiskInput').style.display = 'none';
+            document.getElementById('selectDrug').style.display = 'none';
+        }
+    }
+
     var search_term = "{{ something }}";
     var search_term2 = "{{ pill }}";
 

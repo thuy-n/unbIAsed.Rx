@@ -67,7 +67,7 @@ def fetch_data_with_retries(url, max_retries=3, backoff_factor=0.3):
             raise
 
 def sort(studies_list):
-    studies_list = ast.literal_eval(studies_list)
+    # studies_list = ast.literal_eval(studies_list)
     # Query the database directly where 'Study NCT' is in studies_list
     query_result = Info.query.filter(Info.NCT.in_(studies_list)).all()
     # Convert query result to a list of dictionaries (if not already in this format)
@@ -105,14 +105,11 @@ def get_study(studies_related_pair_input):
     female_proportion = 0
     male_proportion = 0
 
-    
-
     num_studies = len(studies_related_pair_input)
     
     #tbd
     ct = ClinicalTrials()
     api_url = 'https://clinicaltrials.gov/api/v2/studies/'
-    fetch_data_with_retries(api_url)
 
     info1 = Info.query.all()
     info_dict = {info.NCT: {'num_women': info.num_women, 'num_men': info.num_men} for info in info1}
@@ -190,7 +187,6 @@ def get_model(drug, disease):
  
     # Load processor
     with open(preprocessor_file_path, 'rb') as f:
-        
         preprocessor = pickle.load(f)
 
     # Load model
@@ -221,6 +217,17 @@ def get_model(drug, disease):
     transformed_columns = (
         preprocessor.transformers_[0][1].get_feature_names_out(['Indication']).tolist() +
         [
+            # 'Indication',
+            # 'Num Studies',
+            # 'Total females in studies',
+            # 'Total males in studies',
+            # 'Male proportion in studies',
+            # 'Female proportion in studies',
+            # 'Number of participants in most relevant studies',
+            # 'Number of female participants in most relevant studies',
+            # 'Number of male participants in most relevant studies',
+            # 'Proportion of females in most relevant studies',
+            # 'Proportion of males in most relevant studies'
             'Total females in studies', 
             'Total males in studies',
             'Female proportion in studies', 
@@ -237,7 +244,7 @@ def get_model(drug, disease):
     transformed_df = pd.DataFrame(transformed_data, columns=transformed_columns)
     transformed_df.drop(columns=['Female proportion in studies','Male proportion in studies', 'Proportion of females in most relevant studies', 'Proportion of males in most relevant studies' ],  inplace=True)
     prediction = model.predict(transformed_df)*100
-    print(prediction)
+    return np.around(prediction[0], 2) 
 
 @views.route('/home', methods=['GET', 'POST']) 
 def home():
@@ -296,7 +303,7 @@ def home():
 
     drugs = Drugs.query.all()
     
-    #get_model(drugs[1].name, drugs[1].disease)
+    # get_model('metformin', 'STROKE')
         
     user_agent = request.headers.get('User-Agent').lower()
     if 'mobile' in user_agent:

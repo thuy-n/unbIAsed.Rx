@@ -9,6 +9,24 @@
   </head>
 
   <style>
+    @media (max-width: 700px) {
+      .carousel2 {
+        display:block;
+      }
+      .carousel1{
+        display:none;
+      }
+    }
+
+    @media (min-width: 701px) {
+    .carousel2 {
+      display: none;
+    }
+    .carousel1 {
+      display: block;
+    }
+  }
+
     .card-img-top {
         width: 100%;
         height: 250px;
@@ -250,7 +268,7 @@
             <br>
             <div class="row"> 
               <div class="col text-secondary fst-italic"> 
-                <p>Disclamer: All information provided is for educational purposes only, and is not intended for medical advice, diagnosis, or treatment. Read more 
+                <p>Disclaimer: All information provided is for educational purposes only, and is not intended for medical advice, diagnosis, or treatment. Read more 
                     <button class="btn readMore" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasTop" aria-controls="offcanvasTop" style="vertical-align: baseline; padding: 0;">
                     here
                     </button>
@@ -269,7 +287,7 @@
 
     <div class="offcanvas offcanvas-top" tabindex="-1" id="offcanvasTop" aria-labelledby="offcanvasTopLabel">
       <div class="offcanvas-header">
-        <h5 id="offcanvasTopLabel">Disclamer</h5>
+        <h5 id="offcanvasTopLabel">Disclaimer</h5>
         <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
       </div>
       <div class="offcanvas-body">

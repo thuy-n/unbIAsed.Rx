@@ -17,7 +17,7 @@
         <br>
         <label for="diseaseFilter">Filter by Condition Prevalence:</label>
         <select class="form-select" aria-label="Default select example" id="drug_filter" name="drug_filter">
-          <option selected value="ALL">All Drugs</option>
+          <option selected value="ALL">All Conditions</option>
           <option value="ASTHMA">Asthma</option>
           <option value="DEMENTIA">Dementia</option>
           <option value="DIABETES">Diabetes</option>
@@ -90,7 +90,7 @@
                       <a href="{{ url_for('auth.login') }}" class="btn btn-start">Save</a>
                     {% endif %}
                   </button>
-                  <button type="button" class="btn btn-start" id="calcRisk" >Identify Risk</button>   <!--COME BACK HERE -->             
+                  <button type="button" class="btn btn-start" id="calcRisk" onclick="window.location.href='{{ url_for('auth.identify') }}';" >Identify Risk</button>   <!--COME BACK HERE -->             
                  </form>
             </div>
         </div>
