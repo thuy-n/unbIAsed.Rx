@@ -107,6 +107,19 @@
 </div>
     
 <script> 
+    window.onload = function() {
+        if(window.location.hash) {
+            var hash = window.location.hash.substring(1); // Get the hash, minus the '#'
+            var targetElement = document.getElementById(hash);
+            if(targetElement) {
+                targetElement.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }
+            history.pushState("", document.title, window.location.pathname + window.location.search);
+        }
+    };
     function toggleDrugInput() {
         var selection = document.getElementById('drugRiskSelect').value;
         if (selection === 'input') {

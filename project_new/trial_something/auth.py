@@ -2,7 +2,7 @@ import os
 import re
 from flask import Blueprint, jsonify, render_template, request, flash, redirect, session, url_for
 import pandas as pd
-from .models import User, Note, Drugs
+from .models import User, Drugs
 from werkzeug.security import generate_password_hash, check_password_hash
 from . import db   #means from __init__.py import db
 from flask_login import login_user, login_required, logout_user, current_user
@@ -11,45 +11,23 @@ from wtforms import StringField, SubmitField, ValidationError
 from wtforms.validators import DataRequired, Email
 from werkzeug.utils import secure_filename
 from fuzzywuzzy import process
-from PIL import Image
 import pytesseract
-from dotenv import load_dotenv
 import cv2
 import nltk
-from nltk.tokenize import word_tokenize
-from nltk.tag import pos_tag
 from nltk.corpus import stopwords
 from nltk.stem import PorterStemmer
 nltk.download('stopwords')
 import difflib
 from sqlalchemy import or_
 import torch
-from typing import Callable, Any, Optional
-import zipfile
-from torch.utils.data import Dataset, DataLoader
 import torch.nn as nn
 import torch
-import numpy as np
-from torchvision.transforms import transforms
 from torchvision.models import shufflenet_v2_x0_5, ShuffleNet_V2_X0_5_Weights
-import tqdm
-from sklearn import model_selection
-import matplotlib.pyplot as plt
-from sklearn.preprocessing import LabelEncoder
-from torchmetrics.classification import MulticlassConfusionMatrix, Accuracy
 import timm
 from albumentations import (
     Compose, Normalize, Resize, RandomResizedCrop, RandomCrop, HorizontalFlip, VerticalFlip,
     Rotate, ShiftScaleRotate, Transpose
 )
-# from albumentations.augmentations.transforms import RandomBrightness
-from albumentations.pytorch import ToTensorV2
-from torchmetrics.classification import MulticlassConfusionMatrix, Accuracy
-import timm
-from albumentations import (
-    Compose, Normalize, Resize, RandomResizedCrop, RandomCrop, HorizontalFlip, VerticalFlip,
-    Rotate, ShiftScaleRotate, Transpose
-    )
 from albumentations.pytorch import ToTensorV2
 from trial_something.views import get_model
 

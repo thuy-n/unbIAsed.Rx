@@ -46,6 +46,14 @@
   </p>
 
   <a href="{{ url_for('auth.identify') }}" class="btn btn-start responsive-text" role="button" id="startTodayButton">Identify Medicine</a>
+  
+  <br><br>
+
+  <p>Want to calculate the risk of a drug that is not in our database? No problem!
+    You can add it manually and we will calculate the risk for you.
+  </p>
+
+  <a href="{{ url_for('auth.identify') }}#identify-risk-form" class="btn btn-start responsive-text" role="button">Identify Risk</a>
 
 </div>
 
@@ -77,7 +85,9 @@
                   </div>
                 </div>
                 <form action="{{ url_for('views.save_drug') if not drug.is_saved else url_for('views.unsave_drug') }}" method="post" class="mt-3">
-                  <input type="hidden" name="drug_id" value="{{ drug.id }}">
+                  
+                  <div class="master">
+                    <input type="hidden" name="drug_id" value="{{ drug.id }}">
                     {% if current_user.is_authenticated %}
                     <!-- If user is logged in, show the save/unsave button -->
                       {% if drug.is_saved %}
@@ -90,8 +100,15 @@
                       <a href="{{ url_for('auth.login') }}" class="btn btn-start">Save</a>
                     {% endif %}
                   </button>
-                  <button type="button" class="btn btn-start" id="calcRisk" onclick="window.location.href='{{ url_for('auth.identify') }}';" >Identify Risk</button>   <!--COME BACK HERE -->             
-                 </form>
+                    <button type="button" id="calcRisk" class="btn btn-start calcRisk" data-drug-id="{{ drug.id }}">Calculate Risk</button>  
+                    <br><br>
+                    <div id="resultString" class="container position-relative rounded " 
+                    style="background-color: #CEE3EA; display:none;" data-drug-id="{{ drug.id }}">
+                    
+                    {{ drug.predict_result }}
+                    </div>
+                  </div>
+                </form>
             </div>
         </div>
     </div>
@@ -100,6 +117,20 @@
 {% endfor %}
   
   <script>
+    document.querySelectorAll('.btn.btn-start.calcRisk').forEach(button => {
+      button.addEventListener('click', function() {
+        // Find the parent '.master' container
+        let masterContainer = button.closest('.master');
+
+        // Within the '.master' container, find the 'resultString' div
+        let resultDiv = masterContainer.querySelector('.container.position-relative.rounded');
+
+        if (resultDiv) {
+          // Toggle the display state between 'block' and 'none'
+          resultDiv.style.display = resultDiv.style.display === 'block' ? 'none' : 'block';
+        }
+      });
+    });
     document.getElementById('saveButton').addEventListener('click', function() {
       var cardContainer = document.getElementById('cardContainer');
       var parser = new DOMParser();

@@ -47,6 +47,14 @@
 
   <a href="{{ url_for('auth.identify') }}" class="btn btn-start responsive-text" role="button" id="startTodayButton">Identify Medicine</a>
 
+  <br><br>
+
+  <p>Want to calculate the risk of a drug that is not in our database? No problem!
+    You can add it manually and we will calculate the risk for you.
+  </p>
+
+  <a href="{{ url_for('auth.identify') }}#identify-risk-form" class="btn btn-start responsive-text" role="button" id="startTodayButton">Identify Risk</a>
+
 </div>
 
 {% for drug in drugs %}

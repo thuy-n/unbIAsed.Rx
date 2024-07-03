@@ -1,6 +1,6 @@
 from flask import Blueprint, redirect, render_template, request, flash, jsonify, url_for
 from flask_login import login_required, current_user
-from .models import Note, Drugs, Info
+from .models import Drugs, Info
 from . import db
 import json
 import pandas as pd
@@ -9,15 +9,12 @@ import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import numpy as np
-from sqlalchemy import func
 import pickle 
-import sklearn 
 import requests
 from pytrials.client import ClinicalTrials
 import re
 from requests.exceptions import ChunkedEncodingError, ConnectionError, Timeout
 import time
-import ast
 
 views = Blueprint('views', __name__)
 
@@ -95,8 +92,8 @@ def sort(studies_list):
 
     return (top_3, total_participants, sum_females, sum_males, female_proportion, male_proportion)
 
-def divide_by_100(x):
-    return x/100
+# def divide_by_100(x):
+#     return x/100
 
 def get_study(studies_related_pair_input):
     tot_num_females = 0
@@ -249,6 +246,9 @@ def get_model(drug, disease):
 @views.route('/home', methods=['GET', 'POST']) 
 def home():
     disease_prevalence = None
+    result_string = ""
+    filtered_drugs = None
+    prediction_risk = ""
 
     if request.method == 'POST':
         drug_filter = request.form.get('drug_filter')
@@ -261,8 +261,8 @@ def home():
 
         user_agent = request.headers.get('User-Agent').lower()
         if 'mobile' in user_agent:
-            return render_template("home-mobile.html", drugs=filtered_drugs, user=current_user, disease_prevalence=disease_prevalence)
-        return render_template("home.html", drugs=filtered_drugs, user=current_user, disease_prevalence=disease_prevalence)
+            return render_template("home-mobile.html", drugs=filtered_drugs, user=current_user, disease_prevalence=disease_prevalence, result_string=result_string)
+        return render_template("home.html", drugs=filtered_drugs, user=current_user, disease_prevalence=disease_prevalence, result_string=result_string)
     
     if not Drugs.query.first():  # Check if the database is empty
         BASE_DIR = os.path.dirname(os.path.abspath(__file__))  # Get the directory of the current file
@@ -278,7 +278,7 @@ def home():
             myLabels = ['Female', 'Male']
             mycolors = [(236/255, 142/255, 130/255, 1), (54/255, 74/255, 93/255, 1)]
             explode = (0.1, 0)  # explode 1st slice
-            plt.pie(y, explode=explode, labels=myLabels, colors=mycolors, autopct='%1.1f%%',
+            plt.pie(y, explode=explode, labels=myLabels, colors=mycolors,
             shadow=True, startangle=140) #, textprops={'color':"white"}
             
             image_path = os.path.join(image_dir, f'{drug_name}.png')
@@ -294,21 +294,17 @@ def home():
                 prevalence=relative_image_path,
                 path_prevalence = f"static/images/prevalence/{row['Indication'].lower()}.png"
             )
+
             db.session.add(drug)
 
         db.session.commit()
-
-        # list of studies, # of participants by gender of each study, # of studies top 3 most 
-        # relevant, stats related (# and proportions) --> input model
-
+  
     drugs = Drugs.query.all()
     
-    # get_model('metformin', 'STROKE')
-        
     user_agent = request.headers.get('User-Agent').lower()
     if 'mobile' in user_agent:
-        return render_template("home-mobile.html", drugs=drugs, user=current_user, disease_prevalence=disease_prevalence)
-    return render_template("home.html", drugs=drugs, user=current_user, disease_prevalence=disease_prevalence)
+        return render_template("home-mobile.html", drugs=drugs, user=current_user, disease_prevalence=disease_prevalence, result_string=result_string)
+    return render_template("home.html", drugs=drugs, user=current_user, disease_prevalence=disease_prevalence, result_string=result_string)
   
 @views.route('/save-drug', methods=['POST'])
 @login_required
