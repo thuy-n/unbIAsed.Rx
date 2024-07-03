@@ -58,7 +58,7 @@
         <div>
             <h2 class="display-6 text-center my-3">Identify Risk</h2>
             <div class="mb-3">
-                <label for="drug" class="form-label">Enter the drug name and its target condition to calculate the risk for <b>female patients</b></label>
+                <label for="drug" class="form-label">Enter the drug name and its target condition to calculate the risk for <b>{{ current_user.sexe.lower() }}  patients</b></label>
                 <select class="form-select" aria-label="Default select example" id="drugRiskSelect" name="drugRiskSelect" onchange="toggleDrugInput()">
                     <option selected value="menu">Select Drug Option</option>
                     <option value="input">Input Drug</option>

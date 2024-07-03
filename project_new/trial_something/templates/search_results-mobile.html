@@ -6,9 +6,9 @@
 </div>
 
 {% for result in results %}
-<div class="card shadow " style="background-color:#CEE3EA;">
+<div class="card shadow " style="background-color:#CEE3EA;overflow: hidden;">
   <div class="card-body">
-      <div id="cardContainer" >
+      <div id="cardContainer" style="max-width:100%">
           <h4 class="card-title">{{ result.name }}</h4>
           <div>
             <h5 class="card-subtitle mb-2 text-body-secondary">Used For: {{ result.disease }}</h5>
@@ -26,10 +26,10 @@
 
           <div class="row">
             <div class="col-sm-6">
-              <img style="height:250px;width:auto" src="{{ result.prevalence }}" alt="{{ result.name }}">
+              <img style="height:auto;max-width:100%;display:block;" src="{{ result.prevalence }}" alt="{{ result.name }}">
             </div>
             <div class="col-sm-6">
-              <img style="height:250px;width:auto" src="{{ result.path_prevalence }}" alt="Disease Prevalence">
+              <img style="height:auto;max-width:100%;display:block;" src="{{ result.path_prevalence }}" alt="Disease Prevalence">
             </div>
           </div>
               <form action="{{ url_for('views.save_drug') if not result.is_saved else url_for('views.unsave_drug') }}" method="post">

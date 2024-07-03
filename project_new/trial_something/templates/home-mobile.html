@@ -58,9 +58,9 @@
 </div>
 
 {% for drug in drugs %}
-<div class="card shadow " style="background-color:#CEE3EA;">
+<div class="card shadow " style="background-color:#CEE3EA;overflow: hidden;">
     <div class="card-body">
-        <div id="cardContainer" >
+        <div id="cardContainer" style="max-width:100%">
             <h4 class="card-title">{{ drug.name.replace("_", " ") }}</h4>
             <div>
                 <h5 class="card-subtitle mb-2 text-body-secondary">Used For: {{ drug.disease }}</h5>
@@ -78,10 +78,10 @@
 
                 <div class="row">
                   <div class="col-sm-6">
-                    <img style="height:250px;width:auto" src="{{ drug.prevalence }}" alt="{{ drug.name }}">
+                    <img style="height:auto;max-width:100%;display:block;" src="{{ drug.prevalence }}" alt="{{ drug.name }}">
                   </div>
                   <div class="col-sm-6">
-                    <img style="height:250px;width:auto" src="{{ drug.path_prevalence }}" alt="Disease Prevalence">
+                    <img style="height:auto;max-width:100%;display:block;" src="{{ drug.path_prevalence }}" alt="Disease Prevalence">
                   </div>
                 </div>
                 <form action="{{ url_for('views.save_drug') if not drug.is_saved else url_for('views.unsave_drug') }}" method="post" class="mt-3">
