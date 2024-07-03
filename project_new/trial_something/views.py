@@ -306,9 +306,7 @@ def home():
 
         db.session.commit()
 
-  
-    drugs = Drugs.query.all()
-    
+    drugs = Drugs.query.all()    
     
     user_agent = request.headers.get('User-Agent').lower()
     if 'mobile' in user_agent:
