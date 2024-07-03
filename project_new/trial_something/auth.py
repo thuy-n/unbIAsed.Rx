@@ -471,7 +471,6 @@ def identify():
                     return render_template("identify-mobile.html", user=current_user, text=text, word=word, something=something, meds=meds)    
                 return render_template("identify.html", user=current_user, text=text, word=word, something=something, meds=meds)
 
-
             prediction_risk = get_model(drug_search, disease_search)
 
             # After extracting or validating prediction_risk

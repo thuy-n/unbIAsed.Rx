@@ -317,14 +317,20 @@
 
 {% block javascript %}
   <script type="text/javascript">
-    function deleteNote(noteId) {
-      fetch("/delete-note", {
-        method: "POST",
-        body: JSON.stringify({ noteId: noteId }),
-      }).then((_res) => {
-        window.location.href = "/";
-      });
-    }
+
+    window.onload = function() {
+        if(window.location.hash) {
+            var hash = window.location.hash.substring(1); // Get the hash, minus the '#'
+            var targetElement = document.getElementById(hash);
+            if(targetElement) {
+                targetElement.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }
+            history.pushState("", document.title, window.location.pathname + window.location.search);
+        }
+    };
 
    
    
