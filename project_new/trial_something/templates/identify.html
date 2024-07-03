@@ -10,7 +10,7 @@
          complete
     </div>
 
-    <form id="label-identify-form" enctype="multipart/form-data" method="POST" action="{{ url_for('auth.identify') }}" class="mb-3">
+    <form id="label-identify-form" enctype="multipart/form-data" method="POST" action="#label-identify-form" class="mb-3">
         <div>
             <h2 class="display-6 text-center my-3">Identify Label</h2>
             <div class="mb-3">
@@ -30,7 +30,7 @@
 
     <br>
 
-    <form id="pill-identify-form" enctype="multipart/form-data" method="POST" action="{{ url_for('auth.identify') }}" class="mb-3">
+    <form id="pill-identify-form" enctype="multipart/form-data" method="POST" action="#pill-identify-form"class="mb-3">
         <div>
             <h2 class="display-6 text-center my-3">Identify Pill</h2>
             <div class="text-secondary fst-italic" style="font-size:80%">
@@ -54,11 +54,11 @@
 
     <br>
 
-    <form id="identify-risk-form" enctype="multipart/form-data" method="POST"  class="mb-3">
+    <form id="identify-risk-form" enctype="multipart/form-data" method="POST"  action="#identify-risk-form" class="mb-3">
         <div>
             <h2 class="display-6 text-center my-3">Identify Risk</h2>
             <div class="mb-3">
-                <label for="drug" class="form-label">Enter the drug name and its target condition to calculate the risk for <b>female patients</b></label>
+                <label for="drug" class="form-label">Enter the drug name and its target condition to calculate the risk for <b>{{ current_user.sexe.lower() }} patients</b></label>
                 <select class="form-select" aria-label="Default select example" id="drugRiskSelect" name="drugRiskSelect" onchange="toggleDrugInput()">
                     <option selected value="menu">Select Drug Option</option>
                     <option value="input">Input Drug</option>

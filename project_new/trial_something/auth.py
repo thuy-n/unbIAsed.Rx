@@ -182,6 +182,7 @@ def sign_up():
         last_name = request.form.get('lastName')
         password1 = request.form.get('password1')
         password2 = request.form.get('password2')
+        sex = request.form.get('sexInput')
 
         user = User.query.filter_by(email=email).first()
         if user:
@@ -197,11 +198,18 @@ def sign_up():
         else:
             new_user = User(email=email, first_name=first_name, last_name=last_name, password=generate_password_hash(
                 password1, method='pbkdf2:sha256'))
-            db.session.add(new_user)
-            db.session.commit()
-            login_user(new_user, remember=True)
-            flash('Account created!', category='success')
-            return redirect(url_for('views.home'))
+            sex = sex.capitalize()
+            if sex == 'Female' or sex == 'Male':
+                new_user.sexe = sex
+                db.session.add(new_user)
+                db.session.commit()
+                login_user(new_user, remember=True)
+                flash('Account created!', category='success')
+                return redirect(url_for('views.home'))
+            elif sex != 'Female' or sex != 'Male':
+                flash('Please enter a valid answer for the sexe field', category='error')
+                return redirect(url_for('auth.sign_up'))
+            
 
     user_agent = request.headers.get('User-Agent').lower()
     if 'mobile' in user_agent:
@@ -469,7 +477,11 @@ def identify():
             # After extracting or validating prediction_risk
             if prediction_risk is not None:
                 # Convert prediction_risk to string
+                if current_user.sexe == 'male' or current_user.sexe == 'Male':
+                    prediction_risk = 100 - prediction_risk
+                
                 prediction_risk = str(prediction_risk)
+                
             else:
                 print("prediction_risk is None or not in the expected format. Check get_model function and inputs.")
 
