@@ -249,6 +249,7 @@ def home():
     result_string = ""
     filtered_drugs = None
     prediction_risk = ""
+    result_strings = []
 
     if request.method == 'POST':
         drug_filter = request.form.get('drug_filter')
@@ -261,8 +262,8 @@ def home():
 
         user_agent = request.headers.get('User-Agent').lower()
         if 'mobile' in user_agent:
-            return render_template("home-mobile.html", drugs=filtered_drugs, user=current_user, disease_prevalence=disease_prevalence, result_string=result_string)
-        return render_template("home.html", drugs=filtered_drugs, user=current_user, disease_prevalence=disease_prevalence, result_string=result_string)
+            return render_template("home-mobile.html", drugs=filtered_drugs, user=current_user, disease_prevalence=disease_prevalence, result_strings=result_strings)
+        return render_template("home.html", drugs=filtered_drugs, user=current_user, disease_prevalence=disease_prevalence, result_strings=result_strings)
     
     if not Drugs.query.first():  # Check if the database is empty
         BASE_DIR = os.path.dirname(os.path.abspath(__file__))  # Get the directory of the current file
@@ -286,6 +287,12 @@ def home():
             plt.close(fig)  # Close the figure
             relative_image_path = f'static/{drug_name}.png'
 
+            # prediction_risk = get_model(drug_name, row['Indication'])
+            # prediction_risk = str(prediction_risk)
+            # result_string = f"The predicted risk for an adverse reaction to {drug_name} given {row['Indication']} is {prediction_risk} %."
+            # print(result_string)
+            # result_strings.append(result_string)
+
             drug = Drugs(
                 name=drug_name,
                 disease=row['Indication'],
@@ -298,13 +305,15 @@ def home():
             db.session.add(drug)
 
         db.session.commit()
+
   
     drugs = Drugs.query.all()
     
+    
     user_agent = request.headers.get('User-Agent').lower()
     if 'mobile' in user_agent:
-        return render_template("home-mobile.html", drugs=drugs, user=current_user, disease_prevalence=disease_prevalence, result_string=result_string)
-    return render_template("home.html", drugs=drugs, user=current_user, disease_prevalence=disease_prevalence, result_string=result_string)
+        return render_template("home-mobile.html", drugs=drugs, user=current_user, disease_prevalence=disease_prevalence, result_strings=result_strings)
+    return render_template("home.html", drugs=drugs, user=current_user, disease_prevalence=disease_prevalence, result_strings=result_strings)
   
 @views.route('/save-drug', methods=['POST'])
 @login_required
