@@ -318,6 +318,7 @@ def home():
 def save_drug():
     drug_id = request.form.get('drug_id')
     drug = Drugs.query.get(drug_id)
+    drug.user_id = current_user.id
     drug.is_saved = True
     db.session.commit()
     return redirect(url_for('auth.saved'))
@@ -327,6 +328,7 @@ def save_drug():
 def unsave_drug():
     drug_id = request.form.get('drug_id')
     drug = Drugs.query.get(drug_id)
+    drug.user_id = None
     drug.is_saved = False
     db.session.commit()
     return redirect(url_for('views.home'))
