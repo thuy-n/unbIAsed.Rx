@@ -436,7 +436,8 @@ def identify():
             reverse_class_dict = {v: k for k, v in class_dict.items()}
 
             # Example usage
-            model_path = r'C:\Users\anbgo\coding_projects_flask\GitHub-Rx\project_new\trial_something\resnet50-2.pt'
+            #model_path = r'C:\Users\anbgo\coding_projects_flask\GitHub-Rx\project_new\trial_something\resnet50-2.pt'
+            model_path = os.path.join(BASE_DIR, 'resnet50-2.pt')
             input_width = 224  # Replace with your model's input width
             input_height = 224  # Replace with your model's input height
             predicted_class = predict_with_cnn(image_filepath, model_path, input_width, input_height)
