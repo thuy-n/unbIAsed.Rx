@@ -381,7 +381,7 @@ def identify():
             label_filepath = os.path.join('/tmp', label_filename)
             label_file.save(label_filepath)
             
-            pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
+            # pytesseract.pytesseract.tesseract_cmd = r'C:\Program Files\Tesseract-OCR\tesseract.exe'
             img = cv2.imread(label_filepath)
             img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
 
@@ -419,7 +419,7 @@ def identify():
             if sentence == "":
                 flash('No text was found in the image', 'error')
             
-            os.remove(label_filepath)
+            # os.remove(label_filepath)
 
 
         # Process the label file if the 'label' button was clicked and a file was uploaded
@@ -445,7 +445,7 @@ def identify():
             pill = predicted_class_name + " has been found!"
 
             flash('Pill successfully identified', 'success')
-            os.remove(image_filepath)
+            # os.remove(image_filepath)
 
         
             user_agent = request.headers.get('User-Agent').lower()
