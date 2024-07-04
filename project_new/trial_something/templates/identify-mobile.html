@@ -57,8 +57,12 @@
     <form id="identify-risk-form" enctype="multipart/form-data" method="POST" action="#identify-risk-form" class="mb-3">
         <div>
             <h2 class="display-6 text-center my-3">Identify Risk</h2>
+            <div class="text-secondary fst-italic" style="font-size:80%">
+                * The model is currently set to female patients. To see the prediction risk for male patients, please login or create an account
+            </div>
+            <br>
             <div class="mb-3">
-                <label for="drug" class="form-label">Enter the drug name and its target condition to calculate the risk for <b>{{ current_user.sexe.lower() }}  patients</b></label>
+                <label for="drug" class="form-label">Enter the drug name and its target condition to calculate the risk for <b>{{ current_user.sexe.lower() if current_user.is_authenticated else 'female' }}</b> patients</b></label>
                 <select class="form-select" aria-label="Default select example" id="drugRiskSelect" name="drugRiskSelect" onchange="toggleDrugInput()">
                     <option selected value="menu">Select Drug Option</option>
                     <option value="input">Input Drug</option>
