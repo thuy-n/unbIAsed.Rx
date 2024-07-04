@@ -124,6 +124,20 @@
             history.pushState("", document.title, window.location.pathname + window.location.search);
         }
     };
+
+    function toggleDrugInput() {
+        var selection = document.getElementById('drugRiskSelect').value;
+        if (selection === 'input') {
+            document.getElementById('drugRiskInput').style.display = 'block';
+            document.getElementById('selectDrug').style.display = 'none';
+        } else if (selection === 'select') {
+            document.getElementById('drugRiskInput').style.display = 'none';
+            document.getElementById('selectDrug').style.display = 'block';
+        } else {
+            document.getElementById('drugRiskInput').style.display = 'none';
+            document.getElementById('selectDrug').style.display = 'none';
+        }
+    }
     var search_term = "{{ something }}";
     var search_term2 = "{{ pill }}";
 
