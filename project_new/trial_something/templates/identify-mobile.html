@@ -76,8 +76,9 @@
                         <option value="{{ med }}">{{ med.capitalize() }}</option>
                     {% endfor %}
                 </select>
+                
                 <select class="form-select" aria-label="Default select example" id="diseaseRisk" name="diseaseRisk">
-                    <option>
+                    
                         <option selected>Select Condition</option>
                         <option value="ASTHMA">Asthma</option>
                         <option value="DEMENTIA">Dementia</option>
@@ -92,9 +93,9 @@
                         <option value="PARKINSON'S">Parkinson's</option>
                         <option value="MULTIPLE SCLEROSIS">Multiple Sclerosis</option>
                         <option value="CHRONIC OBSTRUCTIVE PULMONARY DISEASE">Chronic Obstructive Pulmonary Disease</option>
-                    </option>
+                    
                 </select>
-                <!-- <input type="text" class="form-control" id="diseaseRisk" name="diseaseRisk" placeholder="Enter Disease" required> -->
+                <!-- <input type="text" class="form-control" id="diseaseRisk" name="diseaseRisk" placeholder="Enter Condition" required> -->
             </div>
             <button type="submit" class="btn btn-start" name="submit-button3" value="risk" >Calculate Risk</button>
             <br><br>
