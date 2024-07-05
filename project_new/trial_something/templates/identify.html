@@ -129,9 +129,9 @@
             // Assuming "{{ errorFlash }}" is empty when no error, and contains a message when there is an error
             var isErrorFlashed = "{{ errorFlash }}";
 
-            if (errorFlash.length) {
-                event.preventDefault(); // Prevent form submission
-                window.scrollTo(0, 0); // Scroll to the top of the page
+            if (errorFlash) {
+                event.target.removeAttribute('action');
+                window.scrollTo(0, 0);
 
             } else {
                 // If no error, proceed with the form submission or other logic
