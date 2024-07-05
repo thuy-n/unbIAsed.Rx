@@ -114,7 +114,7 @@
             </div>
             <br><br>
             <div class="container position-relative rounded shadow {{ 'hidden' if result_string is none or result_string|length == 0 }}" 
-            style="background-color: #CEE3EA; {{ 'padding: 20px;' if result_string is not none and result_string|length > 0 }}">
+            style="background-color: #CEE3EA; {{ 'padding: 20px;' if result_string is not none and result_string|length > 0 }}" id="result">
             {{ result_string }}
             </div>
             
@@ -125,22 +125,35 @@
 </div>
     
 <script> 
-    // Show the modal when prediction starts
-    var calculatingModal = new bootstrap.Modal(document.getElementById('calculatingModal'), {});
-    calculatingModal.show();
+    // JavaScript to control the modal and check the result visibility
 
-    // Assuming you have a function to perform the prediction
     function performPrediction() {
-        // Simulate prediction delay
+        // Show the modal
+        var calculatingModal = new bootstrap.Modal(document.getElementById('calculatingModal'), {});
+        calculatingModal.show();
+
+        // Assuming you're using AJAX or a similar method to perform the prediction
+        // and update the page, you would trigger that here. For demonstration,
+        // I'll use a setTimeout to simulate an asynchronous operation.
         setTimeout(() => {
-            // Hide the modal when prediction is complete
+            // This is where you would normally handle the result of the prediction.
+            // For demonstration, let's simulate showing the result.
+            document.getElementById('result').classList.remove('hidden');
+
+            // Once the result is displayed, hide the modal.
             calculatingModal.hide();
-            
-            // Proceed with displaying the prediction results
-        }, 3000); // Simulate a 3-second prediction time
+        }, 3000); // Simulate a 3-second operation
     }
 
-    // Call performPrediction when appropriate (e.g., after a button click)
+    // Ensure the modal is hidden initially if the result is already visible
+    window.onload = function() {
+        if (!document.getElementById('result').classList.contains('hidden')) {
+            var calculatingModal = bootstrap.Modal.getInstance(document.getElementById('calculatingModal'));
+            if (calculatingModal) {
+                calculatingModal.hide();
+            }
+        }
+    };
 
     window.onload = function() {
         if(window.location.hash) {
