@@ -199,11 +199,9 @@ def sign_up():
             new_user = User(email=email, sexe = None, first_name=first_name, last_name=last_name, password=generate_password_hash(
                 password1, method='pbkdf2:sha256'))
             
-            sex = sex.capitalize()
-            if sex == 'Female' or sex == 'Male':
-                new_user.sexe = sex
-
-            elif sex == 'Prefer not to say' or sex =='None':
+            if sex == 'female' or sex == 'male':
+                new_user.sexe = sex.capitalize()
+            elif sex =='none':
                 new_user.sexe = None
             
             db.session.add(new_user)
