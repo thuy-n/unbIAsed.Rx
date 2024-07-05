@@ -182,7 +182,8 @@ def sign_up():
         last_name = request.form.get('lastName')
         password1 = request.form.get('password1')
         password2 = request.form.get('password2')
-        sex = request.form.get('sexSelect')
+        sexs = request.form.get('sexSelect')
+        sex = sexs.value 
 
         user = User.query.filter_by(email=email).first()
         if user:
