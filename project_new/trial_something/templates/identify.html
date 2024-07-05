@@ -125,21 +125,27 @@
     
 <script> 
     document.addEventListener('DOMContentLoaded', function() {
-        // Function to check for errors and decide the action
         function handleSubmit(event) {
-            // Example condition check: here, you would check if an error is flashed
-            // This is a placeholder condition. You need to replace it with your actual error check
-            var isErrorFlashed = "{{ errorFlash }}"; // Replace this with the actual check for flashed errors
+            // Assuming "{{ errorFlash }}" is empty when no error, and contains a message when there is an error
+            var isErrorFlashed = "{{ errorFlash }}".trim().length > 0;
 
             if (isErrorFlashed) {
-                event.preventDefault();
+                event.preventDefault(); // Prevent form submission
                 window.scrollTo(0, 0); // Scroll to the top of the page
-                // Optionally, display the error message if not already done
-            }  else {
-                // Show the modal only if there is no error
-                // var calculatingModal = new bootstrap.Modal(document.getElementById('calculatingModal'), {});
-                // calculatingModal.show();
-                performPrediction();
+
+                // Display the error message
+                var errorMessageContainer = document.getElementById('error-message-container');
+                if (!errorMessageContainer) {
+                    // If the container doesn't exist, create it
+                    errorMessageContainer = document.createElement('div');
+                    errorMessageContainer.id = 'error-message-container';
+                    document.body.insertBefore(errorMessageContainer, document.body.firstChild); // Adjust placement as needed
+                }
+                errorMessageContainer.textContent = "{{ errorFlash }}"; // Set the error message
+                errorMessageContainer.style.display = 'block'; // Make sure it's visible
+            } else {
+                // If no error, proceed with the form submission or other logic
+                performPrediction(); // Uncomment or modify as needed
             }
         }
 
