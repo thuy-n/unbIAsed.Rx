@@ -97,7 +97,7 @@
                 </select>
                 <!-- <input type="text" class="form-control" id="diseaseRisk" name="diseaseRisk" placeholder="Enter Condition" required> -->
             </div>
-            <button type="submit" class="btn btn-start" name="submit-button3" value="risk" >Calculate Risk</button>
+            <button type="submit" class="btn btn-start" name="submit-button3" value="risk" onclick="performPrediction()">Calculate Risk</button>
             <!-- Calculating Modal -->
             <div class="modal" tabindex="-1" role="dialog" id="calculatingModal">
                 <div class="modal-dialog" role="document">
@@ -163,7 +163,7 @@
             }
         }
     };
-    
+
     window.onload = function() {
         if(window.location.hash) {
             var hash = window.location.hash.substring(1); // Get the hash, minus the '#'
