@@ -124,24 +124,34 @@
 </div>
     
 <script> 
-    // JavaScript to control the modal and check the result visibility
-
     function performPrediction() {
         // Show the modal
         var calculatingModal = new bootstrap.Modal(document.getElementById('calculatingModal'), {});
         calculatingModal.show();
 
-        // Assuming you're using AJAX or a similar method to perform the prediction
-        // and update the page, you would trigger that here. For demonstration,
-        // I'll use a setTimeout to simulate an asynchronous operation.
-        setTimeout(() => {
-            // This is where you would normally handle the result of the prediction.
-            // For demonstration, let's simulate showing the result.
-            document.getElementById('result').classList.remove('hidden');
+        // Set up a MutationObserver to watch for changes in the 'hidden' class of the result div
+        var observer = new MutationObserver(function(mutations) {
+            mutations.forEach(function(mutation) {
+                if (!document.getElementById('result').classList.contains('hidden')) {
+                    // Once the result is displayed, hide the modal and disconnect the observer
+                    calculatingModal.hide();
+                    observer.disconnect();
+                }
+            });
+        });
 
-            // Once the result is displayed, hide the modal.
-            calculatingModal.hide();
-        }, 5000); // Simulate a 3-second operation
+        // Configuration of the observer:
+        var config = { attributes: true, childList: false, characterData: false, attributeFilter: ['class'] };
+
+        // Target node to observe
+        var target = document.getElementById('result');
+
+        // Start observing
+        observer.observe(target, config);
+
+        // Assuming you're using AJAX or a similar method to perform the prediction
+        // and update the page, you would trigger that here.
+        // The observer will take care of hiding the modal once the result is ready.
     }
 
     // Ensure the modal is hidden initially if the result is already visible

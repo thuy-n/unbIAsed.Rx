@@ -123,9 +123,9 @@ def get_study(studies_related_pair_input):
 
                 if data.get("hasResults", False):
                     # Initialize counters for female and male participants
-                    study_path = f"{study_id}.json"
-                    with open(study_path, 'w') as json_file:
-                        json.dump(data, json_file)
+                    # study_path = f"{study_id}.json"
+                    # with open(study_path, 'w') as json_file:
+                    #     json.dump(data, json_file)
                     female_count = 0
                     male_count = 0
 
