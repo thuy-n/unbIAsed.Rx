@@ -162,7 +162,7 @@
 
         if (isErrorFlashed) {
             window.scrollTo(0, 0);
-            $('#calculatingModal').modal('hide');
+            // $('#calculatingModal').modal('hide');
         } else {
             // document.getElementById('calculatingModal').style.opacity = '1';
             $('#calculatingModal').modal('show');
@@ -174,7 +174,7 @@
             mutations.forEach(function(mutation) {
                 if (!document.getElementById('result').classList.contains('hidden')) {
                     // Once the result is displayed, hide the modal and disconnect the observer
-                    calculatingModal.hide();
+                    $('#calculatingModal').modal('hide');
                     observer.disconnect();
                 }
             });
