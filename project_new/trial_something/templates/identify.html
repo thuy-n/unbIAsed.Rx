@@ -125,6 +125,23 @@
 </div>
     
 <script> 
+    document.addEventListener('DOMContentLoaded', function() {
+        function handleSubmit(event) {
+            var isErrorFlashed = "{{ errorFlash }}"; // Ensure this is trimmed for accurate length check
+
+            if (isErrorFlashed) {
+                event.preventDefault(); // Prevent form submission
+                // Additional logic for handling the error can go here
+            } else {
+                // If no error, proceed with the form submission or other logic
+                performPrediction(); // This needs to be defined or uncommented as needed
+            }
+        }
+
+        document.getElementById('label-identify-form').addEventListener('submit', handleSubmit);
+        document.getElementById('pill-identify-form').addEventListener('submit', handleSubmit);
+        document.getElementById('identify-risk-form').addEventListener('submit', handleSubmit);
+    });
     
     function performPrediction() {
         // Show the modal
