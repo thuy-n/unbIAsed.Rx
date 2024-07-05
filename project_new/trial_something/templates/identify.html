@@ -57,21 +57,7 @@
     <form id="identify-risk-form" enctype="multipart/form-data" method="POST"  action="#identify-risk-form" class="mb-3">
         <div>
             <h2 class="display-6 text-center my-3">Identify Risk</h2>
-            {% with messages = get_flashed_messages(with_categories=true) %} {% if
-                messages %} {% for category, message in messages %} {% if category ==
-                'error' %}
-                <div class="alert alert-danger alter-dismissable fade show" role="alert" >
-                  {{ message }}
-                  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
-                  </button>
-                </div>
-                {% else %}
-                <div class="alert alert-success alter-dismissable fade show" role="alert" >
-                  {{ message }}
-                  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
-                  </button>
-                </div>
-            {% endif %} {% endfor %} {% endif %} {% endwith %}
+            
             <div class="text-secondary fst-italic" style="font-size:80%">
                 * The model is currently set to female patients. To see the prediction risk for male patients, please login or create an account
             </div>
