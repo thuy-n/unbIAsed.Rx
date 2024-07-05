@@ -99,7 +99,6 @@
             </div>
             <button type="submit" class="btn btn-start" name="submit-button3" value="risk" onclick="performPrediction()">Calculate Risk</button>
             <!-- Calculating Modal -->
-            <br><br>
             <div class="modal" tabindex="-1" role="dialog" id="calculatingModal">
                 <div class="modal-dialog" role="document">
                 <div class="modal-content">
@@ -142,7 +141,7 @@
 
             // Once the result is displayed, hide the modal.
             calculatingModal.hide();
-        }, 3000); // Simulate a 3-second operation
+        }, 5000); // Simulate a 3-second operation
     }
 
     // Ensure the modal is hidden initially if the result is already visible
