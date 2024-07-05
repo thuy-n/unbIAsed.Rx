@@ -178,8 +178,8 @@ def about():
 def sign_up():
     if request.method == 'POST':
         email = request.form.get('email')
-        first_name = request.form.get('firstName')
-        last_name = request.form.get('lastName')
+        first_name = request.form.get('firstName').capitalize()
+        last_name = request.form.get('lastName').capitalize()
         password1 = request.form.get('password1')
         password2 = request.form.get('password2')
         sex = request.form.get('sexSelect', '').strip()
