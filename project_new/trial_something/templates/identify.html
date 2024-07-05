@@ -124,6 +124,26 @@
 </div>
     
 <script> 
+    document.addEventListener('DOMContentLoaded', function() {
+        // Function to check for errors and decide the action
+        function handleSubmit(event) {
+            // Example condition check: here, you would check if an error is flashed
+            // This is a placeholder condition. You need to replace it with your actual error check
+            var isErrorFlashed = "{{ errorFlash }}"; // Replace this with the actual check for flashed errors
+
+            if (isErrorFlashed) {
+                event.preventDefault(); // Prevent form submission
+                window.scrollTo(0, 0); // Scroll to the top of the page
+                // Optionally, display the error message if not already done
+            }
+            // If no error, the form will submit normally
+        }
+
+        // Attach the event listener to both forms
+        document.getElementById('label-identify-form').addEventListener('submit', handleSubmit);
+        document.getElementById('pill-identify-form').addEventListener('submit', handleSubmit);
+        document.getElementById('identify-risk-form').addEventListener('submit', handleSubmit);
+    });
     function performPrediction() {
         // Show the modal
         var calculatingModal = new bootstrap.Modal(document.getElementById('calculatingModal'), {});
