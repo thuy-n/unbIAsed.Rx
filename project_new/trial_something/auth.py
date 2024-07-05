@@ -182,7 +182,7 @@ def sign_up():
         last_name = request.form.get('lastName')
         password1 = request.form.get('password1')
         password2 = request.form.get('password2')
-        sex = request.form.get('sexSelect')
+        sex = request.form.get('sexSelect', '').strip()
 
         user = User.query.filter_by(email=email).first()
         if user:
@@ -198,10 +198,10 @@ def sign_up():
         else:
             new_user = User(email=email, first_name=first_name, last_name=last_name, password=generate_password_hash(
                 password1, method='pbkdf2:sha256'))
-            sex = sex.capitalize()
-            if sex == 'Female' or sex == 'Male':
+            # sex = sex.capitalize()
+            if sex.lower() == 'female' or sex.lower() == 'male':
                 new_user.sexe = sex
-            if sex == 'Prefer not to say' or sex=='None':
+            elif sex.lower() == 'prefer not to say' or sex.lower() =='none':
                 new_user.sexe = None
             
             db.session.add(new_user)
