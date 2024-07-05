@@ -477,8 +477,9 @@ def identify():
             # After extracting or validating prediction_risk
             if prediction_risk is not None:
                 # Convert prediction_risk to string
-                if current_user.sexe == 'male' or current_user.sexe == 'Male':
-                    prediction_risk = 100 - prediction_risk
+                if current_user.is_authenticated:
+                    if current_user.sexe.lower() == 'male':
+                        prediction_risk = 100 - prediction_risk
                 
                 prediction_risk = str(prediction_risk)
                 
