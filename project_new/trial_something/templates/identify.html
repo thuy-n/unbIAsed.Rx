@@ -13,12 +13,27 @@
     <form id="label-identify-form" enctype="multipart/form-data" method="POST" action="#label-identify-form" class="mb-3">
         <div>
             <h2 class="display-6 text-center my-3">Identify Label</h2>
+            {% with messages = get_flashed_messages(with_categories=true) %} {% if
+                messages %} {% for category, message in messages %} {% if category ==
+                'error' %}
+                <div class="alert alert-danger alter-dismissable fade show" role="alert" >
+                  {{ message }}
+                  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+                  </button>
+                </div>
+                {% else %}
+                <div class="alert alert-success alter-dismissable fade show" role="alert" >
+                  {{ message }}
+                  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+                  </button>
+                </div>
+                {% endif %} {% endfor %} {% endif %} {% endwith %}
             <div class="mb-3">
                 <label for="label-image" class="form-label">Upload Label Image</label>
                 <input type="file" class="form-control" id="label-image" name="uploaded-label-image" accept="image/*" capture onchange="displayImage(this, 'label-image-preview');">
             </div>
             <img id="label-image-preview" src="" alt="Label Image Preview" style="display: none;padding-bottom:20px;" >
-            <button type="submit" class="btn btn-start" name="submit-button1" value="label" >Identify Label</button>
+            <button type="submit" class="btn btn-start" name="submit-button1" value="label" onclick="performPrediction()">Identify Label</button>
             <a id="moreButton" class="btn btn-start" onclick="goSearch()">Show Results</a>
             <br><br>
             <div class="container position-relative rounded shadow {{ 'hidden' if text is none or text|length == 0 }}" 
@@ -33,6 +48,21 @@
     <form id="pill-identify-form" enctype="multipart/form-data" method="POST" action="#pill-identify-form"class="mb-3">
         <div>
             <h2 class="display-6 text-center my-3">Identify Pill</h2>
+            {% with messages = get_flashed_messages(with_categories=true) %} {% if
+                messages %} {% for category, message in messages %} {% if category ==
+                'error' %}
+                <div class="alert alert-danger alter-dismissable fade show" role="alert" >
+                  {{ message }}
+                  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+                  </button>
+                </div>
+                {% else %}
+                <div class="alert alert-success alter-dismissable fade show" role="alert" >
+                  {{ message }}
+                  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+                  </button>
+                </div>
+                {% endif %} {% endfor %} {% endif %} {% endwith %}
             <div class="text-secondary fst-italic" style="font-size:80%">
                 * Please note that this pill recognition tool is a prototype designed to facilitate your search for drug information. Always double-check your medicine.
             </div>
@@ -42,7 +72,7 @@
                 <input type="file" class="form-control" id="pill-image" name="uploaded-pill-image" accept="image/*", capture onchange="displayImage(this, 'pill-image-preview');">
             </div>
             <img id="pill-image-preview" src="" alt="Pill Image Preview" style="display: none;padding-bottom:20px;" >
-            <button type="submit" class="btn btn-start" name="submit-button2" value="pill" >Identify Pill</button>
+            <button type="submit" class="btn btn-start" name="submit-button2" value="pill" onclick="performPrediction()">Identify Pill</button>
             <a id="moreButton" class="btn btn-start" onclick="goSearch2()">Show Results</a>
             <br><br>
             <div class="container position-relative rounded shadow {{ 'hidden' if pill is none or pill|length == 0 }}" 
@@ -53,24 +83,25 @@
     </form>
 
     <br>
-    {% with messages = get_flashed_messages(with_categories=true) %} {% if
-        messages %} {% for category, message in messages %} {% if category ==
-        'error' %}
-        <div class="alert alert-danger alter-dismissable fade show" role="alert" >
-          {{ message }}
-          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
-          </button>
-        </div>
-        {% else %}
-        <div class="alert alert-success alter-dismissable fade show" role="alert" >
-          {{ message }}
-          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
-          </button>
-        </div>
-        {% endif %} {% endfor %} {% endif %} {% endwith %}
+    
     <form id="identify-risk-form" enctype="multipart/form-data" method="POST"  action="#identify-risk-form" class="mb-3">
         <div>
             <h2 class="display-6 text-center my-3">Identify Risk</h2>
+            {% with messages = get_flashed_messages(with_categories=true) %} {% if
+                messages %} {% for category, message in messages %} {% if category ==
+                'error' %}
+                <div class="alert alert-danger alter-dismissable fade show" role="alert" >
+                  {{ message }}
+                  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+                  </button>
+                </div>
+                {% else %}
+                <div class="alert alert-success alter-dismissable fade show" role="alert" >
+                  {{ message }}
+                  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+                  </button>
+                </div>
+            {% endif %} {% endfor %} {% endif %} {% endwith %}
             <div class="text-secondary fst-italic" style="font-size:80%">
                 * The model is currently set to female patients. To see the prediction risk for male patients, please login or create an account
             </div>
@@ -111,7 +142,7 @@
                 </select>
                 <!-- <input type="text" class="form-control" id="diseaseRisk" name="diseaseRisk" placeholder="Enter Condition" required> -->
             </div>
-            <button type="submit" class="btn btn-start" name="submit-button3" value="risk" >Calculate Risk</button>
+            <button type="submit" class="btn btn-start" name="submit-button3" value="risk" onclick="performPrediction()">Calculate Risk</button>
             <!-- Calculating Modal -->
             <div class="modal" tabindex="-1" role="dialog" id="calculatingModal">
                 <div class="modal-dialog" role="document">
@@ -138,29 +169,7 @@
 </div>
     
 <script> 
-    document.addEventListener('DOMContentLoaded', function() {
-        function handleSubmit(event) {
-            // Assuming "{{ errorFlash }}" is empty when no error, and contains a message when there is an error
-            var isErrorFlashed = "{{ errorFlash }}";
-
-            if (errorFlash) {
-                event.preventDefault();
-                event.target.removeAttribute('action');
-                // window.scrollTo(0, 0);
-
-            } else {
-                // If no error, proceed with the form submission or other logic
-                performPrediction(); // Uncomment or modify as needed
-            }
-        }
-        document.querySelectorAll('form').forEach(function(form) {
-            form.addEventListener('submit', handleSubmit);
-        });
-
-        // document.getElementById('label-identify-form').addEventListener('submit', handleSubmit);
-        // document.getElementById('pill-identify-form').addEventListener('submit', handleSubmit);
-        // document.getElementById('identify-risk-form').addEventListener('submit', handleSubmit);
-    });
+    
     function performPrediction() {
         // Show the modal
         var calculatingModal = new bootstrap.Modal(document.getElementById('calculatingModal'), {});
