@@ -130,7 +130,7 @@
     document.addEventListener('DOMContentLoaded', function() {
         function handleSubmit(event) {
             var isErrorFlashed = "{{ errorFlash }}"; // Ensure this is trimmed for accurate length check
-            event.preventDefault();
+            
             if (isErrorFlashed) {
                 // event.preventDefault(); // Prevent form submission
                 // Additional logic for handling the error can go here
