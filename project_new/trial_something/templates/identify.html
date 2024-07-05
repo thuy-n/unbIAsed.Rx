@@ -132,10 +132,14 @@
             var isErrorFlashed = "{{ errorFlash }}"; // Replace this with the actual check for flashed errors
 
             if (isErrorFlashed) {
+                event.preventDefault();
                 window.scrollTo(0, 0); // Scroll to the top of the page
                 // Optionally, display the error message if not already done
+            }  else {
+                // Show the modal only if there is no error
+                var calculatingModal = new bootstrap.Modal(document.getElementById('calculatingModal'), {});
+                calculatingModal.show();
             }
-            // If no error, the form will submit normally
         }
 
         // Attach the event listener to both forms
