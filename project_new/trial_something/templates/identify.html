@@ -13,6 +13,7 @@
     <form id="label-identify-form" enctype="multipart/form-data" method="POST" action="#label-identify-form" class="mb-3">
         <div>
             <h2 class="display-6 text-center my-3">Identify Label</h2>
+            <div id="flash-messages"></div>
             <div class="mb-3">
                 <label for="label-image" class="form-label">Upload Label Image</label>
                 <input type="file" class="form-control" id="label-image" name="uploaded-label-image" accept="image/*" capture onchange="displayImage(this, 'label-image-preview');">
@@ -33,6 +34,7 @@
     <form id="pill-identify-form" enctype="multipart/form-data" method="POST" action="#pill-identify-form"class="mb-3">
         <div>
             <h2 class="display-6 text-center my-3">Identify Pill</h2>
+            <div id="flash-messages"></div>
             <div class="text-secondary fst-italic" style="font-size:80%">
                 * Please note that this pill recognition tool is a prototype designed to facilitate your search for drug information. Always double-check your medicine.
             </div>
@@ -57,7 +59,7 @@
     <form id="identify-risk-form" enctype="multipart/form-data" method="POST"  action="#identify-risk-form" class="mb-3">
         <div>
             <h2 class="display-6 text-center my-3">Identify Risk</h2>
-            
+            <div id="flash-messages"></div>
             <div class="text-secondary fst-italic" style="font-size:80%">
                 * The model is currently set to female patients. To see the prediction risk for male patients, please login or create an account
             </div>
@@ -133,6 +135,9 @@
                 event.preventDefault(); // Prevent form submission
                 // Additional logic for handling the error can go here
                 window.scrollTo(0, 0); // Scroll to the top of the page
+
+                var flashMessagesContainer = document.getElementById('flash-messages');
+                flashMessagesContainer.innerHTML = '<div class="alert alert-danger" role="alert">' + isErrorFlashed + '</div>';
 
             } else {
                 // If no error, proceed with the form submission or other logic
