@@ -183,7 +183,6 @@ def sign_up():
         password1 = request.form.get('password1')
         password2 = request.form.get('password2')
         sex = request.form.get('sexSelect')
-        print(sex)
 
         user = User.query.filter_by(email=email).first()
         if user:
@@ -202,8 +201,8 @@ def sign_up():
             sex = sex.capitalize()
             if sex == 'Female' or sex == 'Male':
                 new_user.sexe = sex
-            if sex == 'Prefer not to say':
-                new_user.sexe = 'None'
+            if sex == 'Prefer not to say' or sex=='None':
+                new_user.sexe = None
             
             db.session.add(new_user)
             db.session.commit()
