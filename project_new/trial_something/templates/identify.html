@@ -130,14 +130,18 @@
             var isErrorFlashed = "{{ errorFlash }}";
 
             if (errorFlash) {
+                event.preventDefault();
                 event.target.removeAttribute('action');
-                window.scrollTo(0, 0);
+                // window.scrollTo(0, 0);
 
             } else {
                 // If no error, proceed with the form submission or other logic
                 performPrediction(); // Uncomment or modify as needed
             }
         }
+        document.querySelectorAll('form').forEach(function(form) {
+            form.addEventListener('submit', handleSubmit);
+        });
 
         document.getElementById('label-identify-form').addEventListener('submit', handleSubmit);
         document.getElementById('pill-identify-form').addEventListener('submit', handleSubmit);
