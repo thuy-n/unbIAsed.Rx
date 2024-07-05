@@ -124,24 +124,18 @@
 </div>
     
 <script> 
-    document.addEventListener('DOMContentLoaded', function() {
-        var calculateRiskButton = document.querySelector('[name="submit-button3"]');
-
-        function handleCalculateRiskEvent(event) {
-            event.preventDefault(); // Prevent the default button action
-            performPrediction();
-        }
-
-        // Listen for both click and touchstart events
-        calculateRiskButton.addEventListener('click', handleCalculateRiskEvent);
-        calculateRiskButton.addEventListener('touchstart', handleCalculateRiskEvent);
-    });
     function performPrediction() {
         // Show the modal
         var calculatingModal = new bootstrap.Modal(document.getElementById('calculatingModal'), {});
         calculatingModal.show();
 
-        // Set up a MutationObserver to watch for changes in the 'hidden' class of the result div
+        // Configuration of the observer:
+        var config = { attributes: true, childList: false, characterData: false, attributeFilter: ['class'] };
+
+        // Target node to observe
+        var target = document.getElementById('result');
+
+        // Start observing
         var observer = new MutationObserver(function(mutations) {
             mutations.forEach(function(mutation) {
                 if (!document.getElementById('result').classList.contains('hidden')) {
@@ -152,19 +146,31 @@
             });
         });
 
-        // Configuration of the observer:
-        var config = { attributes: true, childList: false, characterData: false, attributeFilter: ['class'] };
-
-        // Target node to observe
-        var target = document.getElementById('result');
-
-        // Start observing
         observer.observe(target, config);
 
         // Assuming you're using AJAX or a similar method to perform the prediction
         // and update the page, you would trigger that here.
         // The observer will take care of hiding the modal once the result is ready.
     }
+
+    window.onload = function() {
+        // Check if the result is already visible
+        if (!document.getElementById('result').classList.contains('hidden')) {
+            var calculatingModal = bootstrap.Modal.getInstance(document.getElementById('calculatingModal'));
+            if (calculatingModal) {
+                calculatingModal.hide();
+            }
+        }
+
+        // Additional onload logic for handling URL hash
+        if(window.location.hash) {
+            var hash = window.location.hash.substring(1); // Get the hash, minus the '#'
+            // You can add logic here to handle the hash, such as scrolling to a specific element
+            // or performing some action based on the hash value.
+        }
+
+        // Any other onload logic can be added here
+    };
 
     // Ensure the modal is hidden initially if the result is already visible
     window.onload = function() {
