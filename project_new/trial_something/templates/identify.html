@@ -10,7 +10,7 @@
          complete
     </div>
 
-    <form id="label-identify-form" enctype="multipart/form-data" method="POST" action="#label-identify-form" class="mb-3">
+    <form id="label-identify-form" enctype="multipart/form-data" method="POST" class="mb-3">
         <div>
             <h2 class="display-6 text-center my-3">Identify Label</h2>
             <div id="flash-messages"></div>
@@ -19,7 +19,7 @@
                 <input type="file" class="form-control" id="label-image" name="uploaded-label-image" accept="image/*" capture onchange="displayImage(this, 'label-image-preview');">
             </div>
             <img id="label-image-preview" src="" alt="Label Image Preview" style="display: none;padding-bottom:20px;" >
-            <button type="submit" class="btn btn-start" name="submit-button1" value="label" >Identify Label</button>
+            <button type="submit" class="btn btn-start" name="submit-button1" value="label" onclick="performPrediction()">Identify Label</button>
             <a id="moreButton" class="btn btn-start" onclick="goSearch()">Show Results</a>
             <br><br>
             <div class="container position-relative rounded shadow {{ 'hidden' if text is none or text|length == 0 }}" 
@@ -31,7 +31,7 @@
 
     <br>
 
-    <form id="pill-identify-form" enctype="multipart/form-data" method="POST" action="#pill-identify-form"class="mb-3">
+    <form id="pill-identify-form" enctype="multipart/form-data" method="POST" class="mb-3">
         <div>
             <h2 class="display-6 text-center my-3">Identify Pill</h2>
             <div id="flash-messages"></div>
@@ -44,7 +44,7 @@
                 <input type="file" class="form-control" id="pill-image" name="uploaded-pill-image" accept="image/*", capture onchange="displayImage(this, 'pill-image-preview');">
             </div>
             <img id="pill-image-preview" src="" alt="Pill Image Preview" style="display: none;padding-bottom:20px;" >
-            <button type="submit" class="btn btn-start" name="submit-button2" value="pill" >Identify Pill</button>
+            <button type="submit" class="btn btn-start" name="submit-button2" value="pill" onclick="performPrediction()">Identify Pill</button>
             <a id="moreButton" class="btn btn-start" onclick="goSearch2()">Show Results</a>
             <br><br>
             <div class="container position-relative rounded shadow {{ 'hidden' if pill is none or pill|length == 0 }}" 
@@ -56,7 +56,7 @@
 
     <br>
     
-    <form id="identify-risk-form" enctype="multipart/form-data" method="POST"  action="#identify-risk-form" class="mb-3">
+    <form id="identify-risk-form" enctype="multipart/form-data" method="POST" class="mb-3">
         <div>
             <h2 class="display-6 text-center my-3">Identify Risk</h2>
             <div id="flash-messages"></div>
@@ -100,7 +100,7 @@
                 </select>
                 <!-- <input type="text" class="form-control" id="diseaseRisk" name="diseaseRisk" placeholder="Enter Condition" required> -->
             </div>
-            <button type="submit" class="btn btn-start" name="submit-button3" value="risk" >Calculate Risk</button>
+            <button type="submit" class="btn btn-start" name="submit-button3" value="risk" onclick="performPrediction()">Calculate Risk</button>
             <!-- Calculating Modal -->
             <div class="modal" tabindex="-1" role="dialog" id="calculatingModal">
                 <div class="modal-dialog" role="document">
@@ -127,33 +127,33 @@
 </div>
     
 <script> 
-    document.addEventListener('DOMContentLoaded', function() {
-        function handleSubmit(event) {
-            var isErrorFlashed = "{{ errorFlash }}"; // Ensure this is trimmed for accurate length check
+    // document.addEventListener('DOMContentLoaded', function() {
+    //     function handleSubmit(event) {
+    //         var isErrorFlashed = "{{ errorFlash }}"; // Ensure this is trimmed for accurate length check
             
-            if (isErrorFlashed) {
-                // event.preventDefault(); // Prevent form submission
-                // Additional logic for handling the error can go here
-                window.scrollTo(0, 0); // Scroll to the top of the page
+    //         if (isErrorFlashed) {
+    //             // event.preventDefault(); // Prevent form submission
+    //             // Additional logic for handling the error can go here
+    //             window.scrollTo(0, 0); // Scroll to the top of the page
 
-                setTimeout(function() {
-                    // Additional logic to handle the error can go here
-                    // For example, showing an alert or logging to console
-                    // alert("Error detected. Please check your input.");
-                }, 6000); // Adjust the time (in milliseconds) as needed
+    //             setTimeout(function() {
+    //                 // Additional logic to handle the error can go here
+    //                 // For example, showing an alert or logging to console
+    //                 // alert("Error detected. Please check your input.");
+    //             }, 6000); // Adjust the time (in milliseconds) as needed
 
 
-            } else {
-                // If no error, proceed with the form submission or other logic
-                // event.target.submit();
-                performPrediction(); // This needs to be defined or uncommented as needed
-            }
-        }
+    //         } else {
+    //             // If no error, proceed with the form submission or other logic
+    //             // event.target.submit();
+    //             performPrediction(); // This needs to be defined or uncommented as needed
+    //         }
+    //     }
 
-        document.getElementById('label-identify-form').addEventListener('submit', handleSubmit);
-        document.getElementById('pill-identify-form').addEventListener('submit', handleSubmit);
-        document.getElementById('identify-risk-form').addEventListener('submit', handleSubmit);
-    });
+    //     document.getElementById('label-identify-form').addEventListener('submit', handleSubmit);
+    //     document.getElementById('pill-identify-form').addEventListener('submit', handleSubmit);
+    //     document.getElementById('identify-risk-form').addEventListener('submit', handleSubmit);
+    // });
     
     function performPrediction() {
         // Show the modal
