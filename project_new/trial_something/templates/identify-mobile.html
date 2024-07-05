@@ -162,24 +162,6 @@
             }
         }
 
-        // Additional onload logic for handling URL hash
-        if(window.location.hash) {
-            var hash = window.location.hash.substring(1); // Get the hash, minus the '#'
-            // You can add logic here to handle the hash, such as scrolling to a specific element
-            // or performing some action based on the hash value.
-        }
-
-        // Any other onload logic can be added here
-    };
-
-    // Ensure the modal is hidden initially if the result is already visible
-    window.onload = function() {
-        if (!document.getElementById('result').classList.contains('hidden')) {
-            var calculatingModal = bootstrap.Modal.getInstance(document.getElementById('calculatingModal'));
-            if (calculatingModal) {
-                calculatingModal.hide();
-            }
-        }
     };
 
     window.onload = function() {
