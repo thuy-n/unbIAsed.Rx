@@ -36,7 +36,7 @@ class User(db.Model, UserMixin):
     last_name = db.Column(db.String(150))
     notes = db.relationship('Note')
     age = db.Column(db.String(50))
-    sexe = db.Column(db.String(50), default="Female")
+    sexe = db.Column(db.String(50))
     drugs = db.relationship('Drugs', backref='user', lazy=True)
     info = db.relationship('Info', backref='user', lazy=True)
     
