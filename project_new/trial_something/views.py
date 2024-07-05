@@ -168,9 +168,12 @@ def get_study(studies_related_pair_input):
     return num_studies, female_proportion, male_proportion, tot_num_females, tot_num_males
 
 def get_model(drug, disease):
-    model_file_path = r'C:\Users\anbgo\coding_projects_flask\GitHub-Rx\project_new\trial_something\regression_model.pkl'
-    preprocessor_file_path =  r'C:\Users\anbgo\coding_projects_flask\GitHub-Rx\project_new\trial_something\preprocessor.pkl'
+    # model_file_path = r'C:\Users\anbgo\coding_projects_flask\GitHub-Rx\project_new\trial_something\regression_model.pkl'
+    # preprocessor_file_path =  r'C:\Users\anbgo\coding_projects_flask\GitHub-Rx\project_new\trial_something\preprocessor.pkl'
 
+    model_file_path = os.path.join(os.path.dirname(__file__), 'regression_model.pkl')
+    preprocessor_file_path = os.path.join(os.path.dirname(__file__), 'preprocessor.pkl')
+    
     BASE_DIR1 = os.path.dirname(os.path.abspath(__file__))  # Get the directory of the current file
     csv_file1 = os.path.join(BASE_DIR1, 'ctg-studies.csv')  # Join the base directory with the file name
     df1 = pd.read_csv(csv_file1)  
