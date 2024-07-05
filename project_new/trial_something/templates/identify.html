@@ -130,8 +130,10 @@
             var isErrorFlashed = "{{ errorFlash }}"; // Ensure this is trimmed for accurate length check
 
             if (isErrorFlashed) {
-                event.preventDefault(); // Prevent form submission
+                // event.preventDefault(); // Prevent form submission
                 // Additional logic for handling the error can go here
+                window.scrollTo(0, 0); // Scroll to the top of the page
+
             } else {
                 // If no error, proceed with the form submission or other logic
                 performPrediction(); // This needs to be defined or uncommented as needed
