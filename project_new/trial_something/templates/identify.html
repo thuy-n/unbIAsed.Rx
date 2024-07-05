@@ -18,7 +18,7 @@
                 <input type="file" class="form-control" id="label-image" name="uploaded-label-image" accept="image/*" capture onchange="displayImage(this, 'label-image-preview');">
             </div>
             <img id="label-image-preview" src="" alt="Label Image Preview" style="display: none;padding-bottom:20px;" >
-            <button type="submit" class="btn btn-start" name="submit-button1" value="label" onclick="performPrediction()">Identify Label</button>
+            <button type="submit" class="btn btn-start" name="submit-button1" value="label" >Identify Label</button>
             <a id="moreButton" class="btn btn-start" onclick="goSearch()">Show Results</a>
             <br><br>
             <div class="container position-relative rounded shadow {{ 'hidden' if text is none or text|length == 0 }}" 
@@ -42,7 +42,7 @@
                 <input type="file" class="form-control" id="pill-image" name="uploaded-pill-image" accept="image/*", capture onchange="displayImage(this, 'pill-image-preview');">
             </div>
             <img id="pill-image-preview" src="" alt="Pill Image Preview" style="display: none;padding-bottom:20px;" >
-            <button type="submit" class="btn btn-start" name="submit-button2" value="pill" onclick="performPrediction()">Identify Pill</button>
+            <button type="submit" class="btn btn-start" name="submit-button2" value="pill" >Identify Pill</button>
             <a id="moreButton" class="btn btn-start" onclick="goSearch2()">Show Results</a>
             <br><br>
             <div class="container position-relative rounded shadow {{ 'hidden' if pill is none or pill|length == 0 }}" 
@@ -98,7 +98,7 @@
                 </select>
                 <!-- <input type="text" class="form-control" id="diseaseRisk" name="diseaseRisk" placeholder="Enter Condition" required> -->
             </div>
-            <button type="submit" class="btn btn-start" name="submit-button3" value="risk" onclick="performPrediction()">Calculate Risk</button>
+            <button type="submit" class="btn btn-start" name="submit-button3" value="risk" >Calculate Risk</button>
             <!-- Calculating Modal -->
             <div class="modal" tabindex="-1" role="dialog" id="calculatingModal">
                 <div class="modal-dialog" role="document">
@@ -130,7 +130,7 @@
             var isErrorFlashed = "{{ errorFlash }}"; // Ensure this is trimmed for accurate length check
 
             if (isErrorFlashed) {
-                // event.preventDefault(); // Prevent form submission
+                event.preventDefault(); // Prevent form submission
                 // Additional logic for handling the error can go here
                 window.scrollTo(0, 0); // Scroll to the top of the page
 
