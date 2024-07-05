@@ -23,7 +23,7 @@
             <a id="moreButton" class="btn btn-start" onclick="goSearch()">Show Results</a>
             <br><br>
             <div class="container position-relative rounded shadow {{ 'hidden' if text is none or text|length == 0 }}" 
-            style="background-color: #CEE3EA; {{ 'padding: 20px;' if text is not none and text|length > 0 }}">
+            style="background-color: #CEE3EA; {{ 'padding: 20px;' if text is not none and text|length > 0 }}" id="result">
             {{ text }}
             </div>
         </div>
@@ -48,7 +48,7 @@
             <a id="moreButton" class="btn btn-start" onclick="goSearch2()">Show Results</a>
             <br><br>
             <div class="container position-relative rounded shadow {{ 'hidden' if pill is none or pill|length == 0 }}" 
-            style="background-color: #CEE3EA; {{ 'padding: 20px;' if pill is not none and pill|length > 0 }}">
+            style="background-color: #CEE3EA; {{ 'padding: 20px;' if pill is not none and pill|length > 0 }}" id="result">
             {{ pill }} 
             </div>
         </div>
@@ -102,7 +102,7 @@
             </div>
             <button type="submit" class="btn btn-start" name="submit-button3" value="risk" onclick="performPrediction()">Calculate Risk</button>
             <!-- Calculating Modal -->
-            <div class="modal" tabindex="-1" role="dialog" id="calculatingModal">
+            <div class="modal" tabindex="-1" role="dialog" id="calculatingModal" style="display:none;">
                 <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -158,12 +158,12 @@
     function performPrediction() {
         // Show the modal
         var isErrorFlashed = "{{ errorFlash }}";
-        var calculatingModal = new bootstrap.Modal(document.getElementById('calculatingModal'), {});
+        var modal = document.getElementById('calculatingModal').value;
 
         if (isErrorFlashed) {
             window.scrollTo(0, 0);
         } else {
-            calculatingModal.show();
+            document.getElementById('calculatingModal').style.display = 'block';
         }
 
         // Set up a MutationObserver to watch for changes in the 'hidden' class of the result div
