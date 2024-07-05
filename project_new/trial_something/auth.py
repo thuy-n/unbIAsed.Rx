@@ -201,6 +201,9 @@ def sign_up():
             sex = sex.capitalize()
             if sex == 'Female' or sex == 'Male':
                 new_user.sexe = sex
+            if sex == 'none':
+                new_user.sexe = 'None'
+            
             db.session.add(new_user)
             db.session.commit()
             login_user(new_user, remember=True)
