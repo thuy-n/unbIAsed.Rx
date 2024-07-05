@@ -98,6 +98,19 @@
                 <!-- <input type="text" class="form-control" id="diseaseRisk" name="diseaseRisk" placeholder="Enter Condition" required> -->
             </div>
             <button type="submit" class="btn btn-start" name="submit-button3" value="risk" >Calculate Risk</button>
+            <!-- Calculating Modal -->
+            <div class="modal" tabindex="-1" role="dialog" id="calculatingModal">
+                <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                    <h5 class="modal-title">Processing</h5>
+                    </div>
+                    <div class="modal-body">
+                    <p>Calculating...</p>
+                    </div>
+                </div>
+                </div>
+            </div>
             <br><br>
             <div class="container position-relative rounded shadow {{ 'hidden' if result_string is none or result_string|length == 0 }}" 
             style="background-color: #CEE3EA; {{ 'padding: 20px;' if result_string is not none and result_string|length > 0 }}">
@@ -111,6 +124,46 @@
 </div>
     
 <script> 
+    function performPrediction() {
+        // Show the modal
+        var calculatingModal = new bootstrap.Modal(document.getElementById('calculatingModal'), {});
+        calculatingModal.show();
+
+        // Set up a MutationObserver to watch for changes in the 'hidden' class of the result div
+        var observer = new MutationObserver(function(mutations) {
+            mutations.forEach(function(mutation) {
+                if (!document.getElementById('result').classList.contains('hidden')) {
+                    // Once the result is displayed, hide the modal and disconnect the observer
+                    calculatingModal.hide();
+                    observer.disconnect();
+                }
+            });
+        });
+
+        // Configuration of the observer:
+        var config = { attributes: true, childList: false, characterData: false, attributeFilter: ['class'] };
+
+        // Target node to observe
+        var target = document.getElementById('result');
+
+        // Start observing
+        observer.observe(target, config);
+
+        // Assuming you're using AJAX or a similar method to perform the prediction
+        // and update the page, you would trigger that here.
+        // The observer will take care of hiding the modal once the result is ready.
+    }
+
+    // Ensure the modal is hidden initially if the result is already visible
+    window.onload = function() {
+        if (!document.getElementById('result').classList.contains('hidden')) {
+            var calculatingModal = bootstrap.Modal.getInstance(document.getElementById('calculatingModal'));
+            if (calculatingModal) {
+                calculatingModal.hide();
+            }
+        }
+    };
+    
     window.onload = function() {
         if(window.location.hash) {
             var hash = window.location.hash.substring(1); // Get the hash, minus the '#'
