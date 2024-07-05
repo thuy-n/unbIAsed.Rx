@@ -157,8 +157,14 @@
     
     function performPrediction() {
         // Show the modal
+        var isErrorFlashed = "{{ errorFlash }}";
         var calculatingModal = new bootstrap.Modal(document.getElementById('calculatingModal'), {});
-        calculatingModal.show();
+
+        if (isErrorFlashed) {
+            window.scrollTo(0, 0);
+        } else {
+            calculatingModal.show();
+        }
 
         // Set up a MutationObserver to watch for changes in the 'hidden' class of the result div
         var observer = new MutationObserver(function(mutations) {
