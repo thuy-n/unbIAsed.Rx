@@ -9,7 +9,7 @@
 <div class="card shadow " style="background-color:#CEE3EA;overflow: hidden;">
   <div class="card-body">
       <div id="cardContainer" style="max-width:100%">
-          <h4 class="card-title">{{ result.name }}</h4>
+          <h4 class="card-title">{{ result.name.replace("_", " ") }}</h4>
           <div>
             <h5 class="card-subtitle mb-2 text-body-secondary">Used For: {{ result.disease }}</h5>
             <br>

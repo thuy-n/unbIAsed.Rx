@@ -277,17 +277,17 @@ def home():
 
         for index, row in df.iterrows():
             drug_name = row['Drug'].replace(' ', '_').replace('/', '_')  # Replace spaces and slashes with underscores
-            fig = plt.figure(facecolor=(206/255, 227/255, 234/255, 1))  # Create a new figure with a light gray background
-            y = np.array([float(row['Female proportion in studies']), float(row['Male proportion in studies'])])
-            myLabels = ['Female', 'Male']
-            mycolors = [(236/255, 142/255, 130/255, 1), (54/255, 74/255, 93/255, 1)]
-            explode = (0.1, 0)  # explode 1st slice
-            plt.pie(y, explode=explode, labels=myLabels, colors=mycolors,
-            shadow=True, startangle=140) #, textprops={'color':"white"}
+            # fig = plt.figure(facecolor=(206/255, 227/255, 234/255, 1))  # Create a new figure with a light gray background
+            # y = np.array([float(row['Female proportion in studies']), float(row['Male proportion in studies'])])
+            # myLabels = ['Female', 'Male']
+            # mycolors = [(236/255, 142/255, 130/255, 1), (54/255, 74/255, 93/255, 1)]
+            # explode = (0.1, 0)  # explode 1st slice
+            # plt.pie(y, explode=explode, labels=myLabels, colors=mycolors,
+            # shadow=True, startangle=140) #, textprops={'color':"white"}
             
-            image_path = os.path.join(image_dir, f'{drug_name}.png')
-            plt.savefig(image_path, facecolor=fig.get_facecolor())
-            plt.close(fig)  # Close the figure
+            # image_path = os.path.join(image_dir, f'{drug_name}.png')
+            # plt.savefig(image_path, facecolor=fig.get_facecolor())
+            # plt.close(fig)  # Close the figure
             relative_image_path = f'static/{drug_name}.png'
 
             # prediction_risk = get_model(drug_name, row['Indication'])
