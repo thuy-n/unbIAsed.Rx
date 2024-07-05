@@ -13,21 +13,6 @@
     <form id="label-identify-form" enctype="multipart/form-data" method="POST" action="#label-identify-form" class="mb-3">
         <div>
             <h2 class="display-6 text-center my-3">Identify Label</h2>
-            {% with messages = get_flashed_messages(with_categories=true) %} {% if
-                messages %} {% for category, message in messages %} {% if category ==
-                'error' %}
-                <div class="alert alert-danger alter-dismissable fade show" role="alert" >
-                  {{ message }}
-                  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
-                  </button>
-                </div>
-                {% else %}
-                <div class="alert alert-success alter-dismissable fade show" role="alert" >
-                  {{ message }}
-                  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
-                  </button>
-                </div>
-                {% endif %} {% endfor %} {% endif %} {% endwith %}
             <div class="mb-3">
                 <label for="label-image" class="form-label">Upload Label Image</label>
                 <input type="file" class="form-control" id="label-image" name="uploaded-label-image" accept="image/*" capture onchange="displayImage(this, 'label-image-preview');">
@@ -48,21 +33,6 @@
     <form id="pill-identify-form" enctype="multipart/form-data" method="POST" action="#pill-identify-form"class="mb-3">
         <div>
             <h2 class="display-6 text-center my-3">Identify Pill</h2>
-            {% with messages = get_flashed_messages(with_categories=true) %} {% if
-                messages %} {% for category, message in messages %} {% if category ==
-                'error' %}
-                <div class="alert alert-danger alter-dismissable fade show" role="alert" >
-                  {{ message }}
-                  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
-                  </button>
-                </div>
-                {% else %}
-                <div class="alert alert-success alter-dismissable fade show" role="alert" >
-                  {{ message }}
-                  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
-                  </button>
-                </div>
-                {% endif %} {% endfor %} {% endif %} {% endwith %}
             <div class="text-secondary fst-italic" style="font-size:80%">
                 * Please note that this pill recognition tool is a prototype designed to facilitate your search for drug information. Always double-check your medicine.
             </div>
