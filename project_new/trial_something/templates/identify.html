@@ -136,6 +136,13 @@
                 // Additional logic for handling the error can go here
                 window.scrollTo(0, 0); // Scroll to the top of the page
 
+                setTimeout(function() {
+                    // Additional logic to handle the error can go here
+                    // For example, showing an alert or logging to console
+                    // alert("Error detected. Please check your input.");
+                }, 2000); // Adjust the time (in milliseconds) as needed
+
+
             } else {
                 // If no error, proceed with the form submission or other logic
                 event.target.submit();
