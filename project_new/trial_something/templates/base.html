@@ -182,7 +182,7 @@
             </ul>
             <ul class="navbar-nav ms-auto align-items-center">
               <form class="d-flex" action="/search" method="GET">
-                <input class="form-control me-2" type="text" name="query" placeholder="Search" aria-label="Search" >
+                <input class="form-control me-2" type="text" name="query" placeholder="Search Drug or Condition" aria-label="Search" >
                 <button class="btn custom-btn" type="submit" id="searchButton">Search</button>
               </form>
               <a class="nav-item nav-link" style="color: #F2EDF5" id="login" href="/login">Login</a>
@@ -194,7 +194,7 @@
         {% if user.is_authenticated %}
         <ul class="navbar-nav ms-auto">
           <form class="d-flex" action="/search" method="GET">
-            <input class="form-control me-2" type="text" name="query" placeholder="Search" aria-label="Search" >
+            <input class="form-control me-2" type="text" name="query" placeholder="Search Drug or Condition" aria-label="Search" >
             <button class="btn custom-btn" type="submit" id="searchButton">Search</button>
           </form>
           <li class="nav-item dropdown">
