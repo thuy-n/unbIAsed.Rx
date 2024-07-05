@@ -182,7 +182,7 @@ def sign_up():
         last_name = request.form.get('lastName')
         password1 = request.form.get('password1')
         password2 = request.form.get('password2')
-        sex = request.form.get('sexInput')
+        sex = request.form.get('sexSelect')
 
         user = User.query.filter_by(email=email).first()
         if user:
@@ -201,14 +201,12 @@ def sign_up():
             sex = sex.capitalize()
             if sex == 'Female' or sex == 'Male':
                 new_user.sexe = sex
-                db.session.add(new_user)
-                db.session.commit()
-                login_user(new_user, remember=True)
-                flash('Account created!', category='success')
-                return redirect(url_for('views.home'))
-            elif sex != 'Female' or sex != 'Male':
-                flash('Please enter a valid answer for the sexe field', category='error')
-                return redirect(url_for('auth.sign_up'))
+            db.session.add(new_user)
+            db.session.commit()
+            login_user(new_user, remember=True)
+            flash('Account created!', category='success')
+            return redirect(url_for('views.home'))
+            
             
 
     user_agent = request.headers.get('User-Agent').lower()
