@@ -34,6 +34,7 @@
           </div>
               <form action="{{ url_for('views.save_drug') if not result.is_saved else url_for('views.unsave_drug') }}" method="post">
                 <input type="hidden" name="drug_id" value="{{ result.id }}">
+                <br>
                 <button type="submit" class="btn btn-start">
                     {% if current_user.is_authenticated %}
                         {{ 'Unsave' if result.is_saved else 'Save' }}
