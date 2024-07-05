@@ -102,7 +102,7 @@
             </div>
             <button type="submit" class="btn btn-start" name="submit-button3" value="risk" onclick="performPrediction()">Calculate Risk</button>
             <!-- Calculating Modal -->
-            <div class="modal" tabindex="-1" role="dialog" id="calculatingModal" style="opacity:0;">
+            <div class="modal" tabindex="-1" role="dialog" id="calculatingModal">
                 <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -158,12 +158,15 @@
     function performPrediction() {
         // Show the modal
         var isErrorFlashed = "{{ errorFlash }}";
-        var modal = document.getElementById('calculatingModal').value;
+        // var modal = document.getElementById('calculatingModal').value;
 
         if (isErrorFlashed) {
             window.scrollTo(0, 0);
+            $('#calculatingModal').modal('hide');
         } else {
-            document.getElementById('calculatingModal').style.opacity = '1';
+            // document.getElementById('calculatingModal').style.opacity = '1';
+            $('#calculatingModal').modal('show');
+
         }
 
         // Set up a MutationObserver to watch for changes in the 'hidden' class of the result div
