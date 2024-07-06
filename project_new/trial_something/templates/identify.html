@@ -143,8 +143,7 @@
                         // Once the result is displayed, hide the modal and disconnect the observer
                         calculatingModal.hide();
                         observer.disconnect();
-                        var resultDivTop = resultDiv.getBoundingClientRect().top + window.pageYOffset;
-                        window.scrollTo({top: resultDivTop, behavior: "smooth"});
+                        window.scrollTo({top: resultDiv, behavior: "smooth"});
                         // resultDiv.scrollIntoView({behavior: "smooth", block: "start"});
                 
                     }
