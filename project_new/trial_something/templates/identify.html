@@ -130,16 +130,14 @@
     function performPrediction() {
         var isErrorFlashed = {{ errorFlash|tojson }};
 
-        // if (isErrorFlashed) {
-        //     window.scrollTo(0, 0);
-        //     // event.preventDefault();
-        //     return;
-        // } 
-        // var isErrorFlashed = false;
+        if (isErrorFlashed) {
+            window.scrollTo(0, 0);
+            // event.preventDefault();
+            return;
+        } 
 
         if (!isErrorFlashed) {
-            var calculatingModal = new bootstrap.Modal(document.getElementById('calculatingModal'), {});
-            calculatingModal.show();
+           
 
             // Set up a MutationObserver to watch for changes in the 'hidden' class of the result div
             var observer = new MutationObserver(function(mutations) {
@@ -156,6 +154,9 @@
             var config = { attributes: true, childList: false, characterData: false, attributeFilter: ['class'] };
             var target = document.getElementById('result');
             observer.observe(target, config);
+
+            var calculatingModal = new bootstrap.Modal(document.getElementById('calculatingModal'), {});
+            calculatingModal.show();
         }
     }
 
@@ -166,6 +167,11 @@
             if (calculatingModal) {
                 calculatingModal.hide();
             }
+        }
+
+        var isErrorFlashed = {{ errorFlash|tojson }};
+        if (isErrorFlashed) {
+            window.scrollTo(0, 0);
         }
     };
     
