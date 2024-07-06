@@ -10,7 +10,7 @@
          complete
     </div>
 
-    <form id="label-identify-form" enctype="multipart/form-data" method="POST" class="mb-3">
+    <form id="label-identify-form" enctype="multipart/form-data" method="POST" action="#label-identify-form" class="mb-3">
         <div>
             <h2 class="display-6 text-center my-3">Identify Label</h2>
             <div id="flash-messages"></div>
@@ -31,7 +31,7 @@
 
     <br>
 
-    <form id="pill-identify-form" enctype="multipart/form-data" method="POST" class="mb-3">
+    <form id="pill-identify-form" enctype="multipart/form-data" method="POST" action="#pill-identify-form" class="mb-3">
         <div>
             <h2 class="display-6 text-center my-3">Identify Pill</h2>
             <div id="flash-messages"></div>
@@ -127,16 +127,12 @@
 </div>
     
 <script> 
-    function getOffsetTop(element) {
-        var offsetTop = 0;
-        while(element) {
-            offsetTop += element.offsetTop;
-            element = element.offsetParent;
-        }
-        return offsetTop;
-    }
     function performPrediction() {
         var isErrorFlashed = {{ errorFlash|tojson }};
+
+        if (isErrorFlashed) {
+            window.scrollTo(0, 0);
+        } 
         // var isErrorFlashed = false;
 
         if (!isErrorFlashed) {
@@ -146,18 +142,11 @@
             // Set up a MutationObserver to watch for changes in the 'hidden' class of the result div
             var observer = new MutationObserver(function(mutations) {
                 mutations.forEach(function(mutation) {
-                    var resultDiv = document.getElementById('result');
                     if (!resultDiv.classList.contains('hidden')) {
                         // Once the result is displayed, hide the modal and disconnect the observer
                         calculatingModal.hide();
                         observer.disconnect();
 
-                        var offsetTop = getOffsetTop(resultDiv);
-                        console.log("Scrolling to offsetTop: ", offsetTop); // Debugging line
-                        window.scrollTo({top: offsetTop, behavior: "smooth"});
-                        // window.scrollTo({top: resultDiv, behavior: "smooth"});
-                        // resultDiv.scrollIntoView({behavior: "smooth", block: "start"});
-                
                     }
                 });
             });
@@ -165,7 +154,7 @@
             var config = { attributes: true, childList: false, characterData: false, attributeFilter: ['class'] };
             var target = document.getElementById('result');
             observer.observe(target, config);
-            }
+        }
     }
 
     // Ensure the modal is hidden initially if the result is already visible
