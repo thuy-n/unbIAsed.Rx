@@ -143,10 +143,9 @@
                         // Once the result is displayed, hide the modal and disconnect the observer
                         calculatingModal.hide();
                         observer.disconnect();
-
-                        setTimeout(function() {
-                            resultDiv.scrollIntoView({behavior: "smooth", block: "start"});
-                        }, 100); // Adjust the delay as needed
+                        var resultDivTop = resultDiv.getBoundingClientRect().top + window.pageYOffset;
+                        window.scrollTo({top: resultDivTop, behavior: "smooth"});
+                        // resultDiv.scrollIntoView({behavior: "smooth", block: "start"});
                 
                     }
                 });
