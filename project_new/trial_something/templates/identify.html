@@ -138,7 +138,8 @@
             // Set up a MutationObserver to watch for changes in the 'hidden' class of the result div
             var observer = new MutationObserver(function(mutations) {
                 mutations.forEach(function(mutation) {
-                    if (!document.getElementById('result').classList.contains('hidden')) {
+                    var resultDiv = document.getElementById('result');
+                    if (!resultDiv.classList.contains('hidden')) {
                         // Once the result is displayed, hide the modal and disconnect the observer
                         calculatingModal.hide();
                         observer.disconnect();
