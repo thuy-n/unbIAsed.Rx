@@ -131,7 +131,6 @@
         var isErrorFlashed = {{ errorFlash|tojson }};
 
         if (isErrorFlashed) {
-            event.preventDefault();  // Prevent form submission
             window.scrollTo(0, 0);  // Scroll to top
         } 
 
