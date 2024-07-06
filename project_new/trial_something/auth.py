@@ -463,7 +463,7 @@ def identify():
             drug_search = drug_search.upper()
             disease_search = disease_search.upper()
 
-            if disease_search == '' or drug_search == '':
+            if disease_search == None or drug_search == None:
                 errorFlash = True
                 flash('Please fill in all fields', 'error')
                 user_agent = request.headers.get('User-Agent').lower()

@@ -100,7 +100,7 @@
                 </select>
                 <!-- <input type="text" class="form-control" id="diseaseRisk" name="diseaseRisk" placeholder="Enter Condition" required> -->
             </div>
-            <button type="submit" class="btn btn-start" name="submit-button3" value="risk" onclick="performPrediction()">Calculate Risk</button>
+            <button type="submit" class="btn btn-start" name="submit-button3" value="risk" onclick="performPrediction()" onsubmit="return handleSubmit(event)">Calculate Risk</button>
             <!-- Calculating Modal -->
             <div class="modal" tabindex="-1" role="dialog" id="calculatingModal">
                 <div class="modal-dialog" role="document">
@@ -174,50 +174,16 @@
             window.scrollTo(0, 0);
         }
     };
+
+    function handleSubmit(event) {
+        var isErrorFlashed = {{ errorFlash|tojson }};
+        if (isErrorFlashed) {
+            event.preventDefault();  // Prevent form submission
+            window.scrollTo(0, 0);  // Scroll to top
+        }
+    }
+
     
-    // function performPrediction() {
-    //     // Show the modal
-    //     var isErrorFlashed = "{{ errorFlash }}";
-    //     // var modal = document.getElementById('calculatingModal').value;
-
-    //     if (isErrorFlashed) {
-    //         window.scrollTo(0, 0);
-    //         // $('#calculatingModal').modal('hide');
-    //     } else {
-    //         // document.getElementById('calculatingModal').style.opacity = '1';
-    //         $('#calculatingModal').modal('show');
-    //         watchForResult();
-
-    //     }
-
-    // }
-
-    // function watchForResult() {
-    //     // Create a MutationObserver to watch for changes in the 'result' div
-    //     var observer = new MutationObserver(function(mutations) {
-    //         mutations.forEach(function(mutation) {
-    //         if (!document.getElementById('result').classList.contains('hidden')) {
-    //             $('#calculatingModal').modal('hide');
-    //             observer.disconnect(); // Stop observing once the modal is hidden
-    //         }
-    //         });
-    //     });
-
-    //     // Configuration of the observer:
-    //     var config = { attributes: true, childList: true, characterData: true };
-    //     observer.observe(document.getElementById('result'), config);
-    // }
-
-
-    // Ensure the modal is hidden initially if the result is already visible
-    // window.onload = function() {
-    //     if (!document.getElementById('result').classList.contains('hidden')) {
-    //         var calculatingModal = bootstrap.Modal.getInstance(document.getElementById('calculatingModal'));
-    //         if (calculatingModal) {
-    //             calculatingModal.hide();
-    //         }
-    //     }
-    // };
 
     window.onload = function() {
         if(window.location.hash) {
