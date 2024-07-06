@@ -128,8 +128,8 @@
     
 <script> 
     function performPrediction() {
-        // var isErrorFlashed = "{{ errorFlash }}";
-        var isErrorFlashed = false;
+        var isErrorFlashed = "{{ errorFlash }}";
+        // var isErrorFlashed = false;
 
         if (!isErrorFlashed) {
             var calculatingModal = new bootstrap.Modal(document.getElementById('calculatingModal'), {});
@@ -142,6 +142,7 @@
                         // Once the result is displayed, hide the modal and disconnect the observer
                         calculatingModal.hide();
                         observer.disconnect();
+                        resultDiv.scrollIntoView({behavior: "smooth", block: "start"});
                     }
                 });
             });
