@@ -130,11 +130,11 @@
     function performPrediction() {
         var isErrorFlashed = {{ errorFlash|tojson }};
 
-        if (isErrorFlashed) {
-            window.scrollTo(0, 0);
-            // event.preventDefault();
-            return;
-        } 
+        // if (isErrorFlashed) {
+        //     window.scrollTo(0, 0);
+        //     // event.preventDefault();
+        //     return;
+        // } 
         // var isErrorFlashed = false;
 
         if (!isErrorFlashed) {
