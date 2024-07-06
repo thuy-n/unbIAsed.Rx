@@ -128,9 +128,16 @@
     
 <script> 
     function performPrediction() {
-        // Show the modal
-        var calculatingModal = document.getElementById('calculatingModal');
-        calculatingModal.show();
+        var isErrorFlashed = "{{ errorFlash }}";
+
+        if (isErrorFlashed) {
+            // window.scrollTo(0, 0);
+            return
+        } else {
+            var calculatingModal = new bootstrap.Modal(document.getElementById('calculatingModal'), {});
+            calculatingModal.show();
+        }
+        
 
         // Set up a MutationObserver to watch for changes in the 'hidden' class of the result div
         var observer = new MutationObserver(function(mutations) {
