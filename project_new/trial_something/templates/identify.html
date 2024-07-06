@@ -100,7 +100,7 @@
                 </select>
                 <!-- <input type="text" class="form-control" id="diseaseRisk" name="diseaseRisk" placeholder="Enter Condition" required> -->
             </div>
-            <button type="submit" class="btn btn-start" name="submit-button3" value="risk" onclick="performPrediction()">Calculate Risk</button>
+            <button type="button" class="btn btn-start" name="submit-button3" value="risk" onclick="performPrediction()">Calculate Risk</button>
             <!-- Calculating Modal -->
             <div class="modal" tabindex="-1" role="dialog" id="calculatingModal">
                 <div class="modal-dialog" role="document">
@@ -127,17 +127,28 @@
 </div>
     
 <script> 
+
+    // function handleSubmit(event) {
+    //     var isErrorFlashed = {{ errorFlash|tojson }};
+    //     if (isErrorFlashed) {
+    //         event.preventDefault();  // Prevent form submission
+    //         window.scrollTo(0, 0);  // Scroll to top
+    //     } else {
+    //         // Only submit the form if there are no flash messages
+    //         document.getElementById('identify-risk-form').submit();
+    //     }
+    // }
+
+    
     function performPrediction() {
         var isErrorFlashed = {{ errorFlash|tojson }};
 
         if (isErrorFlashed) {
-            window.scrollTo(0, 0);  // Scroll to top
+            window.scrollTo(0, 0);
+            return;
         } 
 
-        else {
-           
-            window.location.hash = 'identify-risk-form';  // Scroll to form
-
+        if (!isErrorFlashed) {
             // Set up a MutationObserver to watch for changes in the 'hidden' class of the result div
             var observer = new MutationObserver(function(mutations) {
                 mutations.forEach(function(mutation) {
@@ -145,7 +156,6 @@
                         // Once the result is displayed, hide the modal and disconnect the observer
                         calculatingModal.hide();
                         observer.disconnect();
-
                     }
                 });
             });
@@ -154,12 +164,17 @@
             var target = document.getElementById('result');
             observer.observe(target, config);
 
-            var calculatingModal = new bootstrap.Modal(document.getElementById('calculatingModal'), {});
-            calculatingModal.show();
+            // Create a new Promise that resolves after a delay
+            new Promise(function(resolve) {
+                setTimeout(resolve, 1000);  // Adjust delay as needed
+            }).then(function() {
+                var calculatingModal = new bootstrap.Modal(document.getElementById('calculatingModal'), {});
+                calculatingModal.show();
+            });
+            document.getElementById('identify-risk-form').submit();
         }
     }
 
-    // Ensure the modal is hidden initially if the result is already visible
     window.onload = function() {
         if (!document.getElementById('result').classList.contains('hidden')) {
             var calculatingModal = bootstrap.Modal.getInstance(document.getElementById('calculatingModal'));
@@ -167,23 +182,8 @@
                 calculatingModal.hide();
             }
         }
-
-        var isErrorFlashed = {{ errorFlash|tojson }};
-        if (isErrorFlashed) {
-            window.scrollTo(0, 0);
-        }
     };
-
-    function handleSubmit(event) {
-        var isErrorFlashed = {{ errorFlash|tojson }};
-        if (isErrorFlashed) {
-            event.preventDefault();  // Prevent form submission
-            window.scrollTo(0, 0);  // Scroll to top
-        }
-    }
-
     
-
     window.onload = function() {
         if(window.location.hash) {
             var hash = window.location.hash.substring(1); // Get the hash, minus the '#'
