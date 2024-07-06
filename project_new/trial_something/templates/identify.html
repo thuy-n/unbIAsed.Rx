@@ -133,10 +133,10 @@
         if (isErrorFlashed) {
             event.preventDefault();  // Prevent form submission
             window.scrollTo(0, 0);  // Scroll to top
-        } else {
-            // Only submit the form if there are no flash messages
-            document.getElementById('identify-risk-form').submit();
-        }
+            return
+        } 
+        document.getElementById('identify-risk-form').submit();
+        
     }
 
     
