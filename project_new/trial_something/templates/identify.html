@@ -143,8 +143,8 @@
                         // Once the result is displayed, hide the modal and disconnect the observer
                         calculatingModal.hide();
                         observer.disconnect();
-                        window.scrollTo({top: resultDiv, behavior: "smooth"});
-                        // resultDiv.scrollIntoView({behavior: "smooth", block: "start"});
+                        // window.scrollTo({top: resultDiv, behavior: "smooth"});
+                        resultDiv.scrollIntoView({behavior: "smooth", block: "start"});
                 
                     }
                 });
