@@ -127,66 +127,78 @@
 </div>
     
 <script> 
-    // document.addEventListener('DOMContentLoaded', function() {
-    //     function handleSubmit(event) {
-    //         var isErrorFlashed = "{{ errorFlash }}"; // Ensure this is trimmed for accurate length check
-            
-    //         if (isErrorFlashed) {
-    //             // event.preventDefault(); // Prevent form submission
-    //             // Additional logic for handling the error can go here
-    //             window.scrollTo(0, 0); // Scroll to the top of the page
-
-    //             setTimeout(function() {
-    //                 // Additional logic to handle the error can go here
-    //                 // For example, showing an alert or logging to console
-    //                 // alert("Error detected. Please check your input.");
-    //             }, 6000); // Adjust the time (in milliseconds) as needed
-
-
-    //         } else {
-    //             // If no error, proceed with the form submission or other logic
-    //             // event.target.submit();
-    //             performPrediction(); // This needs to be defined or uncommented as needed
-    //         }
-    //     }
-
-    //     document.getElementById('label-identify-form').addEventListener('submit', handleSubmit);
-    //     document.getElementById('pill-identify-form').addEventListener('submit', handleSubmit);
-    //     document.getElementById('identify-risk-form').addEventListener('submit', handleSubmit);
-    // });
-    
     function performPrediction() {
         // Show the modal
-        var isErrorFlashed = "{{ errorFlash }}";
-        // var modal = document.getElementById('calculatingModal').value;
+        var calculatingModal = new bootstrap.Modal(document.getElementById('calculatingModal'), {});
+        calculatingModal.show();
 
-        if (isErrorFlashed) {
-            window.scrollTo(0, 0);
-            // $('#calculatingModal').modal('hide');
-        } else {
-            // document.getElementById('calculatingModal').style.opacity = '1';
-            $('#calculatingModal').modal('show');
-            watchForResult();
-
-        }
-
-    }
-
-    function watchForResult() {
-        // Create a MutationObserver to watch for changes in the 'result' div
+        // Set up a MutationObserver to watch for changes in the 'hidden' class of the result div
         var observer = new MutationObserver(function(mutations) {
             mutations.forEach(function(mutation) {
-            if (!document.getElementById('result').classList.contains('hidden')) {
-                $('#calculatingModal').modal('hide');
-                observer.disconnect(); // Stop observing once the modal is hidden
-            }
+                if (!document.getElementById('result').classList.contains('hidden')) {
+                    // Once the result is displayed, hide the modal and disconnect the observer
+                    calculatingModal.hide();
+                    observer.disconnect();
+                }
             });
         });
 
         // Configuration of the observer:
-        var config = { attributes: true, childList: true, characterData: true };
-        observer.observe(document.getElementById('result'), config);
+        var config = { attributes: true, childList: false, characterData: false, attributeFilter: ['class'] };
+
+        // Target node to observe
+        var target = document.getElementById('result');
+
+        // Start observing
+        observer.observe(target, config);
+
+        // Assuming you're using AJAX or a similar method to perform the prediction
+        // and update the page, you would trigger that here.
+        // The observer will take care of hiding the modal once the result is ready.
     }
+
+    // Ensure the modal is hidden initially if the result is already visible
+    window.onload = function() {
+        if (!document.getElementById('result').classList.contains('hidden')) {
+            var calculatingModal = bootstrap.Modal.getInstance(document.getElementById('calculatingModal'));
+            if (calculatingModal) {
+                calculatingModal.hide();
+            }
+        }
+    };
+    
+    // function performPrediction() {
+    //     // Show the modal
+    //     var isErrorFlashed = "{{ errorFlash }}";
+    //     // var modal = document.getElementById('calculatingModal').value;
+
+    //     if (isErrorFlashed) {
+    //         window.scrollTo(0, 0);
+    //         // $('#calculatingModal').modal('hide');
+    //     } else {
+    //         // document.getElementById('calculatingModal').style.opacity = '1';
+    //         $('#calculatingModal').modal('show');
+    //         watchForResult();
+
+    //     }
+
+    // }
+
+    // function watchForResult() {
+    //     // Create a MutationObserver to watch for changes in the 'result' div
+    //     var observer = new MutationObserver(function(mutations) {
+    //         mutations.forEach(function(mutation) {
+    //         if (!document.getElementById('result').classList.contains('hidden')) {
+    //             $('#calculatingModal').modal('hide');
+    //             observer.disconnect(); // Stop observing once the modal is hidden
+    //         }
+    //         });
+    //     });
+
+    //     // Configuration of the observer:
+    //     var config = { attributes: true, childList: true, characterData: true };
+    //     observer.observe(document.getElementById('result'), config);
+    // }
 
 
     // Ensure the modal is hidden initially if the result is already visible
