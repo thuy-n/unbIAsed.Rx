@@ -153,6 +153,7 @@
                         observer.disconnect();
 
                         var offsetTop = getOffsetTop(resultDiv);
+                        console.log("Scrolling to offsetTop: ", offsetTop); // Debugging line
                         window.scrollTo({top: offsetTop, behavior: "smooth"});
                         // window.scrollTo({top: resultDiv, behavior: "smooth"});
                         // resultDiv.scrollIntoView({behavior: "smooth", block: "start"});
