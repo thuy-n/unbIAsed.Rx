@@ -100,7 +100,7 @@
                 </select>
                 <!-- <input type="text" class="form-control" id="diseaseRisk" name="diseaseRisk" placeholder="Enter Condition" required> -->
             </div>
-            <button type="button" class="btn btn-start" name="submit-button3" value="risk" onclick="performPrediction()">Calculate Risk</button>
+            <button type="submit" class="btn btn-start" name="submit-button3" value="risk" onclick="performPrediction()" onsubmit="return handleSubmit(event)">Calculate Risk</button>
             <!-- Calculating Modal -->
             <div class="modal" tabindex="-1" role="dialog" id="calculatingModal">
                 <div class="modal-dialog" role="document">
@@ -128,16 +128,16 @@
     
 <script> 
 
-    // function handleSubmit(event) {
-    //     var isErrorFlashed = {{ errorFlash|tojson }};
-    //     if (isErrorFlashed) {
-    //         event.preventDefault();  // Prevent form submission
-    //         window.scrollTo(0, 0);  // Scroll to top
-    //     } else {
-    //         // Only submit the form if there are no flash messages
-    //         document.getElementById('identify-risk-form').submit();
-    //     }
-    // }
+    function handleSubmit(event) {
+        var isErrorFlashed = {{ errorFlash|tojson }};
+        if (isErrorFlashed) {
+            event.preventDefault();  // Prevent form submission
+            window.scrollTo(0, 0);  // Scroll to top
+        } else {
+            // Only submit the form if there are no flash messages
+            document.getElementById('identify-risk-form').submit();
+        }
+    }
 
     
     function performPrediction() {
@@ -171,7 +171,6 @@
                 var calculatingModal = new bootstrap.Modal(document.getElementById('calculatingModal'), {});
                 calculatingModal.show();
             });
-            document.getElementById('identify-risk-form').submit();
         }
     }
 
