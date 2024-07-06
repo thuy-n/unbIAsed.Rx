@@ -128,7 +128,7 @@
     
 <script> 
     function performPrediction() {
-        var isErrorFlashed = "{{ errorFlash }}";
+        var isErrorFlashed = {{ errorFlash|tojson }};
         // var isErrorFlashed = false;
 
         if (!isErrorFlashed) {
