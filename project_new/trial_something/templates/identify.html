@@ -166,43 +166,38 @@
         } else {
             // document.getElementById('calculatingModal').style.opacity = '1';
             $('#calculatingModal').modal('show');
+            watchForResult();
 
         }
 
-        // Set up a MutationObserver to watch for changes in the 'hidden' class of the result div
+    }
+
+    function watchForResult() {
+        // Create a MutationObserver to watch for changes in the 'result' div
         var observer = new MutationObserver(function(mutations) {
             mutations.forEach(function(mutation) {
-                if (!document.getElementById('result').classList.contains('hidden')) {
-                    // Once the result is displayed, hide the modal and disconnect the observer
-                    $('#calculatingModal').modal('hide');
-                    observer.disconnect();
-                }
+            if (!document.getElementById('result').classList.contains('hidden')) {
+                $('#calculatingModal').modal('hide');
+                observer.disconnect(); // Stop observing once the modal is hidden
+            }
             });
         });
 
         // Configuration of the observer:
-        var config = { attributes: true, childList: false, characterData: false, attributeFilter: ['class'] };
-
-        // Target node to observe
-        var target = document.getElementById('result');
-
-        // Start observing
-        observer.observe(target, config);
-
-        // Assuming you're using AJAX or a similar method to perform the prediction
-        // and update the page, you would trigger that here.
-        // The observer will take care of hiding the modal once the result is ready.
+        var config = { attributes: true, childList: true, characterData: true };
+        observer.observe(document.getElementById('result'), config);
     }
 
+
     // Ensure the modal is hidden initially if the result is already visible
-    window.onload = function() {
-        if (!document.getElementById('result').classList.contains('hidden')) {
-            var calculatingModal = bootstrap.Modal.getInstance(document.getElementById('calculatingModal'));
-            if (calculatingModal) {
-                calculatingModal.hide();
-            }
-        }
-    };
+    // window.onload = function() {
+    //     if (!document.getElementById('result').classList.contains('hidden')) {
+    //         var calculatingModal = bootstrap.Modal.getInstance(document.getElementById('calculatingModal'));
+    //         if (calculatingModal) {
+    //             calculatingModal.hide();
+    //         }
+    //     }
+    // };
 
     window.onload = function() {
         if(window.location.hash) {
