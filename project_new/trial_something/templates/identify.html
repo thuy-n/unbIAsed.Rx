@@ -100,7 +100,7 @@
                 </select>
                 <!-- <input type="text" class="form-control" id="diseaseRisk" name="diseaseRisk" placeholder="Enter Condition" required> -->
             </div>
-            <button type="submit" class="btn btn-start" name="submit-button3" value="risk" onsubmit="return handleSubmit(event)">Calculate Risk</button>
+            <button type="submit" class="btn btn-start" name="submit-button3" value="risk" onclick="performPrediction()">Calculate Risk</button>
             <!-- Calculating Modal -->
             <div class="modal" tabindex="-1" role="dialog" id="calculatingModal">
                 <div class="modal-dialog" role="document">
@@ -131,13 +131,13 @@
         var isErrorFlashed = {{ errorFlash|tojson }};
 
         if (isErrorFlashed) {
-            window.scrollTo(0, 0);
-            // event.preventDefault();
-            return;
+            event.preventDefault();  // Prevent form submission
+            window.scrollTo(0, 0);  // Scroll to top
         } 
 
-        if (!isErrorFlashed) {
+        else {
            
+            window.location.hash = 'identify-risk-form';  // Scroll to form
 
             // Set up a MutationObserver to watch for changes in the 'hidden' class of the result div
             var observer = new MutationObserver(function(mutations) {
