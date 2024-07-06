@@ -371,8 +371,8 @@ def identify():
 
         # Check if at least one file was uploaded
         if image_file is None and label_file is None and drug_search == '' and disease_search == '':
-            flash('Either an image or a label file must be uploaded', 'error')
             errorFlash = True
+            flash('Either an image or a label file must be uploaded', 'error')
             user_agent = request.headers.get('User-Agent').lower()
             if 'mobile' in user_agent:
                 return render_template("identify-mobile.html", user=current_user,meds=meds, errorFlash=errorFlash)  
@@ -420,8 +420,9 @@ def identify():
                     text = 'This drug is not currently in our database.'
 
             if sentence == "":
-                flash('No text was found in the image', 'error')
                 errorFlash = True
+                flash('No text was found in the image', 'error')
+                
             
             # os.remove(label_filepath)
 
@@ -463,16 +464,16 @@ def identify():
             disease_search = disease_search.upper()
 
             if disease_search == '' or drug_search == '':
-                flash('Please fill in all fields', 'error')
                 errorFlash = True
+                flash('Please fill in all fields', 'error')
                 user_agent = request.headers.get('User-Agent').lower()
                 if 'mobile' in user_agent:
                     return render_template("identify-mobile.html", user=current_user, text=text, word=word, something=something, meds=meds, errorFlash=errorFlash)    
                 return render_template("identify.html", user=current_user, text=text, word=word, something=something, meds=meds, errorFlash=errorFlash)
                     
             if disease_search == 'SELECT CONDITION':
-                flash('Please select a valid condition', 'error')
                 errorFlash = True
+                flash('Please select a valid condition', 'error')
                 user_agent = request.headers.get('User-Agent').lower()
                 if 'mobile' in user_agent:
                     return render_template("identify-mobile.html", errorFlash=errorFlash, user=current_user, text=text, word=word, something=something, meds=meds)    
@@ -499,11 +500,11 @@ def identify():
             
         else:
             if button_clicked1 == 'label' and not label_file:
-                flash('No file was uploaded', 'error')
                 errorFlash = True
+                flash('No file was uploaded', 'error')
             if button_clicked2 == 'pill' and not image_file:
-                flash('No file was uploaded', 'error')
                 errorFlash = True
+                flash('No file was uploaded', 'error')
             # if drug_search == '' or disease_search == '':
             #     flash('Please fill in all fields', 'error')
 
