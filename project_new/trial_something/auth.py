@@ -463,13 +463,13 @@ def identify():
             drug_search = drug_search.upper()
             disease_search = disease_search.upper()
 
-            if disease_search == None or drug_search == None:
-                errorFlash = True
-                flash('Please fill in all fields', 'error')
-                user_agent = request.headers.get('User-Agent').lower()
-                if 'mobile' in user_agent:
-                    return render_template("identify-mobile.html", user=current_user, text=text, word=word, something=something, meds=meds, errorFlash=errorFlash)    
-                return render_template("identify.html", user=current_user, text=text, word=word, something=something, meds=meds, errorFlash=errorFlash)
+            # if disease_search == None or drug_search == None:
+            #     errorFlash = True
+            #     flash('Please fill in all fields', 'error')
+            #     user_agent = request.headers.get('User-Agent').lower()
+            #     if 'mobile' in user_agent:
+            #         return render_template("identify-mobile.html", user=current_user, text=text, word=word, something=something, meds=meds, errorFlash=errorFlash)    
+            #     return render_template("identify.html", user=current_user, text=text, word=word, something=something, meds=meds, errorFlash=errorFlash)
                     
             if disease_search == 'SELECT CONDITION':
                 errorFlash = True
