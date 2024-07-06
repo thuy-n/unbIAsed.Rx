@@ -128,7 +128,8 @@
     
 <script> 
     function performPrediction() {
-        var isErrorFlashed = "{{ errorFlash }}";
+        // var isErrorFlashed = "{{ errorFlash }}";
+        var isErrorFlashed = false;
 
         if (!isErrorFlashed) {
             var calculatingModal = new bootstrap.Modal(document.getElementById('calculatingModal'), {});
