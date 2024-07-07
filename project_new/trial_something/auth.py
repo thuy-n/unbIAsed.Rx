@@ -386,6 +386,23 @@ def identify():
         #         return render_template("identify-mobile.html", flash_message_pill = flash_message_pill,  flash_message_label = flash_message_label, user=current_user,meds=meds, errorFlash=errorFlash)  
         #     return render_template("identify.html", flash_message_pill = flash_message_pill, flash_message_label = flash_message_label, user=current_user,meds=meds, errorFlash=errorFlash)
 
+        if image_file is None: #pill
+            errorFlash = True
+            flash_message_pill = 'An image file must be uploaded'
+
+            user_agent = request.headers.get('User-Agent').lower()
+            if 'mobile' in user_agent:
+                return render_template("identify-mobile.html", flash_message_pill = flash_message_pill, user=current_user,meds=meds, errorFlash=errorFlash)  
+            return render_template("identify.html", flash_message_pill = flash_message_pill, user=current_user,meds=meds, errorFlash=errorFlash)
+
+        if label_file is None: #label
+            errorFlash = True
+            flash_message_label = 'A label file must be uploaded'
+
+            user_agent = request.headers.get('User-Agent').lower()
+            if 'mobile' in user_agent:
+                return render_template("identify-mobile.html", flash_message_label = flash_message_label, user=current_user,meds=meds, errorFlash=errorFlash)
+            return render_template("identify.html", flash_message_label = flash_message_label, user=current_user,meds=meds, errorFlash=errorFlash)
 
         # Process the image file if the 'image' button was clicked and a file was uploaded
         if button_clicked1 == 'label' and label_file and label_file.filename != '':

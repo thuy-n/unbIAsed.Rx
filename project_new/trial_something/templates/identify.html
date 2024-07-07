@@ -136,10 +136,6 @@
     
 <script>    
     function performPrediction() {
-
-        var isErrorFlashed = {{ errorFlash|tojson }};
-
-        if (!isErrorFlashed) {
             var calculatingModal = new bootstrap.Modal(document.getElementById('calculatingModal'));
             calculatingModal.show();
             // Set up a MutationObserver to watch for changes in the 'hidden' class of the result div
@@ -158,7 +154,7 @@
             var target = document.getElementById('result');
             observer.observe(target, config);
 
-        }
+        
     }
 
     window.onload = function() {
