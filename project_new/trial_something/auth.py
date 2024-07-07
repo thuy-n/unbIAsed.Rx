@@ -70,6 +70,7 @@ auth = Blueprint('auth', __name__)
 
 @auth.route('/login', methods=['GET', 'POST'])
 def login():
+    
     if request.method == 'POST':
         email = request.form.get('email')
         password = request.form.get('password')
@@ -80,7 +81,9 @@ def login():
         elif user:
             if check_password_hash(user.password, password):
                 login_user(user, remember=True)
+                session['device_seen'] = True
                 return redirect(url_for('views.home'))
+            
             elif not check_password_hash(user.password, password):
                 flash('Incorrect password, try again.', category='error')
 

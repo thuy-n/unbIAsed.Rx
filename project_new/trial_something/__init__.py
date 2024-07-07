@@ -1,10 +1,10 @@
 import os
-from flask import Flask
+from flask import Flask, session
+from flask_login import LoginManager, current_user, logout_user
 from flask_sqlalchemy import SQLAlchemy
 from os import path
 from flask_dropzone import Dropzone
 from flask_session import Session
-from flask_login import LoginManager
 
 db = SQLAlchemy()
 DB_NAME = "database.db"
@@ -13,6 +13,7 @@ def create_app():
     app = Flask(__name__)
     app.config['SECRET_KEY'] = 'hjshjhdjah kjshkjdhjs'
     app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{DB_NAME}'
+    Session(app)
     
     db.init_app(app)
 
@@ -35,6 +36,13 @@ def create_app():
     @login_manager.user_loader
     def load_user(id):
         return User.query.get(int(id))
+    
+    @app.before_request
+    def ensure_device_seen():
+        if 'device_seen' not in session:
+            if current_user.is_authenticated:
+                logout_user()
+            session['device_seen'] = True  # Mark device as seen for future requests
 
     return app
 
