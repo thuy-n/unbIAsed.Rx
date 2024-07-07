@@ -505,8 +505,8 @@ def identify():
                 flash_message_risk = 'Please select a valid condition'
                 user_agent = request.headers.get('User-Agent').lower()
                 if 'mobile' in user_agent:
-                    return render_template("identify-mobile.html", flash_message_pill=flash_message_pill, flash_message_label=flash_message_label, flash_message_risk=flash_message_risk, errorFlash=errorFlash, user=current_user, text=text, word=word, something=something, meds=meds)    
-                return render_template("identify.html", flash_message_pill=flash_message_pill, flash_message_label=flash_message_label, flash_message_risk=flash_message_risk, errorFlash=errorFlash, user=current_user, text=text, word=word, something=something, meds=meds)
+                    return render_template("identify-mobile.html",  flash_message_risk=flash_message_risk, errorFlash=errorFlash, user=current_user, text=text, word=word, something=something, meds=meds)    
+                return render_template("identify.html", flash_message_risk=flash_message_risk, errorFlash=errorFlash, user=current_user, text=text, word=word, something=something, meds=meds)
 
             prediction_risk = get_model(drug_search, disease_search)
 
