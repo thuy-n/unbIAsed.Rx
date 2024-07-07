@@ -13,6 +13,16 @@
     <form id="label-identify-form" enctype="multipart/form-data" method="POST" action="#label-identify-form" class="mb-3">
         <div>
             <h2 class="display-6 text-center my-3">Identify Label</h2>
+            <!-- <div id="flash-messages" class=" {{ 'hidden' if flash_message is none or flash_message|length == 0 }}" style="background-color: #CEE3EA; {{ 'padding: 20px;' if flash_message is not none and flash_message|length > 0 }}">
+                {{ flash_message_label }}
+            </div> -->
+
+            <div id="flash-messages" class="alert alert-danger alter-dismissable fade show {{ 'hidden' if flash_message_label is none or flash_message_label|length == 0 }}" role="alert" >
+                {{ flash_message_label }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+                </button>
+            </div>
+
             <div class="mb-3">
                 <label for="label-image" class="form-label">Upload Label Image</label>
                 <input type="file" class="form-control" id="label-image" name="uploaded-label-image" accept="image/*" capture onchange="displayImage(this, 'label-image-preview');">
@@ -22,7 +32,7 @@
             <a id="moreButton" class="btn btn-start" onclick="goSearch()">Show Results</a>
             <br><br>
             <div class="container position-relative rounded shadow {{ 'hidden' if text is none or text|length == 0 }}" 
-            style="background-color: #CEE3EA; {{ 'padding: 20px;' if text is not none and text|length > 0 }}">
+            style="background-color: #CEE3EA; {{ 'padding: 20px;' if text is not none and text|length > 0 }}" id="result">
             {{ text }}
             </div>
         </div>
@@ -33,6 +43,15 @@
     <form id="pill-identify-form" enctype="multipart/form-data" method="POST" action="#pill-identify-form" class="mb-3">
         <div>
             <h2 class="display-6 text-center my-3">Identify Pill</h2>
+            <!-- <div id="flash-messages" class=" {{ 'hidden' if flash_message is none or flash_message|length == 0 }}" style="background-color: #CEE3EA; {{ 'padding: 20px;' if flash_message is not none and flash_message|length > 0 }}">
+                {{ flash_message_pill }}
+            </div> -->
+
+            <div id="flash-messages" class="alert alert-danger alter-dismissable fade show {{ 'hidden' if flash_message_pill is none or flash_message_pill|length == 0 }}" role="alert" >
+                {{ flash_message_pill }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+                </button>
+            </div>
             <div class="text-secondary fst-italic" style="font-size:80%">
                 * Please note that this pill recognition tool is a prototype designed to facilitate your search for drug information. Always double-check your medicine.
             </div>
@@ -43,26 +62,37 @@
             </div>
             <img id="pill-image-preview" src="" alt="Pill Image Preview" style="display: none;padding-bottom:20px;" >
             <button type="submit" class="btn btn-start" name="submit-button2" value="pill" onclick="performPrediction()">Identify Pill</button>
-            <a id="moreButton" class="btn btn-start" onclick="goSearch2()" >Show Results</a>
+            <a id="moreButton" class="btn btn-start" onclick="goSearch2()">Show Results</a>
             <br><br>
             <div class="container position-relative rounded shadow {{ 'hidden' if pill is none or pill|length == 0 }}" 
-            style="background-color: #CEE3EA; {{ 'padding: 20px;' if pill is not none and pill|length > 0 }}">
+            style="background-color: #CEE3EA; {{ 'padding: 20px;' if pill is not none and pill|length > 0 }}" id="result">
             {{ pill }} 
             </div>
         </div>
     </form>
 
     <br>
-
-    <form id="identify-risk-form" enctype="multipart/form-data" method="POST" action="#identify-risk-form" class="mb-3">
+    
+    <form id="identify-risk-form" enctype="multipart/form-data" method="POST"  action="#identify-risk-form" class="mb-3">
         <div>
             <h2 class="display-6 text-center my-3">Identify Risk</h2>
+            <!-- <div id="flash-messages" class=" {{ 'hidden' if flash_message is none or flash_message|length == 0 }}" style="background-color: #CEE3EA; {{ 'padding: 20px;' if flash_message is not none and flash_message|length > 0 }}">
+                {{ flash_message_risk }}
+            </div> -->
+
+            <div id="flash-messages" class="alert alert-danger alter-dismissable fade show {{ 'hidden' if flash_message_risk is none or flash_message_risk|length == 0 }}" role="alert" >
+                {{ flash_message_risk }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+                </button>
+            </div>
+            {% if (not current_user.is_authenticated) or (current_user.sexe == None) %}
             <div class="text-secondary fst-italic" style="font-size:80%">
                 * The model is currently set to female patients. To see the prediction risk for male patients, please login or create an account
             </div>
             <br>
+            {% endif %}
             <div class="mb-3">
-                <label for="drug" class="form-label">Enter the drug name and its target condition to calculate the risk for <b>{{ current_user.sexe.lower() if current_user.is_authenticated and (current_user.sexe == 'female' or current_user.sexe == 'male') else 'female' }}</b> patients</b></label>
+                <label for="drug" class="form-label">Enter the drug name and its target condition to calculate the risk for <b>{{ current_user.sexe.lower() if current_user.is_authenticated and (current_user.sexe == 'Female' or current_user.sexe == 'Male') else 'female' }}</b> patients</b></label>
                 <select class="form-select" aria-label="Default select example" id="drugRiskSelect" name="drugRiskSelect" onchange="toggleDrugInput()">
                     <option selected value="menu">Select Drug Option</option>
                     <option value="input">Input Drug</option>
@@ -113,52 +143,25 @@
             </div>
             <br><br>
             <div class="container position-relative rounded shadow {{ 'hidden' if result_string is none or result_string|length == 0 }}" 
-            style="background-color: #CEE3EA; {{ 'padding: 20px;' if result_string is not none and result_string|length > 0 }}">
+            style="background-color: #CEE3EA; {{ 'padding: 20px;' if result_string is not none and result_string|length > 0 }}" id="result">
             {{ result_string }}
             </div>
             
         </div>
     </form>
     
-
+    
 </div>
     
-<script> 
-    document.addEventListener('DOMContentLoaded', function() {
-        // Function to check for errors and decide the action
-        function handleSubmit(event) {
-            // Example condition check: here, you would check if an error is flashed
-            // This is a placeholder condition. You need to replace it with your actual error check
-            var isErrorFlashed = "{{ errorFlash }}"; // Replace this with the actual check for flashed errors
-
-            if (isErrorFlashed) {
-                event.preventDefault(); // Prevent form submission
-                window.scrollTo(0, 0); // Scroll to the top of the page
-                // Optionally, display the error message if not already done
-            }
-            // If no error, the form will submit normally
-        }
-
-        // Attach the event listener to both forms
-        document.getElementById('label-identify-form').addEventListener('submit', handleSubmit);
-        document.getElementById('pill-identify-form').addEventListener('submit', handleSubmit);
-        document.getElementById('identify-risk-form').addEventListener('submit', handleSubmit);
-    });
+<script>    
     function performPrediction() {
-        // Show the modal
-        var calculatingModal = new bootstrap.Modal(document.getElementById('calculatingModal'), {});
+        var calculatingModal = new bootstrap.Modal(document.getElementById('calculatingModal'));
         calculatingModal.show();
-
-        // Configuration of the observer:
-        var config = { attributes: true, childList: false, characterData: false, attributeFilter: ['class'] };
-
-        // Target node to observe
-        var target = document.getElementById('result');
-
-        // Start observing
+        // Set up a MutationObserver to watch for changes in the 'hidden' class of the result div
+        var resultDiv = document.getElementById('result');
         var observer = new MutationObserver(function(mutations) {
             mutations.forEach(function(mutation) {
-                if (!document.getElementById('result').classList.contains('hidden')) {
+                if (!resultDiv.classList.contains('hidden')) {
                     // Once the result is displayed, hide the modal and disconnect the observer
                     calculatingModal.hide();
                     observer.disconnect();
@@ -166,24 +169,28 @@
             });
         });
 
+        var config = { attributes: true, childList: false, characterData: false, attributeFilter: ['class'] };
+        var target = document.getElementById('result');
         observer.observe(target, config);
 
-        // Assuming you're using AJAX or a similar method to perform the prediction
-        // and update the page, you would trigger that here.
-        // The observer will take care of hiding the modal once the result is ready.
+        
     }
 
     window.onload = function() {
-        // Check if the result is already visible
         if (!document.getElementById('result').classList.contains('hidden')) {
             var calculatingModal = bootstrap.Modal.getInstance(document.getElementById('calculatingModal'));
             if (calculatingModal) {
                 calculatingModal.hide();
             }
         }
-
+        if (!document.getElementById('flash-messages').classList.contains('hidden')) {
+            var calculatingModal = bootstrap.Modal.getInstance(document.getElementById('calculatingModal'));
+            if (calculatingModal) {
+                calculatingModal.hide();
+            }
+        }
     };
-
+    
     window.onload = function() {
         if(window.location.hash) {
             var hash = window.location.hash.substring(1); // Get the hash, minus the '#'
@@ -197,7 +204,6 @@
             history.pushState("", document.title, window.location.pathname + window.location.search);
         }
     };
-
     function toggleDrugInput() {
         var selection = document.getElementById('drugRiskSelect').value;
         if (selection === 'input') {
@@ -211,6 +217,7 @@
             document.getElementById('selectDrug').style.display = 'none';
         }
     }
+
     var search_term = "{{ something }}";
     var search_term2 = "{{ pill }}";
 

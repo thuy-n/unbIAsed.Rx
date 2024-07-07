@@ -89,8 +89,8 @@
             <div class="text-secondary fst-italic" style="font-size:80%">
                 * The model is currently set to female patients. To see the prediction risk for male patients, please login or create an account
             </div>
-            {% endif %}
             <br>
+            {% endif %}
             <div class="mb-3">
                 <label for="drug" class="form-label">Enter the drug name and its target condition to calculate the risk for <b>{{ current_user.sexe.lower() if current_user.is_authenticated and (current_user.sexe == 'Female' or current_user.sexe == 'Male') else 'female' }}</b> patients</b></label>
                 <select class="form-select" aria-label="Default select example" id="drugRiskSelect" name="drugRiskSelect" onchange="toggleDrugInput()">
