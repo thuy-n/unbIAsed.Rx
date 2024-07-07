@@ -543,14 +543,16 @@ def identify():
                 errorFlash = True
                 flash_message_pill = 'No file was uploaded'
 
-                flash('No file was uploaded', 'error')
-            if drug_search == '' or disease_search == '':
-                flash('Please fill in all fields', 'error')
+                # flash('No file was uploaded', 'error')
+            if (drug_search == '' or disease_search == '') and button_clicked3 == 'risk':
+                # flash('Please fill in all fields', 'error')
+                errorFlash = True
+                flash_message_risk = 'Please fill in all fields'
 
         user_agent = request.headers.get('User-Agent').lower()
         if 'mobile' in user_agent:
-            return render_template("identify-mobile.html", flash_message_pill=flash_message_pill, flash_message_label=flash_message_label, errorFlash=errorFlash, user=current_user, text=text, word=word, something=something,meds=meds)    
-        return render_template("identify.html", flash_message_pill=flash_message_pill, flash_message_label=flash_message_label, errorFlash=errorFlash, user=current_user, text=text, word=word, something=something,meds=meds)
+            return render_template("identify-mobile.html", flash_message_risk=flash_message_risk, flash_message_pill=flash_message_pill, flash_message_label=flash_message_label, errorFlash=errorFlash, user=current_user, text=text, word=word, something=something,meds=meds)    
+        return render_template("identify.html", flash_message_risk=flash_message_risk, flash_message_pill=flash_message_pill, flash_message_label=flash_message_label, errorFlash=errorFlash, user=current_user, text=text, word=word, something=something,meds=meds)
 
     else:
         user_agent = request.headers.get('User-Agent').lower()
