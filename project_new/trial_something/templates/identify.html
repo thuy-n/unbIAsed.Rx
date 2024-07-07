@@ -85,10 +85,11 @@
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
                 </button>
             </div>
-
-            <div class="text-secondary fst-italic {{ 'hidden' if !current_user.is_authenticated }}" style="font-size:80%">
+            {% if !current_user.is_authenticated %}
+            <div class="text-secondary fst-italic {{ 'hidden' if  is none }}" style="font-size:80%">
                 * The model is currently set to female patients. To see the prediction risk for male patients, please login or create an account
             </div>
+            {% endif %}
             <br>
             <div class="mb-3">
                 <label for="drug" class="form-label">Enter the drug name and its target condition to calculate the risk for <b>{{ current_user.sexe.lower() if current_user.is_authenticated and (current_user.sexe == 'Female' or current_user.sexe == 'Male') else 'female' }}</b> patients</b></label>
