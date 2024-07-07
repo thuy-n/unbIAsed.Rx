@@ -556,6 +556,7 @@ def identify():
                 # flash('Please fill in all fields', 'error')
                 errorFlash = True
                 flash_message_risk = 'Please fill in all fields'
+                print(drug_search)
 
         user_agent = request.headers.get('User-Agent').lower()
         if 'mobile' in user_agent:
