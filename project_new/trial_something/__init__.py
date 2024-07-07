@@ -1,5 +1,5 @@
 import os
-from flask import Flask, session
+from flask import Flask, session, redirect, url_for  # Import the redirect and url_for functions
 from flask_login import LoginManager, current_user, logout_user
 from flask_sqlalchemy import SQLAlchemy
 from os import path
@@ -13,7 +13,6 @@ def create_app():
     app = Flask(__name__)
     app.config['SECRET_KEY'] = 'hjshjhdjah kjshkjdhjs'
     app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{DB_NAME}'
-    Session(app)
     
     db.init_app(app)
 
@@ -39,10 +38,9 @@ def create_app():
     
     @app.before_request
     def ensure_device_seen():
-        if 'device_seen' not in session:
-            if current_user.is_authenticated:
-                logout_user()
-            session['device_seen'] = True  # Mark device as seen for future requests
+        if 'device_seen' not in session and current_user.is_authenticated:
+            logout_user()
+            return redirect(url_for('auth.login'))  # Adjust 'auth.login' as necessary
 
     return app
 
