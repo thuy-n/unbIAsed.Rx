@@ -374,17 +374,17 @@ def identify():
         button_clicked3 = request.form.get('submit-button3')
 
         # Check if at least one file was uploaded
-        if image_file is None and label_file is None: #and drug_search == '' and disease_search == ''
-            errorFlash = True
-            # flash('Either an image or a label file must be uploaded', 'error')
-            flash_message = 'Either an image or a label file must be uploaded'
-            flash_message_label = flash_message
-            flash_message_pill = flash_message  
+        # if image_file is None and label_file is None: #and drug_search == '' and disease_search == ''
+        #     errorFlash = True
+        #     # flash('Either an image or a label file must be uploaded', 'error')
+        #     flash_message = 'Either an image or a label file must be uploaded'
+        #     flash_message_label = flash_message
+        #     flash_message_pill = flash_message  
 
-            user_agent = request.headers.get('User-Agent').lower()
-            if 'mobile' in user_agent:
-                return render_template("identify-mobile.html", flash_message_pill = flash_message_pill,  flash_message_label = flash_message_label, user=current_user,meds=meds, errorFlash=errorFlash)  
-            return render_template("identify.html", flash_message_pill = flash_message_pill, flash_message_label = flash_message_label, user=current_user,meds=meds, errorFlash=errorFlash)
+        #     user_agent = request.headers.get('User-Agent').lower()
+        #     if 'mobile' in user_agent:
+        #         return render_template("identify-mobile.html", flash_message_pill = flash_message_pill,  flash_message_label = flash_message_label, user=current_user,meds=meds, errorFlash=errorFlash)  
+        #     return render_template("identify.html", flash_message_pill = flash_message_pill, flash_message_label = flash_message_label, user=current_user,meds=meds, errorFlash=errorFlash)
 
 
         # Process the image file if the 'image' button was clicked and a file was uploaded
