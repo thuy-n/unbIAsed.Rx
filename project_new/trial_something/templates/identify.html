@@ -86,7 +86,7 @@
                 </button>
             </div>
 
-            <div class="text-secondary fst-italic" style="font-size:80%">
+            <div class="text-secondary fst-italic {{ 'hidden' if !current_user.is_authenticated }}" style="font-size:80%">
                 * The model is currently set to female patients. To see the prediction risk for male patients, please login or create an account
             </div>
             <br>
