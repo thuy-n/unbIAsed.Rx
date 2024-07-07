@@ -17,13 +17,12 @@
                 {{ flash_message_label }}
             </div> -->
 
-            <div id="flash-messages" class="alert alert-danger alter-dismissable fade show {{ 'hidden' if flash_message is none or flash_message|length == 0 }}" role="alert" >
+            <div id="flash-messages" class="alert alert-danger alter-dismissable fade show {{ 'hidden' if flash_message_label is none or flash_message_label|length == 0 }}" role="alert" >
                 {{ flash_message_label }}
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
                 </button>
             </div>
 
-            <div id="flash-messages"></div>
             <div class="mb-3">
                 <label for="label-image" class="form-label">Upload Label Image</label>
                 <input type="file" class="form-control" id="label-image" name="uploaded-label-image" accept="image/*" capture onchange="displayImage(this, 'label-image-preview');">
@@ -48,12 +47,11 @@
                 {{ flash_message_pill }}
             </div> -->
 
-            <div id="flash-messages" class="alert alert-danger alter-dismissable fade show {{ 'hidden' if flash_message is none or flash_message|length == 0 }}" role="alert" >
+            <div id="flash-messages" class="alert alert-danger alter-dismissable fade show {{ 'hidden' if flash_message_pill is none or flash_message_pill|length == 0 }}" role="alert" >
                 {{ flash_message_pill }}
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
                 </button>
             </div>
-            <div id="flash-messages"></div>
             <div class="text-secondary fst-italic" style="font-size:80%">
                 * Please note that this pill recognition tool is a prototype designed to facilitate your search for drug information. Always double-check your medicine.
             </div>
@@ -82,7 +80,7 @@
                 {{ flash_message_risk }}
             </div> -->
 
-            <div id="flash-messages" class="alert alert-danger alter-dismissable fade show {{ 'hidden' if flash_message is none or flash_message|length == 0 }}" role="alert" >
+            <div id="flash-messages" class="alert alert-danger alter-dismissable fade show {{ 'hidden' if flash_message_risk is none or flash_message_risk|length == 0 }}" role="alert" >
                 {{ flash_message_risk }}
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
                 </button>
