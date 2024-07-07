@@ -139,13 +139,11 @@
 
         var isErrorFlashed = {{ errorFlash|tojson }};
 
-        if (isErrorFlashed) {
-            window.scrollTo(0, 0);
-            return;
-        } 
-
         if (!isErrorFlashed) {
+            var calculatingModal = new bootstrap.Modal(document.getElementById('calculatingModal'));
+            calculatingModal.show();
             // Set up a MutationObserver to watch for changes in the 'hidden' class of the result div
+            var resultDiv = document.getElementById('result');
             var observer = new MutationObserver(function(mutations) {
                 mutations.forEach(function(mutation) {
                     if (!resultDiv.classList.contains('hidden')) {
@@ -170,12 +168,12 @@
                 calculatingModal.hide();
             }
         }
-        // if (!document.getElementById('flash-messages').classList.contains('hidden')) {
-        //     var calculatingModal = bootstrap.Modal.getInstance(document.getElementById('calculatingModal'));
-        //     if (calculatingModal) {
-        //         calculatingModal.hide();
-        //     }
-        // }
+        if (!document.getElementById('flash-messages').classList.contains('hidden')) {
+            var calculatingModal = bootstrap.Modal.getInstance(document.getElementById('calculatingModal'));
+            if (calculatingModal) {
+                calculatingModal.hide();
+            }
+        }
     };
     
     window.onload = function() {
