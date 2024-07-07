@@ -85,8 +85,8 @@
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
                 </button>
             </div>
-            {% if not current_user.is_authenticated %}
-            <div class="text-secondary fst-italic {{ 'hidden' if  is none }}" style="font-size:80%">
+            {% if (not current_user.is_authenticated) or (current_user.sexe == None) %}
+            <div class="text-secondary fst-italic" style="font-size:80%">
                 * The model is currently set to female patients. To see the prediction risk for male patients, please login or create an account
             </div>
             {% endif %}
