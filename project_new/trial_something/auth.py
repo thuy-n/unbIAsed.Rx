@@ -378,10 +378,8 @@ def identify():
             errorFlash = True
             # flash('Either an image or a label file must be uploaded', 'error')
             flash_message = 'Either an image or a label file must be uploaded'
-            if image_file is None and label_file is not None:
-                flash_message_label = flash_message
-            else:
-                flash_message_pill = flash_message  
+            flash_message_label = flash_message
+            flash_message_pill = flash_message  
 
             user_agent = request.headers.get('User-Agent').lower()
             if 'mobile' in user_agent:
