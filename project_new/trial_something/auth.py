@@ -527,14 +527,14 @@ def identify():
                 return render_template("identify-mobile.html", errorFlash=errorFlash, user=current_user, text=text, word=word, something=something, result_string=result_string,meds=meds) 
             return render_template("identify.html", errorFlash=errorFlash, user=current_user, text=text, word=word, something=something, result_string=result_string,meds=meds)
             
-        else:
-            if button_clicked1 == 'label' and not label_file:
-                errorFlash = True
-                flash_message_label = 'No file was uploaded'
-                # flash('No file was uploaded', 'error')
-            if button_clicked2 == 'pill' and not image_file:
-                errorFlash = True
-                flash_message_pill = 'No file was uploaded'
+        # else:
+        #     if button_clicked1 == 'label' and not label_file:
+        #         errorFlash = True
+        #         flash_message_label = 'No file was uploaded'
+        #         # flash('No file was uploaded', 'error')
+        #     if button_clicked2 == 'pill' and not image_file:
+        #         errorFlash = True
+        #         flash_message_pill = 'No file was uploaded'
 
                 # flash('No file was uploaded', 'error')
             # if drug_search == '' or disease_search == '':
@@ -542,14 +542,14 @@ def identify():
 
         user_agent = request.headers.get('User-Agent').lower()
         if 'mobile' in user_agent:
-            return render_template("identify-mobile.html", flash_message=flash_message, errorFlash=errorFlash, user=current_user, text=text, word=word, something=something,meds=meds)    
-        return render_template("identify.html", flash_message=flash_message, errorFlash=errorFlash, user=current_user, text=text, word=word, something=something,meds=meds)
+            return render_template("identify-mobile.html", errorFlash=errorFlash, user=current_user, text=text, word=word, something=something,meds=meds)    
+        return render_template("identify.html", errorFlash=errorFlash, user=current_user, text=text, word=word, something=something,meds=meds)
 
     else:
         user_agent = request.headers.get('User-Agent').lower()
         if 'mobile' in user_agent:
-            return render_template("identify-mobile.html", flash_message=flash_message, errorFlash=errorFlash, user=current_user, word=word, something=something,meds=meds)   
-        return render_template("identify.html", flash_message=flash_message, errorFlash=errorFlash, user=current_user, word=word, something=something,meds=meds)
+            return render_template("identify-mobile.html", errorFlash=errorFlash, user=current_user, word=word, something=something,meds=meds)   
+        return render_template("identify.html", errorFlash=errorFlash, user=current_user, word=word, something=something,meds=meds)
 
 @auth.route('/learn')
 def learn():
