@@ -338,7 +338,6 @@ def identify():
     prediction_risk = ""
     result_string = ""
     errorFlash = False
-    flash_message = ""
     flash_message_label = ""
     flash_message_pill = ""
     flash_message_risk = ""
@@ -515,7 +514,7 @@ def identify():
                     return render_template("identify-mobile.html",  flash_message_risk=flash_message_risk, errorFlash=errorFlash, user=current_user, text=text, word=word, something=something, meds=meds)    
                 return render_template("identify.html", flash_message_risk=flash_message_risk, errorFlash=errorFlash, user=current_user, text=text, word=word, something=something, meds=meds)
 
-            if drug_search == 'DRUGS IN DATASET' or "":
+            if drug_search == 'DRUGS IN DATASET':
                 errorFlash = True
                 # flash('Please select a valid condition', 'error')
                 flash_message_risk = 'Please select a valid drug'
