@@ -386,7 +386,7 @@ def identify():
         #         return render_template("identify-mobile.html", flash_message_pill = flash_message_pill,  flash_message_label = flash_message_label, user=current_user,meds=meds, errorFlash=errorFlash)  
         #     return render_template("identify.html", flash_message_pill = flash_message_pill, flash_message_label = flash_message_label, user=current_user,meds=meds, errorFlash=errorFlash)
 
-        if image_file is None: #pill
+        if image_file is None and (drug_search is None and disease_search is None): #pill
             errorFlash = True
             flash_message_pill = 'An image file must be uploaded'
 
@@ -395,7 +395,7 @@ def identify():
                 return render_template("identify-mobile.html", flash_message_pill = flash_message_pill, user=current_user,meds=meds, errorFlash=errorFlash)  
             return render_template("identify.html", flash_message_pill = flash_message_pill, user=current_user,meds=meds, errorFlash=errorFlash)
 
-        if label_file is None: #label
+        if label_file is None and (drug_search is None and disease_search is None): #label
             errorFlash = True
             flash_message_label = 'A label file must be uploaded'
 
@@ -449,8 +449,16 @@ def identify():
                 errorFlash = True
                 # flash('No text was found in the image', 'error')
                 flash_message_label = 'No text was found in the image'
-                
-            
+
+                user_agent = request.headers.get('User-Agent').lower()
+                if 'mobile' in user_agent:
+                    return render_template("identify-mobile.html", flash_message_label = flash_message_label, user=current_user,meds=meds, errorFlash=errorFlash)
+                return render_template("identify.html", flash_message_label = flash_message_label, user=current_user,meds=meds, errorFlash=errorFlash)
+
+            user_agent = request.headers.get('User-Agent').lower()
+            if 'mobile' in user_agent:
+                return render_template("identify-mobile.html", user=current_user, text=text, word=word, something=something, pill=pill,meds=meds, errorFlash=errorFlash) 
+            return render_template("identify.html", user=current_user, text=text, word=word, something=something, pill=pill,meds=meds, errorFlash=errorFlash)
             # os.remove(label_filepath)
 
 
@@ -480,7 +488,6 @@ def identify():
             # flash('Pill successfully identified', 'success')
             # os.remove(image_filepath)
 
-        
             user_agent = request.headers.get('User-Agent').lower()
             if 'mobile' in user_agent:
                 return render_template("identify-mobile.html", user=current_user, text=text, word=word, something=something, pill=pill,meds=meds, errorFlash=errorFlash) 
