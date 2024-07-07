@@ -13,6 +13,9 @@
     <form id="label-identify-form" enctype="multipart/form-data" method="POST" action="#label-identify-form" class="mb-3">
         <div>
             <h2 class="display-6 text-center my-3">Identify Label</h2>
+            <div id="flash-messages" class=" {{ 'hidden' if flash_message is none or flash_message|length == 0 }}" style="background-color: #CEE3EA; {{ 'padding: 20px;' if flash_message is not none and flash_message|length > 0 }}">
+                {{ flash_message_label }}
+            </div>
             <div id="flash-messages"></div>
             <div class="mb-3">
                 <label for="label-image" class="form-label">Upload Label Image</label>
@@ -34,6 +37,9 @@
     <form id="pill-identify-form" enctype="multipart/form-data" method="POST" action="#pill-identify-form" class="mb-3">
         <div>
             <h2 class="display-6 text-center my-3">Identify Pill</h2>
+            <div id="flash-messages" class=" {{ 'hidden' if flash_message is none or flash_message|length == 0 }}" style="background-color: #CEE3EA; {{ 'padding: 20px;' if flash_message is not none and flash_message|length > 0 }}">
+                {{ flash_message_pill }}
+            </div>
             <div id="flash-messages"></div>
             <div class="text-secondary fst-italic" style="font-size:80%">
                 * Please note that this pill recognition tool is a prototype designed to facilitate your search for drug information. Always double-check your medicine.
@@ -60,7 +66,7 @@
         <div>
             <h2 class="display-6 text-center my-3">Identify Risk</h2>
             <div id="flash-messages" class=" {{ 'hidden' if flash_message is none or flash_message|length == 0 }}" style="background-color: #CEE3EA; {{ 'padding: 20px;' if flash_message is not none and flash_message|length > 0 }}">
-                {{ flash_message }}
+                {{ flash_message_risk }}
             </div>
             <div class="text-secondary fst-italic" style="font-size:80%">
                 * The model is currently set to female patients. To see the prediction risk for male patients, please login or create an account
