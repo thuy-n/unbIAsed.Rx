@@ -128,19 +128,6 @@
                 <!-- <input type="text" class="form-control" id="diseaseRisk" name="diseaseRisk" placeholder="Enter Condition" required> -->
             </div>
             <button type="submit" class="btn btn-start" name="submit-button3" value="risk" onclick="performPrediction()">Calculate Risk</button>
-            <!-- Calculating Modal -->
-            <div class="modal" tabindex="-1" role="dialog" id="calculatingModal">
-                <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                    <h5 class="modal-title">Processing</h5>
-                    </div>
-                    <div class="modal-body">
-                    <p>Calculating...</p>
-                    </div>
-                </div>
-                </div>
-            </div>
             <br><br>
             <div class="container position-relative rounded shadow {{ 'hidden' if result_string is none or result_string|length == 0 }}" 
             style="background-color: #CEE3EA; {{ 'padding: 20px;' if result_string is not none and result_string|length > 0 }}" id="result">
@@ -149,6 +136,23 @@
             
         </div>
     </form>
+
+    <!-- Calculating Modal -->
+    <div class="modal" tabindex="-1" role="dialog" id="calculatingModal">
+        <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Processing</h5>
+                <div class="spinner-border text-primary" role="status">
+                    <span class="visually-hidden"></span>
+                </div>
+            </div>
+            <div class="modal-body">
+             <p>Calculating...</p>
+            </div>
+        </div>
+        </div>
+    </div>
     
     
 </div>

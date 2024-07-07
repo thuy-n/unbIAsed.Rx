@@ -437,7 +437,7 @@ def identify():
                 close_matches = difflib.get_close_matches(word, meds, n=1, cutoff=0.9)
                 if close_matches:
                     # flash('Label successfully identified', 'success')
-                    text = close_matches[0] + ' has been found!'
+                    text = close_matches[0].capitalize + ' has been found!'
                     something = close_matches[0]
                     break
                     
