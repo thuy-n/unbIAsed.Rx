@@ -136,23 +136,23 @@
     
 <script>    
     function performPrediction() {
-            var calculatingModal = new bootstrap.Modal(document.getElementById('calculatingModal'));
-            calculatingModal.show();
-            // Set up a MutationObserver to watch for changes in the 'hidden' class of the result div
-            var resultDiv = document.getElementById('result');
-            var observer = new MutationObserver(function(mutations) {
-                mutations.forEach(function(mutation) {
-                    if (!resultDiv.classList.contains('hidden')) {
-                        // Once the result is displayed, hide the modal and disconnect the observer
-                        calculatingModal.hide();
-                        observer.disconnect();
-                    }
-                });
+        var calculatingModal = new bootstrap.Modal(document.getElementById('calculatingModal'));
+        calculatingModal.show();
+        // Set up a MutationObserver to watch for changes in the 'hidden' class of the result div
+        var resultDiv = document.getElementById('result');
+        var observer = new MutationObserver(function(mutations) {
+            mutations.forEach(function(mutation) {
+                if (!resultDiv.classList.contains('hidden')) {
+                    // Once the result is displayed, hide the modal and disconnect the observer
+                    calculatingModal.hide();
+                    observer.disconnect();
+                }
             });
+        });
 
-            var config = { attributes: true, childList: false, characterData: false, attributeFilter: ['class'] };
-            var target = document.getElementById('result');
-            observer.observe(target, config);
+        var config = { attributes: true, childList: false, characterData: false, attributeFilter: ['class'] };
+        var target = document.getElementById('result');
+        observer.observe(target, config);
 
         
     }

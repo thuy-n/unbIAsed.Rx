@@ -483,20 +483,21 @@ def identify():
         
             user_agent = request.headers.get('User-Agent').lower()
             if 'mobile' in user_agent:
-                return render_template("identify-mobile.html", flash_message_label=flash_message_label, user=current_user, text=text, word=word, something=something, pill=pill,meds=meds, errorFlash=errorFlash) 
-            return render_template("identify.html", flash_message_label=flash_message_label, user=current_user, text=text, word=word, something=something, pill=pill,meds=meds, errorFlash=errorFlash)
+                return render_template("identify-mobile.html", user=current_user, text=text, word=word, something=something, pill=pill,meds=meds, errorFlash=errorFlash) 
+            return render_template("identify.html", user=current_user, text=text, word=word, something=something, pill=pill,meds=meds, errorFlash=errorFlash)
         
         elif button_clicked3 == 'risk':
             drug_search = drug_search.upper()
             disease_search = disease_search.upper()
 
-            # if disease_search == None or drug_search == None:
-            #     errorFlash = True
-            #     flash('Please fill in all fields', 'error')
-            #     user_agent = request.headers.get('User-Agent').lower()
-            #     if 'mobile' in user_agent:
-            #         return render_template("identify-mobile.html", user=current_user, text=text, word=word, something=something, meds=meds, errorFlash=errorFlash)    
-            #     return render_template("identify.html", user=current_user, text=text, word=word, something=something, meds=meds, errorFlash=errorFlash)
+            if disease_search == None or drug_search == None:
+                errorFlash = True
+                # flash('Please fill in all fields', 'error')
+                flash_message_risk = 'Please fill in all fields'
+                user_agent = request.headers.get('User-Agent').lower()
+                if 'mobile' in user_agent:
+                    return render_template("identify-mobile.html", flash_message_risk=flash_message_risk, user=current_user, text=text, word=word, something=something, meds=meds, errorFlash=errorFlash)    
+                return render_template("identify.html", flash_message_risk=flash_message_risk, user=current_user, text=text, word=word, something=something, meds=meds, errorFlash=errorFlash)
                     
             if disease_search == 'SELECT CONDITION':
                 errorFlash = True
@@ -523,8 +524,8 @@ def identify():
 
             user_agent = request.headers.get('User-Agent').lower()
             if 'mobile' in user_agent:
-                return render_template("identify-mobile.html", flash_message_risk=flash_message_risk, flash_message_pill=flash_message_pill, flash_message_label=flash_message_label, errorFlash=errorFlash, user=current_user, text=text, word=word, something=something, result_string=result_string,meds=meds) 
-            return render_template("identify.html", flash_message_risk=flash_message_risk, flash_message_pill=flash_message_pill, flash_message_label=flash_message_label, errorFlash=errorFlash, user=current_user, text=text, word=word, something=something, result_string=result_string,meds=meds)
+                return render_template("identify-mobile.html", errorFlash=errorFlash, user=current_user, text=text, word=word, something=something, result_string=result_string,meds=meds) 
+            return render_template("identify.html", errorFlash=errorFlash, user=current_user, text=text, word=word, something=something, result_string=result_string,meds=meds)
             
         else:
             if button_clicked1 == 'label' and not label_file:
