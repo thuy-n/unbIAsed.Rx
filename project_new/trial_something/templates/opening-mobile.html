@@ -508,21 +508,11 @@
 </div> 
 
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        var videos = document.querySelectorAll('video');
-        videos.forEach(function(video) {
-            var promise = video.play();
-            if (promise !== undefined) {
-                promise.catch(error => {
-                    // Autoplay was prevented.
-                    // Show a play button so the user can start playback.
-                    console.log("Autoplay was prevented, showing play button.");
-                    // Implement showing play button or other UI response here.
-                }).then(() => {
-                    console.log("Autoplay started!");
-                });
-            }
-        });
+    window.addEventListener('load', function() {
+        document.getElementById('myVideo1').play();
+        document.getElementById('myVideo2').play();
+        document.getElementById('myVideo3').play();
+
     });
     var logged_in = {{ logged_in|tojson }};
     window.onload = function() {
