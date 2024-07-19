@@ -41,6 +41,13 @@ def create_app():
         if 'device_seen' not in session and current_user.is_authenticated:
             logout_user()
             return redirect(url_for('auth.login'))  # Adjust 'auth.login' as necessary
+        
+    @app.after_request
+    def set_secure_headers(response):
+        response.headers['X-Content-Type-Options'] = 'nosniff'
+        response.headers['X-Frame-Options'] = 'SAMEORIGIN'
+        response.headers['X-XSS-Protection'] = '1; mode=block'
+        return response
 
     return app
 
