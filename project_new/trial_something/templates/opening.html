@@ -627,33 +627,22 @@
     };
 
     $(document).ready(function(){
-        initCarousel('.carousel1');
-        initCarousel('.carousel2');
+        $('.carousel1').carousel();
+        $('.carousel2').carousel();
+    });
+    $('.carousel1').slick({
+      slidesToShow: 4,
+      slidesToScroll: 1,
+      nextArrow: $('.next'),
+      prevArrow: $('.prev')
     });
 
-    function initCarousel(selector) {
-        $(selector).slick({
-            slidesToShow: getSlidesToShow(),
-            slidesToScroll: 1,
-            nextArrow: $(selector + ' .next'),
-            prevArrow: $(selector + ' .prev')
-        });
-    }
-
-    // Function to determine the number of slides based on screen width
-    function getSlidesToShow() {
-        if (window.innerWidth < 768) { // Example breakpoint at 768px
-            return 1; // Show 1 slide on smaller screens
-        } else {
-            return 4; // Show 4 slides on larger screens
-        }
-    }
-
-    $(window).resize(function() {
-        $('.carousel1, .carousel2').slick('slickSetOption', 'slidesToShow', getSlidesToShow(), true);
+    $('.carousel2').slick({
+      slidesToShow: 10,
+      slidesToScroll: 1,
+      nextArrow: $('.next'),
+      prevArrow: $('.prev')
     });
-
-
    
 </script>
    
