@@ -626,23 +626,21 @@
       });
     };
 
-    // $(document).ready(function(){
-    //     $('.carousel1').carousel();
-    //     $('.carousel2').carousel();
-    // });
-    // $('.carousel1').slick({
-    //   slidesToShow: 4,
-    //   slidesToScroll: 1,
-    //   nextArrow: $('.next'),
-    //   prevArrow: $('.prev')
-    // });
+    $(document).ready(function(){
+    $('.carousel1').slick({
+        slidesToShow: 4,
+        slidesToScroll: 1,
+        nextArrow: $('.next1'),
+        prevArrow: $('.prev1')
+    });
 
-    // $('.carousel2').slick({
-    //   slidesToShow: 10,
-    //   slidesToScroll: 1,
-    //   nextArrow: $('.next'),
-    //   prevArrow: $('.prev')
-    // });
+    $('.carousel2').slick({
+        slidesToShow: 10, // Ensure there are enough items
+        slidesToScroll: 1,
+        nextArrow: $('.next2'),
+        prevArrow: $('.prev2')
+    });
+    });
    
 </script>
    
