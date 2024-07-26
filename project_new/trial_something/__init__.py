@@ -5,7 +5,6 @@ from flask_sqlalchemy import SQLAlchemy
 from os import path
 from flask_dropzone import Dropzone
 from flask_session import Session
-from flask_wtf.csrf import CSRFProtect
 
 db = SQLAlchemy()
 DB_NAME = "database.db"
@@ -14,7 +13,6 @@ def create_app():
     app = Flask(__name__)
     app.config['SECRET_KEY'] = 'hjshjhdjah kjshkjdhjs'
     app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{DB_NAME}'
-    csrf = CSRFProtect(app)
     
     db.init_app(app)
 
@@ -43,13 +41,6 @@ def create_app():
         if 'device_seen' not in session and current_user.is_authenticated:
             logout_user()
             return redirect(url_for('auth.login'))  # Adjust 'auth.login' as necessary
-        
-    @app.after_request
-    def set_secure_headers(response):
-        response.headers['X-Content-Type-Options'] = 'nosniff'
-        response.headers['X-Frame-Options'] = 'SAMEORIGIN'
-        response.headers['X-XSS-Protection'] = '1; mode=block'
-        return response
 
     return app
 
