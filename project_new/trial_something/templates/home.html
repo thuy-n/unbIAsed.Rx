@@ -85,9 +85,9 @@
                   <div class="col-sm-6">
                     <img style="height:auto;max-width:100%;display:block;" src="{{ drug.prevalence }}" alt="{{ drug.name }}">
                   </div>
-                  <div class="col-sm-6">
+                  <!-- <div class="col-sm-6">
                     <img style="height:auto;max-width:100%;display:block;" src="{{ drug.path_prevalence }}" alt="Disease Prevalence" >
-                  </div>
+                  </div> -->
                 </div>
                 <form action="{{ url_for('views.save_drug') if not drug.is_saved else url_for('views.unsave_drug') }}" method="post" class="mt-3">
                   
