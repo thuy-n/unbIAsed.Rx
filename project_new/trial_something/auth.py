@@ -537,7 +537,7 @@ def identify():
                     R = 0
                     
                     if current_user.sexe.lower() == 'male':
-                        R = prediction_risk - (100-(100-prediction_risk))
+                        R = 100-prediction_risk - (100-(100-prediction_risk))
                         pred_risk = 100-pred_risk
                         pred_risk = str(round(pred_risk,2))
 
