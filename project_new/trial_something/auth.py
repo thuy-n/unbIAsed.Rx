@@ -544,11 +544,11 @@ def identify():
                             R = abs(R)
                             prediction_risk = str(round(R,2))
                             result_string = f"""The predicted risk for males of developing an adverse drug reaction to {drug_search} given the condition {disease_search} is {pred_risk}%.
-                            Males have a lower {prediction_risk}% risk of developing a reaction compared to females."""
+                            \n\nMales have a lower {prediction_risk}% risk of developing a reaction compared to females."""
 
                         prediction_risk = str(R) 
                         result_string = f"""The predicted risk for males of developing an adverse drug reaction to {drug_search} given the condition {disease_search} is {pred_risk}%.
-                        Males have an additional {prediction_risk}% risk of developing a reaction compared to females."""
+                        \n\nMales have an additional {prediction_risk}% risk of developing a reaction compared to females."""
 
 
                     if current_user.sexe.lower() == 'female':
@@ -559,12 +559,12 @@ def identify():
                             R = abs(R)
                             prediction_risk = str(round(R,2))
                             result_string = f"""The predicted risk for females of developing an adverse drug reaction to {drug_search} given the condition {disease_search} is {pred_risk}%.
-                            Females have a lower {prediction_risk}% risk of developing a reaction compared to males."""
+                            \n\nFemales have a lower {prediction_risk}% risk of developing a reaction compared to males."""
 
 
                         prediction_risk = str(round(R,2))
                         result_string = f"""The predicted risk for females of developing an adverse drug reaction to {drug_search} given the condition {disease_search} is {pred_risk}%.
-                        Females have an additional {prediction_risk}% risk of developing a reaction compared to males."""
+                        \n\nFemales have an additional {prediction_risk}% risk of developing a reaction compared to males."""
                 else:
                     R = prediction_risk - (100-prediction_risk)
                     pred_risk = str(pred_risk)
@@ -572,12 +572,12 @@ def identify():
                         R = abs(R)
                         prediction_risk = str(round(R,2))
                         result_string = f"""The predicted risk for females of developing an adverse drug reaction to {drug_search} given the condition {disease_search} is {pred_risk}%.
-                        Females have a lower {prediction_risk}% risk of developing a reaction compared to males."""
+                        \n\nFemales have a lower {prediction_risk}% risk of developing a reaction compared to males."""
 
 
                     prediction_risk = str(round(R,2))
                     result_string = f"""The predicted risk for females of developing an adverse drug reaction to {drug_search} given the condition {disease_search} is {pred_risk}%.
-                    Females have an additional {prediction_risk}% risk of developing a reaction compared to males."""
+                    \n\nFemales have an additional {prediction_risk}% risk of developing a reaction compared to males."""
             result_string = result_string
 
             user_agent = request.headers.get('User-Agent').lower()
