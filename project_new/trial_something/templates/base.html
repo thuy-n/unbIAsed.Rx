@@ -9,7 +9,18 @@
   </head>
 
   <style>
-    /* Custom CSS for the card wrapper */
+     @media (max-width: 700px) {
+      .card-sizing{
+        width:150%;
+      }
+    }
+
+    @media (min-width: 701px) {
+      .card-sizing{
+      width:100%;
+    }
+    }
+    
     .card-wrapper {
         max-width: 550px; /* Adjust this value as needed */
         width: 100%;
