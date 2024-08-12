@@ -538,18 +538,17 @@ def identify():
                     if current_user.sexe.lower() == 'male':
                         R = (100-prediction_risk) - (100-(100-prediction_risk))
                         pred_risk = 100-pred_risk
-                        pred_risk = str(pred_risk)
+                        pred_risk = str(round(pred_risk,2))
 
                         if R < 0:
                             R = abs(R)
                             prediction_risk = str(round(R,2))
                             result_string = f"The predicted risk for males of developing an adverse drug reaction to {drug_search} given the condition {disease_search} is {pred_risk}%. Males have a lower {prediction_risk}% risk of developing a reaction compared to females."
 
-                        prediction_risk = str(R) 
+                        prediction_risk = str(round(R,2))
                         result_string = f"The predicted risk for males of developing an adverse drug reaction to {drug_search} given the condition {disease_search} is {pred_risk}%. Males have an additional {prediction_risk}% risk of developing a reaction compared to females."
 
-
-                    if current_user.sexe.lower() == 'female':
+                    elif current_user.sexe.lower() == 'female':
                         R = prediction_risk - (100-prediction_risk)
                         pred_risk = str(pred_risk)
 
