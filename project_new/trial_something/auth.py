@@ -535,8 +535,9 @@ def identify():
             if prediction_risk is not None:
                 if current_user.is_authenticated and current_user.sexe is not None:
                     R = 0
+                    
                     if current_user.sexe.lower() == 'male':
-                        R = (100-prediction_risk) - (100-(100-prediction_risk))
+                        R = prediction_risk - (100-(100-prediction_risk))
                         pred_risk = 100-pred_risk
                         pred_risk = str(round(pred_risk,2))
 
