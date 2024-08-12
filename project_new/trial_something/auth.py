@@ -540,14 +540,14 @@ def identify():
 
 
 
-                    else:
+                    if current_user.sexe.lower() == 'female':
                         R = prediction_risk - (100-prediction_risk)
                         prediction_risk = str(R) 
                         result_string = f"Females have an additional {prediction_risk}% risk of developing a reaction to {drug_search} given {disease_search} compared to men."
-
-                
-                
-                
+                else:
+                    R = prediction_risk - (100-prediction_risk)
+                    prediction_risk = str(R) 
+                    result_string = f"Females have an additional {prediction_risk}% risk of developing a reaction to {drug_search} given {disease_search} compared to men."
             result_string = result_string
 
             user_agent = request.headers.get('User-Agent').lower()
