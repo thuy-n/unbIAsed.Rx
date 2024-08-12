@@ -9,16 +9,19 @@
   </head>
 
   <style>
-      /* .card-sizing .cardContainer{
-        max-width:150%;
-        height:auto;
-        object-fit: contain;
-      } */
-    
-    .card-wrapper {
-        /* max-width: 550px; Adjust this value as needed */
-        width: 100%;
+    .card-sizing {
+      max-width: 100%; /* Ensure the image does not exceed the card's width */
+      height: auto; /* Maintain aspect ratio */
+      display: block; /* Remove extra space below the image */
+      margin: 0 auto; /* Center the image if it's smaller than the container */
     }
+    
+    /* Optional: Adjust card layout on smaller screens */
+    /* @media (max-width: 768px) {
+      .card-sizing {
+        /* Additional adjustments for smaller screens can go here */
+      /* }
+    } */
     .hidden {
       display: none;
     }
