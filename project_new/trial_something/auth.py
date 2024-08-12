@@ -340,6 +340,7 @@ def identify():
     word=None
     something=""
     prediction_risk = ""
+    prediction_risk_male = ""
     result_string = ""
     errorFlash = False
     flash_message_label = ""
@@ -529,17 +530,25 @@ def identify():
 
             prediction_risk = get_model(drug_search, disease_search)
 
-            # After extracting or validating prediction_risk
             if prediction_risk is not None:
-                # Convert prediction_risk to string
                 if current_user.is_authenticated and current_user.sexe is not None:
+                    R = 0
                     if current_user.sexe.lower() == 'male':
-                        prediction_risk = 100 - prediction_risk
+                        R = prediction_risk - (100-(100-prediction_risk))
+                        prediction_risk = str(R) 
+                        result_string = f"Males have an additional {prediction_risk}% risk of developing a reaction to {drug_search} given {disease_search} compared to women."
+
+
+
+                    else:
+                        R = prediction_risk - (100-prediction_risk)
+                        prediction_risk = str(R) 
+                        result_string = f"Females have an additional {prediction_risk}% risk of developing a reaction to {drug_search} given {disease_search} compared to men."
+
                 
-                prediction_risk = str(prediction_risk)
                 
-            # Now prediction_risk is guaranteed to be a string when constructing result_string
-            result_string = f"The predicted risk for an adverse reaction to {drug_search} given {disease_search} is {prediction_risk} %."
+                
+            result_string = result_string
 
             user_agent = request.headers.get('User-Agent').lower()
             if 'mobile' in user_agent:
