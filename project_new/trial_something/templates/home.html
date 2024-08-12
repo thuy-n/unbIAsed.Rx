@@ -69,7 +69,7 @@
       <div class="card-wrapper">
         <div class="card shadow " style="background-color:#CEE3EA;">
             <div class="card-body">
-                <div id="cardContainer">
+                <div id="cardContainer" style="max-width:100%;">
                     <h4 class="card-title">{{ drug.name.replace("_", " ") }}</h4>
                     <div>
                         <h5 class="card-subtitle mb-2 text-body-secondary">Used For: {{ drug.disease }}</h5>
@@ -87,7 +87,7 @@
         
                         <div class="row">
                           <div class="col-sm-6">
-                            <img class="card-sizing" src="{{ drug.prevalence }}" alt="{{ drug.name }}">
+                            <img class="card-sizing" style="height:auto;margin-left:-10px;" src="{{ drug.prevalence }}" alt="{{ drug.name }}">
                           </div>
                           <!-- <div class="col-sm-6">
                             <img style="height:auto;max-width:100%;display:block;" src="{{ drug.path_prevalence }}" alt="Disease Prevalence" >
