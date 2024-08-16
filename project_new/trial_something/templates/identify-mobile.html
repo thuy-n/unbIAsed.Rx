@@ -131,7 +131,7 @@
             <br><br>
             <div class="container position-relative rounded shadow {{ 'hidden' if result_string is none or result_string|length == 0 }}" 
             style="background-color: #CEE3EA; {{ 'padding: 20px;' if result_string is not none and result_string|length > 0 }}" id="result">
-            {{ result_string }}
+            {{ result_string | safe}}
             </div>
             
         </div>

@@ -536,7 +536,7 @@ def identify():
                 R = 0
                 M = 100 - prediction_risk
                 F = prediction_risk
-                nl = '\n'
+                nl = '\n\n'
 
                 if current_user.is_authenticated and current_user.sexe is not None:
                     
