@@ -67,9 +67,9 @@
     {% for drug in drugs %}
     <div class="col-sm-12 col-md-6">
       <div class="card-wrapper ">
-        <div class="card shadow align-items-center text-center" style="background-color:#CEE3EA;">
+        <div class="card shadow align-items-center" style="background-color:#CEE3EA;">
             <div class="card-body">
-                <div id="cardContainer" class="d-flex flex-column align-items-center" style="max-width:100%;">
+                <div id="cardContainer" style="max-width:100%;">
                     <h4 class="card-title">{{ drug.name.replace("_", " ") }}</h4>
                     <div>
                         <h5 class="card-subtitle mb-2 text-body-secondary">Used For: {{ drug.disease }}</h5>
@@ -85,7 +85,7 @@
                            
                         </div>
         
-                        <div class="row">
+                        <div class="row align-items-center">
                           <div class="col-sm-6">
                             <img class="card-sizing" src="{{ drug.prevalence }}" alt="{{ drug.name }}">
                           </div>
