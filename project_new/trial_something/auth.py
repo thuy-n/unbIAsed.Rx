@@ -547,16 +547,16 @@ def identify():
                             R = str(round(R,2))
                             M = str(round(M,2))
                             result_string = (
-                f"The predicted risk for male patients of developing an adverse drug reaction to {drug_search} given the condition {disease_search} is {M}%. \n\n"
-                f"Male patients have a lower {R}% risk of developing a reaction compared to female patients. \n\n"
+                f"The predicted risk for male patients of developing an adverse drug reaction to {drug_search} given the condition {disease_search} is <b>{M}%</b>. \n\n"
+                f"Male patients have a lower <b>{R}%</b> risk of developing a reaction compared to female patients. \n\n"
             )
                         else:
                             R = F - M
                             R = str(round(R,2))
                             M = str(round(M,2))
                             result_string = (
-                f"The predicted risk for male patients of developing an adverse drug reaction to {drug_search} given the condition {disease_search} is {M}%. \n\n"
-                f"Male patients have an additional {R}% risk of developing a reaction compared to female patients. \n\n"
+                f"The predicted risk for male patients of developing an adverse drug reaction to {drug_search} given the condition {disease_search} is <b>{M}%</b>. \n\n"
+                f"Male patients have an additional <b>{R}%</b> risk of developing a reaction compared to female patients. \n\n"
                
             )
                     elif current_user.sexe.lower() == 'female':
@@ -565,8 +565,8 @@ def identify():
                             R = str(round(R,2))
                             F = str(round(F,2))
                             result_string = (
-                f"The predicted risk for female patients of developing an adverse drug reaction to {drug_search} given the condition {disease_search} is {F}%. \n\n"
-                f"Female patients have a lower {R}% risk of developing a reaction compared to male patients. \n\n"
+                f"The predicted risk for female patients of developing an adverse drug reaction to {drug_search} given the condition {disease_search} is <b>{F}%</b>. \n\n"
+                f"Female patients have a lower <b>{R}%</b> risk of developing a reaction compared to male patients. \n\n"
                 
             )
                         else:
@@ -574,8 +574,8 @@ def identify():
                             R = str(round(R,2))
                             F = str(round(F,2))
                             result_string = (
-                f"The predicted risk for female patients of developing an adverse drug reaction to {drug_search} given the condition {disease_search} is {F}%. \n\n"
-                f"Female patients have an additional {R}% risk of developing a reaction compared to male patients. \n\n"
+                f"The predicted risk for female patients of developing an adverse drug reaction to {drug_search} given the condition {disease_search} is <b>{F}%</b>. \n\n"
+                f"Female patients have an additional <b>{R}%</b> risk of developing a reaction compared to male patients. \n\n"
             )
                 else:
                     if F > M:
@@ -583,7 +583,7 @@ def identify():
                         R = str(round(R,2))
                         F = str(round(F,2))
                         result_string = (
-                f"The predicted risk for female patients of developing an adverse drug reaction to {drug_search} given the condition {disease_search} is {F}%.\n\n"
+                f"The predicted risk for female patients of developing an adverse drug reaction to {drug_search} given the condition {disease_search} is <b>{F}%</b>.\n\n"
                 f"Female patients have a lower <b>{R}%</b> risk of developing a reaction compared to male patients.\n\n"
             )
                     else:
@@ -591,8 +591,8 @@ def identify():
                         R = str(round(R,2))
                         F = str(round(F,2))
                         result_string = (
-                f"The predicted risk for female patients of developing an adverse drug reaction to {drug_search} given the condition {disease_search} is {F}%.\n\n"
-                f"Female patients have an additional {R}% risk of developing a reaction compared to male patients.\n\n"
+                f"The predicted risk for female patients of developing an adverse drug reaction to {drug_search} given the condition {disease_search} is <b>{F}%</b>.\n\n"
+                f"Female patients have an additional <b>{R}%</b> risk of developing a reaction compared to male patients.\n\n"
             )
             result_string = result_string
 
