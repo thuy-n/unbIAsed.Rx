@@ -5,10 +5,14 @@
     Search Results
 </div>
 
+<div class="container">
+  <div class="row">
 {% for result in results %}
-<div class="card shadow " style="background-color:#CEE3EA;overflow: hidden;">
-  <div class="card-body">
-      <div id="cardContainer" style="max-width:100%">
+<div class="col-sm-12 col-md-6">
+  <div class="card-wrapper ">
+    <div class="card shadow align-items-center" style="background-color:#CEE3EA;">
+        <div class="card-body">
+          <div id="cardContainer" style="max-width:100%;">
           <h4 class="card-title">{{ result.name.replace("_", " ") }}</h4>
           <div>
             <h5 class="card-subtitle mb-2 text-body-secondary">Used For: {{ result.disease }}</h5>
@@ -17,14 +21,14 @@
               <div class="col-sm-6 h6">
                 Average Sex Distribution in Clinical Studies
               </div>
-             
+            
           </div>
 
-          <div class="row">
-            <div class="col-sm-6">
-              <img style="height:auto;max-width:100%;display:block;" src="{{ result.prevalence }}" alt="{{ result.name }}">
+          <div class="row ">
+            <div class="col-sm-12 d-flex justify-content-center">
+              <img class="card-sizing img-fluid" src="{{ result.prevalence }}" alt="{{ result.name }}">
             </div>
-          
+            
           </div>
 
           <div class="accordion" id="accordionExample{{ result.id }}">
@@ -49,9 +53,10 @@
               </div>
             </div>
           </div>
+          <br>
+
               <form action="{{ url_for('views.save_drug') if not result.is_saved else url_for('views.unsave_drug') }}" method="post">
                 <input type="hidden" name="drug_id" value="{{ result.id }}">
-                <br>
                 <button type="submit" class="btn btn-start">
                     {% if current_user.is_authenticated %}
                         {{ 'Unsave' if result.is_saved else 'Save' }}
@@ -59,14 +64,19 @@
                         Save
                     {% endif %}
                 </button>
-                <!-- <button type="button" class="btn btn-start" id="calcRisk" onclick="window.location.href='{{ url_for('auth.identify') }}#identify-risk-form';" >Identify Risk</button>              -->
+                <!-- <button type="button" class="btn btn-start" id="calcRisk" onclick="window.location.href='{{ url_for('auth.identify') }}#identify-risk-form';" >Identify Risk</button>            -->
               </form>
           </div>
       </div>
   </div>
 </div>
+</div>
+</div>
+
 <br>
 {% endfor %} 
+
+<br>
 
 
   

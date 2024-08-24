@@ -56,6 +56,7 @@
               </div>
             </div>
           </div>
+          <br>
 
               <form action="{{ url_for('views.save_drug') if not result.is_saved else url_for('views.unsave_drug') }}" method="post">
                 <input type="hidden" name="drug_id" value="{{ result.id }}">
@@ -77,6 +78,8 @@
 
 <br>
 {% endfor %} 
+
+<br>
 
 
   
