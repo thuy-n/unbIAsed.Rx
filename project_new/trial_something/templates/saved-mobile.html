@@ -36,6 +36,30 @@
                                 <img style="height:auto;max-width:100%;display:block;" src="{{ drug.path_prevalence }}" alt="Disease Prevalence" >
                               </div> -->
                             </div>
+    
+                            <div class="accordion" id="accordionExample{{ drug.id }}">
+                              <div class="accordion-item">
+                                <h2 class="accordion-header" id="heading{{ drug.id }}">
+                                  <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{ drug.id }}" aria-expanded="true" aria-controls="collapse{{ drug.id }}">
+                                    Learn More
+                                  </button>
+                                </h2>
+                                <div id="collapse{{ drug.id }}" class="accordion-collapse collapse" aria-labelledby="heading{{ drug.id }}" data-bs-parent="#accordionExample{{ drug.id }}">
+                                  <div class="accordion-header ms-3 mt-3 text-secondary">
+                                    Age-Standardized Prevalence of {{ drug.disease}} in Canadians Aged 1 Years and Older (2021-2022) *
+                                  </div>
+                                  <div class="accordion-body">
+                                    <strong>Prevalence in females:</strong> {{ drug.prevFemale }} %<br>
+                                    <strong>Prevalence in males:</strong> {{ drug.prevMale }} % <br>
+                                    <strong>Prevalence in both sexes:</strong> {{ drug.prevBoth }} % <br>
+    
+                                    <br>
+                                    *retrieved from <a class="readMore" href="https://health-infobase.canada.ca/ccdss/data-tool/">https://health-infobase.canada.ca/ccdss/data-tool/</a>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+    
                             <form action="{{ url_for('views.save_drug') if not drug.is_saved else url_for('views.unsave_drug') }}" method="post" class="mt-3">
                               
                               <div class="master">
@@ -62,6 +86,7 @@
                               </div>
                             </form>
                         </div>
+    
                     </div>
                 </div>
             </div>
