@@ -102,13 +102,16 @@
                               </button>
                             </h2>
                             <div id="collapse{{ drug.id }}" class="accordion-collapse collapse" aria-labelledby="heading{{ drug.id }}" data-bs-parent="#accordionExample{{ drug.id }}">
-                              <div class="accordion-header align-items-center mt-3">
-                                Age-Standardized Prevalence of {{ drug.disease}} 
+                              <div class="accordion-header ms-3 mt-3 text-secondary">
+                                Age-Standardized Prevalence of {{ drug.disease}} in Canadians Aged 1 Years and Older (2021-2022)*
                               </div>
                               <div class="accordion-body">
                                 <strong>Prevalence in females:</strong> {{ drug.prevFemale }} %<br>
                                 <strong>Prevalence in males:</strong> {{ drug.prevMale }} % <br>
                                 <strong>Prevalence in both sexes:</strong> {{ drug.prevBoth }} % <br>
+
+                                <br><br>
+                                *retrieved from <a class="readMore" href="https://health-infobase.canada.ca/ccdss/data-tool/">https://health-infobase.canada.ca/ccdss/data-tool/</a>
                               </div>
                             </div>
                           </div>
