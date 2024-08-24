@@ -13,9 +13,9 @@
         <div class="card shadow align-items-center" style="background-color:#CEE3EA;">
             <div class="card-body">
                 <div id="cardContainer" style="max-width:100%;">
-                    <h4 class="card-title">{{ drug.name.replace("_", " ") }}</h4>
+                    <h4 class="card-title">{{ result.name.replace("_", " ") }}</h4>
                     <div>
-                        <h5 class="card-subtitle mb-2 text-body-secondary">Used For: {{ drug.disease }}</h5>
+                        <h5 class="card-subtitle mb-2 text-body-secondary">Used For: {{ result.disease }}</h5>
                         <br>
                         <div class="row">
                             <div class="col-sm-6 h6">
@@ -30,28 +30,28 @@
         
                         <div class="row ">
                           <div class="col-sm-12 d-flex justify-content-center">
-                            <img class="card-sizing img-fluid" src="{{ drug.prevalence }}" alt="{{ drug.name }}">
+                            <img class="card-sizing img-fluid" src="{{ result.prevalence }}" alt="{{ result.name }}">
                           </div>
                           <!-- <div class="col-sm-6">
                             <img style="height:auto;max-width:100%;display:block;" src="{{ drug.path_prevalence }}" alt="Disease Prevalence" >
                           </div> -->
                         </div>
 
-                        <div class="accordion" id="accordionExample{{ drug.id }}">
+                        <div class="accordion" id="accordionExample{{ result.id }}">
                           <div class="accordion-item">
-                            <h2 class="accordion-header" id="heading{{ drug.id }}">
-                              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{ drug.id }}" aria-expanded="true" aria-controls="collapse{{ drug.id }}">
+                            <h2 class="accordion-header" id="heading{{ result.id }}">
+                              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{ result.id }}" aria-expanded="true" aria-controls="collapse{{ result.id }}">
                                 Learn More
                               </button>
                             </h2>
-                            <div id="collapse{{ drug.id }}" class="accordion-collapse collapse" aria-labelledby="heading{{ drug.id }}" data-bs-parent="#accordionExample{{ drug.id }}">
+                            <div id="collapse{{ result.id }}" class="accordion-collapse collapse" aria-labelledby="heading{{ result.id }}" data-bs-parent="#accordionExample{{ result.id }}">
                               <div class="accordion-header ms-3 mt-3 text-secondary">
-                                Age-Standardized Prevalence of {{ drug.disease}} in Canadians Aged 1 Years and Older (2021-2022) *
+                                Age-Standardized Prevalence of {{ result.disease}} in Canadians Aged 1 Years and Older (2021-2022) *
                               </div>
                               <div class="accordion-body">
-                                <strong>Prevalence in females:</strong> {{ drug.prevFemale }} %<br>
-                                <strong>Prevalence in males:</strong> {{ drug.prevMale }} % <br>
-                                <strong>Prevalence in both sexes:</strong> {{ drug.prevBoth }} % <br>
+                                <strong>Prevalence in females:</strong> {{ result.prevFemale }} %<br>
+                                <strong>Prevalence in males:</strong> {{ result.prevMale }} % <br>
+                                <strong>Prevalence in both sexes:</strong> {{ result.prevBoth }} % <br>
 
                                 <br>
                                 *retrieved from <a class="readMore" href="https://health-infobase.canada.ca/ccdss/data-tool/">https://health-infobase.canada.ca/ccdss/data-tool/</a>
@@ -60,26 +60,26 @@
                           </div>
                         </div>
 
-                        <form action="{{ url_for('views.save_drug') if not drug.is_saved else url_for('views.unsave_drug') }}" method="post" class="mt-3">
+                        <form action="{{ url_for('views.save_drug') if not result.is_saved else url_for('views.unsave_drug') }}" method="post" class="mt-3">
                           
                           <div class="master">
-                            <input type="hidden" name="drug_id" value="{{ drug.id }}">
+                            <input type="hidden" name="drug_id" value="{{ result.id }}">
                             {% if current_user.is_authenticated %}
                             <!-- If user is logged in, show the save/unsave button -->
                               {% if drug.is_saved %}
-                                  <button type = "submit" class="unsave-drug btn btn-start" data-drug="{{ drug.id }}">Unsave</button>
+                                  <button type = "submit" class="unsave-drug btn btn-start" data-drug="{{ result.id }}">Unsave</button>
                               {% else %}
-                                  <button type = "submit" class="save-drug btn btn-start" data-drug="{{ drug.id }}">Save</button>
+                                  <button type = "submit" class="save-drug btn btn-start" data-drug="{{ result.id }}">Save</button>
                               {% endif %}
                             {% else %}
                               <!-- If user is not logged in, show only the save button which redirects to login -->
                               <a href="{{ url_for('auth.login') }}" class="btn btn-start">Save</a>
                             {% endif %}
                           </button>
-                            <button hidden type="button" id="calcRisk" class="btn btn-start calcRisk" data-drug-id="{{ drug.id }}">Calculate Risk</button>  
+                            <button hidden type="button" id="calcRisk" class="btn btn-start calcRisk" data-drug-id="{{ result.id }}">Calculate Risk</button>  
                             <br><br>
                             <div id="resultString" class="container position-relative rounded " 
-                            style="background-color: #CEE3EA; display:none;" data-drug-id="{{ drug.id }}">
+                            style="background-color: #CEE3EA; display:none;" data-drug-id="{{ result.id }}">
                             
                             {{ result_strings }}
                             </div>
