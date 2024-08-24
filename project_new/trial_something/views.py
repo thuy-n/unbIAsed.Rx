@@ -302,7 +302,10 @@ def home():
                 female_ratio=row['Female proportion in studies'],
                 male_ratio=row['Male proportion in studies'],
                 prevalence=relative_image_path,
-                path_prevalence = f"static/images/prevalence/{row['Indication'].lower()}.png"
+                path_prevalence = f"static/images/prevalence/{row['Indication'].lower()}.png",
+                prevFemale = row['Prevalence Women'],
+                prevMale = row['Prevalence Men'],
+                prevBoth = row['Prevalence Both Genders']
             )
 
             db.session.add(drug)
