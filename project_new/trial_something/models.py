@@ -27,6 +27,9 @@ class Drugs(db.Model):
     path_prevalence = db.Column(db.String(500)) #path to the image
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     is_saved = db.Column(db.Boolean, default=False)
+    prevFemale = db.Column(db.String(50))
+    prevMale = db.Column(db.String(50))
+    prevBoth = db.Column(db.String(50))
 
 class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
