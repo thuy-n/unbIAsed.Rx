@@ -123,11 +123,11 @@
                     <div class="accordion" id="accordionExample{{ drug.id }}">
                       <div class="accordion-item">
                         <h2 class="accordion-header" id="heading{{ drug.id }}">
-                          <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{ drug.id }}" aria-expanded="true" aria-controls="collapse{{ drug.id }}">
+                          <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse{{ drug.id }}" aria-expanded="true" aria-controls="collapse{{ drug.id }}">
                             Learn More
                           </button>
                         </h2>
-                        <div id="collapse{{ drug.id }}" class="accordion-collapse collapsed" aria-labelledby="heading{{ drug.id }}" data-bs-parent="#accordionExample{{ drug.id }}">
+                        <div id="collapse{{ drug.id }}" class="accordion-collapse collapse" aria-labelledby="heading{{ drug.id }}" data-bs-parent="#accordionExample{{ drug.id }}">
                           <div class="accordion-body">
                             <strong>Prevalence in females:</strong> {{ drug.prevFemale }}<br>
                             <strong>Prevalence in males:</strong> {{ drug.prevMale }} <br>
