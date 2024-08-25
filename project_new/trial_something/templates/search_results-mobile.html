@@ -64,6 +64,13 @@
                         Save
                     {% endif %}
                 </button>
+                <button type="button" id="calcRisk" class="btn btn-start calcRisk" data-drug-id="{{ drug.id }}">Calculate Risk</button>  
+                                <br><br>
+                                <div id="resultString" class="container position-relative rounded " 
+                                style="background-color: #CEE3EA; display:none;" data-drug-id="{{ drug.id }}">
+                                
+                                {{ result_strings }}
+                                </div>
                 <!-- <button type="button" class="btn btn-start" id="calcRisk" onclick="window.location.href='{{ url_for('auth.identify') }}#identify-risk-form';" >Identify Risk</button>            -->
               </form>
           </div>
