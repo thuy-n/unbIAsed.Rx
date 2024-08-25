@@ -21,8 +21,13 @@
         color: #364A5D; /* Change this to your desired text color */
     }
 
-    .accordion-button.collapsed:hover {
+    .accordion-button:not(.collapsed):hover {
       background-color: rgb(236, 142, 130);
+      color: white;
+    }
+
+    .accordion-button.collapsed:hover {
+      background-color: #364A5D;
       color: white;
     }
 
