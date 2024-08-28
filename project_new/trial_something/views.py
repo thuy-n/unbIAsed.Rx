@@ -256,7 +256,6 @@ def home():
     errorFlash = False
     # prediction_risk_male = ""
     result_string_pred = ""
-
     
     if not Drugs.query.first():  # Check if the database is empty
         BASE_DIR = os.path.dirname(os.path.abspath(__file__))  # Get the directory of the current file
@@ -302,7 +301,13 @@ def home():
 
         db.session.commit()
 
-    drugs = Drugs.query.all()    
+    drugs = Drugs.query.all()   
+
+    if filtered_drugs is None:
+        filtered_drugs = []
+
+    if drugs is None:
+        drugs = []
 
     if request.method == 'POST':
         drug_filter = request.form.get('drug_filter')
