@@ -250,12 +250,12 @@ def get_model(drug, disease):
 def home():
     disease_prevalence = None
     result_string = ""
-    filtered_drugs = None
     prediction_risk = ""
     flash_message_risk = ""
     errorFlash = False
     # prediction_risk_male = ""
     result_string_pred = ""
+    
     
     drug_search = ""
     disease_search = "" 

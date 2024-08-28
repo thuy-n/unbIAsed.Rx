@@ -139,7 +139,7 @@
                           <input type="hidden" name="drugCondition" id="drugCondition" value="{{ drug.disease }}">
                           <button type="submit" id="calcRisk" class="btn btn-start calcRisk">Calculate Risk</button>  
                           <br><br>
-                          <div class="container position-relative rounded " >
+                          <div class="container position-relative rounded " id="resultString{{ drug.id }}">
                             {{ result_string_pred }}
                           </div>
                             
@@ -170,6 +170,25 @@
 
   
   <script>
+    document.querySelectorAll('.calcRisk').forEach(card => {
+      button.addEventListener('click', function(event) {
+        event.preventDefault(); // Prevent the form from submitting the traditional way
+        const form = this.closest('form');
+        const formData = new FormData(form);
+
+        fetch(form.action, {
+            method: 'POST',
+            body: formData,
+        })
+        .then(response => response.json())
+        .then(data => {
+            // Update the resultString div with the response
+            const resultDiv = document.getElementById(`resultString${form.querySelector('input[name="drugName"]').value}`);
+            resultDiv.innerHTML = data.result_string_pred;
+        })
+        .catch(error => console.error('Error:', error));
+      });
+    });
 
     
     document.getElementById('saveButton').addEventListener('click', function() {
