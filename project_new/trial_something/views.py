@@ -260,16 +260,17 @@ def home():
     drug_search = ""
     disease_search = "" 
     drugs = Drugs.query.all()  # Get all drugs from the database
+    filtered_drugs = Drugs.query.all()
 
     if request.method == 'POST' and drugs:
         drug_filter = request.form.get('drug_filter')
         calcRiskButton = request.form.get('calcRisk')
 
         if drug_filter:
-            drugs = Drugs.query.filter(Drugs.disease.ilike(f'%{drug_filter}%')).all()
+            filtered_drugs = Drugs.query.filter(Drugs.disease.ilike(f'%{drug_filter}%')).all()
             
         if drug_filter == "ALL":
-            drugs = Drugs.query.all()
+            filtered_drugs = Drugs.query.all()
 
         if calcRiskButton == 'calcRisk':
             drug_search = request.form.get('drugName')
@@ -356,8 +357,8 @@ def home():
 
         user_agent = request.headers.get('User-Agent').lower()
         if 'mobile' in user_agent:
-            return render_template("home-mobile.html", drugs=drugs, user=current_user, disease_prevalence=disease_prevalence, result_string_pred=result_string_pred)
-        return render_template("home.html", drugs=drugs, user=current_user, disease_prevalence=disease_prevalence, result_string_pred=result_string_pred)
+            return render_template("home-mobile.html", drugs=filtered_drugs, user=current_user, disease_prevalence=disease_prevalence, result_string_pred=result_string_pred)
+        return render_template("home.html", drugs=filtered_drugs, user=current_user, disease_prevalence=disease_prevalence, result_string_pred=result_string_pred)
     
     
     if not Drugs.query.first():  # Check if the database is empty
