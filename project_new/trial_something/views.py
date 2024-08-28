@@ -300,6 +300,7 @@ def home():
             db.session.add(drug)
 
         db.session.commit()
+        
         if request.method == 'POST':
             drug_filter = request.form.get('drug_filter')
             calcRiskButton = request.form.get('calcRisk')
