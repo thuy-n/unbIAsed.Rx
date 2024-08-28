@@ -250,12 +250,12 @@ def get_model(drug, disease):
 def home():
     disease_prevalence = None
     result_string = ""
+    # filtered_drugs = None
     prediction_risk = ""
     flash_message_risk = ""
     errorFlash = False
     # prediction_risk_male = ""
     result_string_pred = ""
-    
     
     drug_search = ""
     disease_search = "" 
@@ -265,10 +265,10 @@ def home():
         calcRiskButton = request.form.get('calcRisk')
 
         if drug_filter:
-            filtered_drugs = Drugs.query.filter(Drugs.disease.ilike(f'%{drug_filter}%')).all()
+            drugs = Drugs.query.filter(Drugs.disease.ilike(f'%{drug_filter}%')).all()
             
         if drug_filter == "ALL":
-            filtered_drugs = Drugs.query.all()
+            drugs = Drugs.query.all()
 
         if calcRiskButton == 'calcRisk':
             drug_search = request.form.get('drugName')
@@ -355,8 +355,8 @@ def home():
 
         user_agent = request.headers.get('User-Agent').lower()
         if 'mobile' in user_agent:
-            return render_template("home-mobile.html", drugs=filtered_drugs, user=current_user, disease_prevalence=disease_prevalence, result_string_pred=result_string_pred)
-        return render_template("home.html", drugs=filtered_drugs, user=current_user, disease_prevalence=disease_prevalence, result_string_pred=result_string_pred)
+            return render_template("home-mobile.html", drugs=drugs, user=current_user, disease_prevalence=disease_prevalence, result_string_pred=result_string_pred)
+        return render_template("home.html", drugs=drugs, user=current_user, disease_prevalence=disease_prevalence, result_string_pred=result_string_pred)
     
     
     if not Drugs.query.first():  # Check if the database is empty
