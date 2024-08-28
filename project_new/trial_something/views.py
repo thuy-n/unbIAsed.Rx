@@ -351,7 +351,8 @@ def home():
                 f"The predicted risk for female patients of developing an adverse drug reaction to {drug_search} given the condition {disease_search} is <b>{F}%</b>. <br><br>"
                 f"Female patients have an additional <b>{R}%</b> risk of developing a reaction compared to male patients.<br>"
             )
-            result_string_pred = result_string_pred     
+            result_string_pred = result_string_pred  
+            print(result_string_pred)   
 
         user_agent = request.headers.get('User-Agent').lower()
         if 'mobile' in user_agent:
