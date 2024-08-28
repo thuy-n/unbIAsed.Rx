@@ -286,6 +286,9 @@ def home():
             drug_search = drug_search.upper()
             disease_search = disease_search.upper()
 
+            print(f"Drug Search: {drug_search}, Disease Search: {disease_search}") #debug
+            print(f"Prediction Risk: {prediction_risk}")
+
             prediction_risk = get_model(drug_search, disease_search)
             F = 0
             M = 0
