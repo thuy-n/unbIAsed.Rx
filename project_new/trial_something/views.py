@@ -252,10 +252,14 @@ def home():
     result_string = ""
     filtered_drugs = None
     prediction_risk = ""
-    result_strings = []
+
+    # prediction_risk_male = ""
+    result_string_pred = ""
+   
 
     if request.method == 'POST':
         drug_filter = request.form.get('drug_filter')
+        calcRiskButton = request.form.get('calcRisk')
 
         if drug_filter:
             filtered_drugs = Drugs.query.filter(Drugs.disease.ilike(f'%{drug_filter}%')).all()
@@ -263,10 +267,84 @@ def home():
         if drug_filter == "ALL":
             filtered_drugs = Drugs.query.all()
 
+        if calcRiskButton == 'calcRisk':
+            drug_search = request.form.get('drugName')
+            disease_search = request.form.get('drugCondition')
+
+            drug_search = drug_search.upper()
+            disease_search = disease_search.upper()
+
+            prediction_risk = get_model(drug_search, disease_search)
+            F = 0
+            M = 0
+
+            if prediction_risk is not None:
+                R = 0
+                M = 100 - prediction_risk
+                F = prediction_risk
+
+                if current_user.is_authenticated and current_user.sexe is not None:
+                    
+                    if current_user.sexe.lower() == 'male':
+
+                        if M > F:
+                            R = M - F
+                            R = str(round(R,2))
+                            M = str(round(M,2))
+                            result_string_pred = (
+                f"The predicted risk for male patients of developing an adverse drug reaction to {drug_search} given the condition {disease_search} is <b>{M}%</b>. <br><br>"
+                f"Male patients have a <b>{R}%</b> lower risk of developing a reaction compared to female patients. <br>"
+            )
+                        else:
+                            R = F - M
+                            R = str(round(R,2))
+                            M = str(round(M,2))
+                            result_string_pred = (
+                f"The predicted risk for male patients of developing an adverse drug reaction to {drug_search} given the condition {disease_search} is <b>{M}%</b>. <br><br>"
+                f"Male patients have an additional <b>{R}%</b> risk of developing a reaction compared to female patients.<br> "
+               
+            )
+                    elif current_user.sexe.lower() == 'female':
+                        if F > M:
+                            R = F - M
+                            R = str(round(R,2))
+                            F = str(round(F,2))
+                            result_string_pred = (
+                f"The predicted risk for female patients of developing an adverse drug reaction to {drug_search} given the condition {disease_search} is <b>{F}%</b>. <br><br>"
+                f"Female patients have a <b>{R}%</b> lower risk of developing a reaction compared to male patients. <br>"
+                
+            )
+                        else:
+                            R = M - F
+                            R = str(round(R,2))
+                            F = str(round(F,2))
+                            result_string_pred = (
+                f"The predicted risk for female patients of developing an adverse drug reaction to {drug_search} given the condition {disease_search} is <b>{F}%</b>. <br><br>"
+                f"Female patients have an additional <b>{R}%</b> risk of developing a reaction compared to male patients. <br>"
+            )
+                else:
+                    if F > M:
+                        R = F - M
+                        R = str(round(R,2))
+                        F = str(round(F,2))
+                        result_string_pred = (
+                f"The predicted risk for female patients of developing an adverse drug reaction to {drug_search} given the condition {disease_search} is <b>{F}%</b>. <br><br>"
+                f"Female patients have a <b>{R}%</b> lower risk of developing a reaction compared to male patients.<br>"
+            )
+                    else:
+                        R = M - F
+                        R = str(round(R,2))
+                        F = str(round(F,2))
+                        result_string_pred = (
+                f"The predicted risk for female patients of developing an adverse drug reaction to {drug_search} given the condition {disease_search} is <b>{F}%</b>. <br><br>"
+                f"Female patients have an additional <b>{R}%</b> risk of developing a reaction compared to male patients.<br>"
+            )
+            result_string_pred = result_string_pred
+
         user_agent = request.headers.get('User-Agent').lower()
         if 'mobile' in user_agent:
-            return render_template("home-mobile.html", drugs=filtered_drugs, user=current_user, disease_prevalence=disease_prevalence, result_strings=result_strings)
-        return render_template("home.html", drugs=filtered_drugs, user=current_user, disease_prevalence=disease_prevalence, result_strings=result_strings)
+            return render_template("home-mobile.html", drugs=filtered_drugs, user=current_user, disease_prevalence=disease_prevalence, result_string_pred=result_string_pred)
+        return render_template("home.html", drugs=filtered_drugs, user=current_user, disease_prevalence=disease_prevalence, result_string_pred=result_string_pred)
     
     if not Drugs.query.first():  # Check if the database is empty
         BASE_DIR = os.path.dirname(os.path.abspath(__file__))  # Get the directory of the current file

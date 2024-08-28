@@ -340,7 +340,7 @@ def identify():
     word=None
     something=""
     prediction_risk = ""
-    prediction_risk_male = ""
+    # prediction_risk_male = ""
     result_string = ""
     errorFlash = False
     flash_message_label = ""

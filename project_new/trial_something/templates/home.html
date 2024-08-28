@@ -70,9 +70,9 @@
         <div class="card shadow align-items-center" style="background-color:#CEE3EA;">
             <div class="card-body">
                 <div id="cardContainer" style="max-width:100%;">
-                    <h4 class="card-title">{{ drug.name.replace("_", " ") }}</h4>
+                    <h4 class="card-title" id="drugName">{{ drug.name.replace("_", " ") }}</h4>
                     <div>
-                        <h5 class="card-subtitle mb-2 text-body-secondary">Used For: {{ drug.disease }}</h5>
+                        <h5 class="card-subtitle mb-2 text-body-secondary" id="drugCondition">Used For: {{ drug.disease }}</h5>
                         <br>
                         <div class="row">
                             <div class="col-sm-6 h6">
@@ -138,7 +138,7 @@
                             <div id="resultString" class="container position-relative rounded " 
                             style="background-color: #CEE3EA; display:none;" data-drug-id="{{ drug.id }}">
                             
-                            {{ result_strings }}
+                            {{ result_string_pred }}
                             </div>
                           </div>
                         </form>
