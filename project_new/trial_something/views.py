@@ -252,10 +252,10 @@ def home():
     result_string = ""
     filtered_drugs = None
     prediction_risk = ""
-
+    flash_message_risk = ""
+    errorFlash = False
     # prediction_risk_male = ""
     result_string_pred = ""
-   
 
     
     if not Drugs.query.first():  # Check if the database is empty
@@ -317,6 +317,16 @@ def home():
         if calcRiskButton == 'calcRisk':
             drug_search = request.form.get('drugName')
             disease_search = request.form.get('drugCondition')
+
+            if disease_search == None or drug_search == None:
+                errorFlash = True
+                # flash('Please fill in all fields', 'error')
+                flash_message_risk = 'Please fill in all fields'
+                user_agent = request.headers.get('User-Agent').lower()
+                if 'mobile' in user_agent:
+                    return render_template("identify-mobile.html", flash_message_risk=flash_message_risk, user=current_user, errorFlash=errorFlash)    
+                return render_template("identify.html", flash_message_risk=flash_message_risk, user=current_user,errorFlash=errorFlash)
+                    
 
             drug_search = drug_search.upper()
             disease_search = disease_search.upper()
