@@ -260,7 +260,7 @@ def home():
     drug_search = ""
     disease_search = "" 
 
-    if request.method == 'POST':
+    if request.method == 'POST' and drugs:
         drug_filter = request.form.get('drug_filter')
         calcRiskButton = request.form.get('calcRisk')
 
