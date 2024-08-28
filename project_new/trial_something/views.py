@@ -250,7 +250,7 @@ def get_model(drug, disease):
 def home():
     disease_prevalence = None
     result_string = ""
-    # filtered_drugs = None
+    filtered_drugs = []
     prediction_risk = ""
     flash_message_risk = ""
     errorFlash = False
@@ -259,10 +259,8 @@ def home():
     
     drug_search = ""
     disease_search = "" 
-    drugs = Drugs.query.all()  # Get all drugs from the database
-    filtered_drugs = Drugs.query.all()
-
-    if request.method == 'POST' and drugs:
+    
+    if request.method == 'POST':
         drug_filter = request.form.get('drug_filter')
         calcRiskButton = request.form.get('calcRisk')
 
@@ -405,7 +403,7 @@ def home():
 
         db.session.commit()
 
-    
+    drugs = Drugs.query.all()
 
     user_agent = request.headers.get('User-Agent').lower()
     if 'mobile' in user_agent:
