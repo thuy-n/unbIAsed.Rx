@@ -262,7 +262,7 @@ def home():
     
     if request.method == 'POST':
         drug_filter = request.form.get('drug_filter')
-        calcRiskButton = request.form.get('calcRisk')
+        calcRiskButton = request.form.get('calcRiskB')
 
         if drug_filter:
             filtered_drugs = Drugs.query.filter(Drugs.disease.ilike(f'%{drug_filter}%')).all()
@@ -270,7 +270,7 @@ def home():
         if drug_filter == "ALL":
             filtered_drugs = Drugs.query.all()
 
-        if calcRiskButton == 'calcRisk':
+        if calcRiskButton == 'calcRiskB':
             drug_search = request.form.get('drugName')
             disease_search = request.form.get('drugCondition')
 
