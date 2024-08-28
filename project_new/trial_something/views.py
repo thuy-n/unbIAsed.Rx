@@ -270,7 +270,6 @@ def home():
         if drug_filter == "ALL":
             filtered_drugs = Drugs.query.all()
 
-        result_string_pred = "trial"
         if calcRiskButton == 'calcRiskB':
             
             drug_search = request.form.get('drugName')
@@ -357,7 +356,7 @@ def home():
                 f"Female patients have an additional <b>{R}%</b> risk of developing a reaction compared to male patients.<br>"
             )
             result_string_pred = result_string_pred  
-            print(result_string_pred)   
+            # print(result_string_pred)   
 
         user_agent = request.headers.get('User-Agent').lower()
         if 'mobile' in user_agent:
