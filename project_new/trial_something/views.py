@@ -259,6 +259,7 @@ def home():
     
     drug_search = ""
     disease_search = "" 
+    drugs = Drugs.query.all()  # Get all drugs from the database
 
     if request.method == 'POST' and drugs:
         drug_filter = request.form.get('drug_filter')
@@ -403,7 +404,7 @@ def home():
 
         db.session.commit()
 
-    drugs = Drugs.query.all()  
+    
 
     user_agent = request.headers.get('User-Agent').lower()
     if 'mobile' in user_agent:
