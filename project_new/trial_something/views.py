@@ -270,8 +270,9 @@ def home():
         if drug_filter == "ALL":
             filtered_drugs = Drugs.query.all()
 
+        result_string_pred = "trial"
         if calcRiskButton == 'calcRiskB':
-            result_string_pred = "trial"
+            
             drug_search = request.form.get('drugName')
             disease_search = request.form.get('drugCondition')
 
