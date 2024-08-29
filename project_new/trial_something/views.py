@@ -264,6 +264,10 @@ def home():
         drug_filter = request.form.get('drug_filter')
         calcRiskButton = request.form.get('calcRiskB')
 
+        print("Form data:", request.form)  # Debug print statement
+        print("calcRiskButton:", calcRiskButton)  # Debug print statement
+
+
         if drug_filter:
             filtered_drugs = Drugs.query.filter(Drugs.disease.ilike(f'%{drug_filter}%')).all()
             
