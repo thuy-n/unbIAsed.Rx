@@ -170,7 +170,7 @@
 
   
   <script>
-    const resultStringPred = "{{ result_string_pred|escapejs }}";
+    const resultStringPred = "{{ result_string_pred }}";
     document.querySelectorAll('.calcRisk').forEach(button => {
         button.addEventListener('click', function() {
             const drugId = this.getAttribute('data-drug-id');
