@@ -140,7 +140,7 @@
                           <input type="hidden" name="drug_id" value="{{ drug.id }}">
                           <input type="hidden" name="drugName" id="drugName{{ drug.id }}" value="{{ drug.name }}">
                           <input type="hidden" name="drugCondition" id="drugCondition{{ drug.id }}" value="{{ drug.disease }}">
-                          <button type="button" id="calcRiskButton{{ drug.id }}" data-drug-id="{{ drug.id }}" class="btn btn-start calcRisk">Calculate Risk</button>
+                          <button type="submit" id="calcRiskButton{{ drug.id }}" data-drug-id="{{ drug.id }}" class="btn btn-start calcRisk">Calculate Risk</button>
                           <br><br>
                           <div class="container position-relative rounded" id="resultString{{ drug.id }}">
                               {{ result_string_pred }}
@@ -170,24 +170,24 @@
 
   
   <script>
-    document.querySelectorAll('.calcRisk').forEach(button => {
-        button.addEventListener('click', function() {
-            const drugId = this.getAttribute('data-drug-id');
-            const form = document.getElementById(`calcRiskForm${drugId}`);
-            const formData = new FormData(form);
+    // document.querySelectorAll('.calcRisk').forEach(button => {
+    //     button.addEventListener('click', function() {
+    //         const drugId = this.getAttribute('data-drug-id');
+    //         const form = document.getElementById(`calcRiskForm${drugId}`);
+    //         const formData = new FormData(form);
 
-            fetch('/calcRisk', {
-                method: 'POST',
-                body: formData,
-            })
-            .then(response => response.json())
-            .then(data => {
-                const resultStringElement = document.getElementById(`resultString${drugId}`);
-                resultStringElement.innerHTML = data.result_string_pred;
-            })
-            .catch(error => console.error('Error:', error));
-        });
-    });
+    //         fetch('/home/calculate-risk', {
+    //             method: 'POST',
+    //             body: formData,
+    //         })
+    //         .then(response => response.json())
+    //         .then(data => {
+    //             const resultStringElement = document.getElementById(`resultString${drugId}`);
+    //             resultStringElement.innerHTML = data.result_string_pred;
+    //         })
+    //         .catch(error => console.error('Error:', error));
+    //     });
+    // });
     
     document.getElementById('saveButton').addEventListener('click', function() {
       var cardContainer = document.getElementById('cardContainer');
