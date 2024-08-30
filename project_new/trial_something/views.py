@@ -260,6 +260,7 @@ def calc_risk():
 
     drug_search = request.form.get('drugName')
     disease_search = request.form.get('drugCondition')
+    drug_id = request.form.get('drug_id')
 
     drugs = Drugs.query.all()
 
@@ -345,8 +346,8 @@ def calc_risk():
 
     user_agent = request.headers.get('User-Agent').lower()
     if 'mobile' in user_agent:
-        return render_template("home-mobile.html", drugs=drugs, user=current_user, result_string_pred=result_string_pred)
-    return render_template("home.html", drugs=drugs, user=current_user,  result_string_pred=result_string_pred)
+        return render_template("home-mobile.html", drugs=drugs, user=current_user, result_string_pred=result_string_pred, result_drug_id=drug_id)
+    return render_template("home.html", drugs=drugs, user=current_user,  result_string_pred=result_string_pred, result_drug_id=drug_id)
 
 
 @views.route('/home', methods=['GET', 'POST']) 
