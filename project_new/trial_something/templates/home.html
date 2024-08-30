@@ -143,10 +143,11 @@
                           <button type="submit" id="calcRiskButton{{ drug.id }}" data-drug-id="{{ drug.id }}" class="btn btn-start calcRisk">Calculate Risk</button>
                           <br><br>
                           <div class="container position-relative rounded" id="resultString{{ drug.id }}">
-                            
-                            <!-- {% if result_drug_id == drug.id %} -->
+                            <p>result_string_pred: {{ result_string_pred }}</p>
+                            <p>result_drug_id: {{ result_drug_id }}</p>
+                            {% if result_string_pred and result_drug_id == drug.id %}
                               {{ result_string_pred }}
-                            <!-- {% endif %} -->
+                            {% endif %}
                             
                           </div>
                         </form>
