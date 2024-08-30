@@ -173,9 +173,6 @@ def about():
         return render_template('about-mobile.html', user=current_user)
     return render_template('about.html', user=current_user)
 
-# @auth.route('/settings')
-# def settings():
-    return render_template('settings.html', user=current_user)
 
 @auth.route('/sign-up', methods=['GET', 'POST'])
 def sign_up():

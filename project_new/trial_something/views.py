@@ -264,6 +264,8 @@ def calc_risk():
     drug_id = request.form.get('drug_id')
 
     drugs = Drugs.query.all()
+    drug_id = request.form.get('drug_id')
+    drug = Drugs.query.get(drug_id)
 
     if disease_search == None or drug_search == None:
         errorFlash = True
@@ -371,7 +373,6 @@ def home():
         if 'mobile' in user_agent:
             return render_template("home-mobile.html", drugs=filtered_drugs, user=current_user, disease_prevalence=disease_prevalence, result_string_pred=result_string_pred)
         return render_template("home.html", drugs=filtered_drugs, user=current_user, disease_prevalence=disease_prevalence, result_string_pred=result_string_pred)
-    
     
     if not Drugs.query.first():  # Check if the database is empty
         BASE_DIR = os.path.dirname(os.path.abspath(__file__))  # Get the directory of the current file
