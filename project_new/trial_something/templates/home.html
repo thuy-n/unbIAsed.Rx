@@ -170,24 +170,13 @@
 
   
   <script>
+    const resultStringPred = "{{ result_string_pred|escapejs }}";
     document.querySelectorAll('.calcRisk').forEach(button => {
         button.addEventListener('click', function() {
             const drugId = this.getAttribute('data-drug-id');
-            const form = document.getElementById(`calcRiskForm${drugId}`);
-            const formData = new FormData(form);
+            const resultStringElement = document.getElementById(`resultString${drugId}`);
 
-            fetch(form.action, {
-                method: 'POST',
-                body: formData,
-            })
-            .then(response => response.text())
-            .then(html => {
-                const parser = new DOMParser();
-                const doc = parser.parseFromString(html, 'text/html');
-                const resultString = doc.querySelector(`#resultString${drugId}`).innerHTML;
-                document.getElementById(`resultString${drugId}`).innerHTML = resultString;
-            })
-            .catch(error => console.error('Error:', error));
+            resultStringElement.innerHTML = resultStringPred;
         });
     });
 
