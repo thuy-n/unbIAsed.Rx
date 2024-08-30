@@ -117,10 +117,9 @@
                           </div>
                         </div>
 
-                        <form method="post" id="calcRisk{{ drug.id }}" class="mt-3" action="/home">
+                        <form method="post" id="save-unsave" class="mt-3" action="/home">
                           
                           <div class="master" action="{{ url_for('views.save_drug') if not drug.is_saved else url_for('views.unsave_drug') }}">
-                            <input type="hidden" name="drug_id" value="{{ drug.id }}">
                             {% if current_user.is_authenticated %}
                             <!-- If user is logged in, show the save/unsave button -->
                               {% if drug.is_saved %}
@@ -134,17 +133,18 @@
                             {% endif %}
                           </button>
                         </div>
-                          
+                         
+                        </form>
+
+                        <form method="post" id="calcRiskForm{{ drug.id }}" class="mt-3" action="/home/calculate-risk">
+                          <input type="hidden" name="drug_id" value="{{ drug.id }}">
                           <input type="hidden" name="drugName" id="drugName{{ drug.id }}" value="{{ drug.name }}">
                           <input type="hidden" name="drugCondition" id="drugCondition{{ drug.id }}" value="{{ drug.disease }}">
                           <button type="button" id="calcRiskButton{{ drug.id }}" data-drug-id="{{ drug.id }}" class="btn btn-start calcRisk">Calculate Risk</button>
                           <br><br>
-                          <div class="container position-relative rounded " id="resultString{{ drug.id }}">
-                            {{ result_string_pred }}
+                          <div class="container position-relative rounded" id="resultString{{ drug.id }}">
+                              {{ result_string_pred }}
                           </div>
-                            
-                          
-                         
                         </form>
 
                         <!-- <form method="post" id="calcRiskForm" class="mt-3">
@@ -170,16 +170,24 @@
 
   
   <script>
-    const resultStringPred = "{{ result_string_pred }}";
     document.querySelectorAll('.calcRisk').forEach(button => {
         button.addEventListener('click', function() {
             const drugId = this.getAttribute('data-drug-id');
-            const resultStringElement = document.getElementById(`resultString${drugId}`);
+            const form = document.getElementById(`calcRiskForm${drugId}`);
+            const formData = new FormData(form);
 
-            resultStringElement.innerHTML = resultStringPred;
+            fetch('/calcRisk', {
+                method: 'POST',
+                body: formData,
+            })
+            .then(response => response.json())
+            .then(data => {
+                const resultStringElement = document.getElementById(`resultString${drugId}`);
+                resultStringElement.innerHTML = data.result_string_pred;
+            })
+            .catch(error => console.error('Error:', error));
         });
     });
-
     
     document.getElementById('saveButton').addEventListener('click', function() {
       var cardContainer = document.getElementById('cardContainer');
