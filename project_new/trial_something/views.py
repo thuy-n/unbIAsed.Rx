@@ -268,7 +268,7 @@ def calc_risk():
     # drug = Drugs.query.get(drug_id)
 
     # Convert drug_id to integer
-    result_drug_id = int(drug_id)
+    drug_id = int(drug_id)
 
     if disease_search == None or drug_search == None:
         errorFlash = True
