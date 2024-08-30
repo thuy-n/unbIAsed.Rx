@@ -249,6 +249,7 @@ def get_model(drug, disease):
 
 @views.route('/home/calculate-risk', methods=['POST'])
 def calc_risk():
+    disease_prevalence = None
     prediction_risk = ""
     flash_message_risk = ""
     errorFlash = False
@@ -346,8 +347,8 @@ def calc_risk():
 
     user_agent = request.headers.get('User-Agent').lower()
     if 'mobile' in user_agent:
-        return render_template("home-mobile.html", drugs=drugs, user=current_user, result_string_pred=result_string_pred, result_drug_id=drug_id)
-    return render_template("home.html", drugs=drugs, user=current_user,  result_string_pred=result_string_pred, result_drug_id=drug_id)
+        return render_template("home-mobile.html", drugs=drugs, user=current_user, disease_prevalence=disease_prevalence, result_string_pred=result_string_pred, result_drug_id=drug_id)
+    return render_template("home.html", drugs=drugs, user=current_user, disease_prevalence=disease_prevalence, result_string_pred=result_string_pred, result_drug_id=drug_id)
 
 
 @views.route('/home', methods=['GET', 'POST']) 
