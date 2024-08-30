@@ -217,7 +217,7 @@
     }
 
     window.onload = function() {
-        var drugId = "{{ drug.id }}";
+        var drugId = "{{ drug_id }}";
         var resultDiv = document.getElementById(`resultString${drugId}`);
         if (!resultDiv.classList.contains('hidden')) {
             var calculatingModal = bootstrap.Modal.getInstance(document.getElementById('calculatingModal'));
