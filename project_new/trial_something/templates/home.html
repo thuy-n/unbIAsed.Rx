@@ -140,7 +140,7 @@
                           <input type="hidden" name="drug_id" value="{{ drug.id }}">
                           <input type="hidden" name="drugName" id="drugName{{ drug.id }}" value="{{ drug.name }}">
                           <input type="hidden" name="drugCondition" id="drugCondition{{ drug.id }}" value="{{ drug.disease }}">
-                          <button type="submit" id="calcRiskButton{{ drug.id }}" data-drug-id="{{ drug.id }}" class="btn btn-start calcRisk">Calculate Risk</button>
+                          <button type="submit" onclick="performPrediction()" id="calcRiskButton{{ drug.id }}" data-drug-id="{{ drug.id }}" class="btn btn-start calcRisk">Calculate Risk</button>
                           <br><br>
                           <div class="container position-relative rounded" id="resultString{{ drug.id }}">
                             
@@ -150,6 +150,23 @@
                             
                           </div>
                         </form>
+
+                        <!-- Calculating Modal -->
+                        <div class="modal" tabindex="-1" role="dialog" id="calculatingModal">
+                          <div class="modal-dialog" role="document">
+                              <div class="modal-content">
+                                  <div class="modal-header">
+                                      <h5 class="modal-title">Processing  &nbsp;</h5>
+                                      <div class="spinner-border" role="status" style="color:#CEE3EA">
+                                          <span class="visually-hidden"></span>
+                                      </div>
+                                  </div>
+                                  <div class="modal-body">
+                                      <p>Thank you for your patience.</p>
+                                  </div>
+                              </div>
+                          </div>
+                        </div>
 
                         <!-- <form method="post" id="calcRiskForm" class="mt-3">
                           <input type="hidden" name="drugName" id="drugName" value="{{ drug.name }}">
@@ -174,24 +191,42 @@
 
   
   <script>
-    // document.querySelectorAll('.calcRisk').forEach(button => {
-    //     button.addEventListener('click', function() {
-    //         const drugId = this.getAttribute('data-drug-id');
-    //         const form = document.getElementById(`calcRiskForm${drugId}`);
-    //         const formData = new FormData(form);
+    function performPrediction() {
+        var calculatingModal = new bootstrap.Modal(document.getElementById('calculatingModal'));
+        calculatingModal.show();
+        // Set up a MutationObserver to watch for changes in the 'hidden' class of the result div
+        var resultDiv = document.getElementById('result');
+        var observer = new MutationObserver(function(mutations) {
+            mutations.forEach(function(mutation) {
+                if (!resultDiv.classList.contains('hidden')) {
+                    // Once the result is displayed, hide the modal and disconnect the observer
+                    calculatingModal.hide();
+                    observer.disconnect();
+                }
+            });
+        });
 
-    //         fetch('/home/calculate-risk', {
-    //             method: 'POST',
-    //             body: formData,
-    //         })
-    //         .then(response => response.json())
-    //         .then(data => {
-    //             const resultStringElement = document.getElementById(`resultString${drugId}`);
-    //             resultStringElement.innerHTML = data.result_string_pred;
-    //         })
-    //         .catch(error => console.error('Error:', error));
-    //     });
-    // });
+        var config = { attributes: true, childList: false, characterData: false, attributeFilter: ['class'] };
+        var target = document.getElementById('result');
+        observer.observe(target, config);
+
+        
+    }
+
+    window.onload = function() {
+        if (!document.getElementById('result').classList.contains('hidden')) {
+            var calculatingModal = bootstrap.Modal.getInstance(document.getElementById('calculatingModal'));
+            if (calculatingModal) {
+                calculatingModal.hide();
+            }
+        }
+        if (!document.getElementById('flash-messages').classList.contains('hidden')) {
+            var calculatingModal = bootstrap.Modal.getInstance(document.getElementById('calculatingModal'));
+            if (calculatingModal) {
+                calculatingModal.hide();
+            }
+        }
+    };
     
     document.getElementById('saveButton').addEventListener('click', function() {
       var cardContainer = document.getElementById('cardContainer');
