@@ -142,12 +142,17 @@
                           <input type="hidden" name="drugCondition" id="drugCondition{{ drug.id }}" value="{{ drug.disease }}">
                           <button type="submit" onclick="performPrediction()" id="calcRiskButton{{ drug.id }}" data-drug-id="{{ drug.id }}" class="btn btn-start calcRisk">Calculate Risk</button>
                           <br><br>
-                          <div class="container position-relative rounded" id="resultString{{ drug.id }}">
+                          <div class="container position-relative rounded {{ 'hidden' if result_string_pred is none or result_string_pred|length == 0 }}" id="resultString{{ drug.id }}">
                             
                             {% if result_drug_id == drug.id %}
                               {{ result_string_pred|safe }}
                             {% endif %}
                             
+                          </div>
+
+                          <div class="container position-relative rounded shadow {{ 'hidden' if result_string is none or result_string|length == 0 }}" 
+                          style="background-color: #CEE3EA; {{ 'padding: 20px;' if result_string is not none and result_string|length > 0 }}" id="result">
+                          {{ result_string | safe}}
                           </div>
                         </form>
 
@@ -191,11 +196,12 @@
 
   
   <script>
-    function performPrediction() {
+    
+    function performPrediction(drugId) {
         var calculatingModal = new bootstrap.Modal(document.getElementById('calculatingModal'));
         calculatingModal.show();
         // Set up a MutationObserver to watch for changes in the 'hidden' class of the result div
-        var resultDiv = document.getElementById('result');
+        var resultDiv = document.getElementById(`resultString${drugId}`);
         var observer = new MutationObserver(function(mutations) {
             mutations.forEach(function(mutation) {
                 if (!resultDiv.classList.contains('hidden')) {
@@ -207,19 +213,19 @@
         });
 
         var config = { attributes: true, childList: false, characterData: false, attributeFilter: ['class'] };
-        var target = document.getElementById('result');
-        observer.observe(target, config);
-
-        
+        observer.observe(resultDiv, config);
     }
 
     window.onload = function() {
-        if (!document.getElementById('result').classList.contains('hidden')) {
+        var drugId = "{{ drug.id }}";
+        var resultDiv = document.getElementById(`resultString${drugId}`);
+        if (!resultDiv.classList.contains('hidden')) {
             var calculatingModal = bootstrap.Modal.getInstance(document.getElementById('calculatingModal'));
             if (calculatingModal) {
                 calculatingModal.hide();
             }
         }
+    
         if (!document.getElementById('flash-messages').classList.contains('hidden')) {
             var calculatingModal = bootstrap.Modal.getInstance(document.getElementById('calculatingModal'));
             if (calculatingModal) {
