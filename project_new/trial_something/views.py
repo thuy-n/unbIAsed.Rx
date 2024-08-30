@@ -247,7 +247,7 @@ def get_model(drug, disease):
     return np.around(prediction[0], 2) 
 
 
-@views.route('/home/calculate-risk', methods=['POST'])
+@views.route('/home/calculate-risk', methods=['GET, POST'])
 def calc_risk():
     disease_prevalence = None
     prediction_risk = ""
@@ -343,7 +343,7 @@ def calc_risk():
         f"Female patients have an additional <b>{R}%</b> risk of developing a reaction compared to male patients.<br>"
     )
     result_string_pred = result_string_pred  
-    print(result_string_pred)   
+       
 
     user_agent = request.headers.get('User-Agent').lower()
     if 'mobile' in user_agent:
@@ -354,124 +354,18 @@ def calc_risk():
 @views.route('/home', methods=['GET', 'POST']) 
 def home():
     disease_prevalence = None
-    result_string = ""
     filtered_drugs = []
-    prediction_risk = ""
-    flash_message_risk = ""
-    errorFlash = False
     # prediction_risk_male = ""
     result_string_pred = ""
     
-    drug_search = ""
-    disease_search = "" 
-    
-    print("Request method:", request.method)  # Debug print statement
-
-    
     if request.method == 'POST':
         drug_filter = request.form.get('drug_filter')
-        # calcRiskButton = request.form.get('calcRiskB')
-        action = request.form.get('action')  
-        drug_id = request.form.get('drug_id')
-
-        print("Form data:", request.form)  # Debug print statement
-        print("calcRiskButton:", action)  # Debug print statement
-
 
         if drug_filter:
             filtered_drugs = Drugs.query.filter(Drugs.disease.ilike(f'%{drug_filter}%')).all()
             
         if drug_filter == "ALL":
             filtered_drugs = Drugs.query.all()
-
-        # if action == 'calcRisk':
-        #     print("Calculating risk...")  # Debug print statement
-            
-        #     drug_search = request.form.get('drugName')
-        #     disease_search = request.form.get('drugCondition')
-
-        #     if disease_search == None or drug_search == None:
-        #         errorFlash = True
-        #         # flash('Please fill in all fields', 'error')
-        #         flash_message_risk = 'Please fill in all fields'
-        #         user_agent = request.headers.get('User-Agent').lower()
-        #         if 'mobile' in user_agent:
-        #             return render_template("identify-mobile.html", flash_message_risk=flash_message_risk, user=current_user, errorFlash=errorFlash)    
-        #         return render_template("identify.html", flash_message_risk=flash_message_risk, user=current_user,errorFlash=errorFlash)
-
-        #     drug_search = drug_search.upper()
-        #     disease_search = disease_search.upper()
-
-        #     print(f"Drug Search: {drug_search}, Disease Search: {disease_search}") #debug
-        #     print(f"Prediction Risk: {prediction_risk}")
-
-        #     prediction_risk = get_model(drug_search, disease_search)
-        #     F = 0
-        #     M = 0
-
-        #     if prediction_risk is not None:
-        #         R = 0
-        #         M = 100 - prediction_risk
-        #         F = prediction_risk
-
-        #         if current_user.is_authenticated and current_user.sexe is not None:
-                    
-        #             if current_user.sexe.lower() == 'male':
-
-        #                 if M > F:
-        #                     R = M - F
-        #                     R = str(round(R,2))
-        #                     M = str(round(M,2))
-        #                     result_string_pred = (
-        #         f"The predicted risk for male patients of developing an adverse drug reaction to {drug_search} given the condition {disease_search} is <b>{M}%</b>. <br><br>"
-        #         f"Male patients have a <b>{R}%</b> lower risk of developing a reaction compared to female patients. <br>"
-        #     )
-        #                 else:
-        #                     R = F - M
-        #                     R = str(round(R,2))
-        #                     M = str(round(M,2))
-        #                     result_string_pred = (
-        #         f"The predicted risk for male patients of developing an adverse drug reaction to {drug_search} given the condition {disease_search} is <b>{M}%</b>. <br><br>"
-        #         f"Male patients have an additional <b>{R}%</b> risk of developing a reaction compared to female patients.<br> "
-            
-        #     )
-        #             elif current_user.sexe.lower() == 'female':
-        #                 if F > M:
-        #                     R = F - M
-        #                     R = str(round(R,2))
-        #                     F = str(round(F,2))
-        #                     result_string_pred = (
-        #         f"The predicted risk for female patients of developing an adverse drug reaction to {drug_search} given the condition {disease_search} is <b>{F}%</b>. <br><br>"
-        #         f"Female patients have a <b>{R}%</b> lower risk of developing a reaction compared to male patients. <br>"
-                
-        #     )
-        #                 else:
-        #                     R = M - F
-        #                     R = str(round(R,2))
-        #                     F = str(round(F,2))
-        #                     result_string_pred = (
-        #         f"The predicted risk for female patients of developing an adverse drug reaction to {drug_search} given the condition {disease_search} is <b>{F}%</b>. <br><br>"
-        #         f"Female patients have an additional <b>{R}%</b> risk of developing a reaction compared to male patients. <br>"
-        #     )
-        #         else:
-        #             if F > M:
-        #                 R = F - M
-        #                 R = str(round(R,2))
-        #                 F = str(round(F,2))
-        #                 result_string_pred = (
-        #         f"The predicted risk for female patients of developing an adverse drug reaction to {drug_search} given the condition {disease_search} is <b>{F}%</b>. <br><br>"
-        #         f"Female patients have a <b>{R}%</b> lower risk of developing a reaction compared to male patients.<br>"
-        #     )
-        #             else:
-        #                 R = M - F
-        #                 R = str(round(R,2))
-        #                 F = str(round(F,2))
-        #                 result_string_pred = (
-        #         f"The predicted risk for female patients of developing an adverse drug reaction to {drug_search} given the condition {disease_search} is <b>{F}%</b>. <br><br>"
-        #         f"Female patients have an additional <b>{R}%</b> risk of developing a reaction compared to male patients.<br>"
-        #     )
-        #     result_string_pred = result_string_pred  
-        #     print(result_string_pred)   
 
         user_agent = request.headers.get('User-Agent').lower()
         if 'mobile' in user_agent:
