@@ -137,7 +137,7 @@
                           
                           <input type="hidden" name="drugName" id="drugName{{ drug.id }}" value="{{ drug.name }}">
                           <input type="hidden" name="drugCondition" id="drugCondition{{ drug.id }}" value="{{ drug.disease }}">
-                          <button type="submit" name="action" value="calcRisk" data-drug-id = "{{ drug.id }}" class="btn btn-start calcRisk">Calculate Risk</button>  
+                          <button type="button" id="calcRiskButton{{ drug.id }}" data-drug-id="{{ drug.id }}" class="btn btn-start calcRisk">Calculate Risk</button>
                           <br><br>
                           <div class="container position-relative rounded " id="resultString{{ drug.id }}">
                             {{ result_string_pred }}
@@ -171,26 +171,24 @@
   
   <script>
     document.querySelectorAll('.calcRisk').forEach(button => {
-      button.addEventListener('click', function(event) {
-          // event.preventDefault(); // Prevent the form from submitting the traditional way
-          const drugId = this.getAttribute('data-drug-id');
-          const form = document.getElementById(`calcRiskForm${drugId}`);
-          const formData = new FormData(form);
+        button.addEventListener('click', function() {
+            const drugId = this.getAttribute('data-drug-id');
+            const form = document.getElementById(`calcRiskForm${drugId}`);
+            const formData = new FormData(form);
 
-          fetch(form.action, {
-              method: 'POST',
-              body: formData,
-          })
-          .then(response => response.json())
-          .then(data => {
-              if (data.error) {
-                  alert(data.flash_message_risk);
-              } else {
-                  document.getElementById(`resultString${drugId}`).innerHTML = data.result_string_pred;
-              }
-          })
-          .catch(error => console.error('Error:', error));
-      });
+            fetch(form.action, {
+                method: 'POST',
+                body: formData,
+            })
+            .then(response => response.text())
+            .then(html => {
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(html, 'text/html');
+                const resultString = doc.querySelector(`#resultString${drugId}`).innerHTML;
+                document.getElementById(`resultString${drugId}`).innerHTML = resultString;
+            })
+            .catch(error => console.error('Error:', error));
+        });
     });
 
     
