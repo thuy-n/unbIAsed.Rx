@@ -247,7 +247,7 @@ def get_model(drug, disease):
     return np.around(prediction[0], 2) 
 
 
-@views.route('/home/calculate-risk', methods=['POST'])
+@views.route('/calculate-risk', methods=['POST'])
 def calc_risk():
     disease_prevalence = None
     prediction_risk = ""

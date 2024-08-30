@@ -136,7 +136,7 @@
                          
                         </form>
 
-                        <form method="post" id="calcRiskForm{{ drug.id }}" class="mt-3" action="/home/calculate-risk">
+                        <form method="post" id="calcRiskForm{{ drug.id }}" class="mt-3" action="/calculate-risk">
                           <input type="hidden" name="drug_id" value="{{ drug.id }}">
                           <input type="hidden" name="drugName" id="drugName{{ drug.id }}" value="{{ drug.name }}">
                           <input type="hidden" name="drugCondition" id="drugCondition{{ drug.id }}" value="{{ drug.disease }}">
