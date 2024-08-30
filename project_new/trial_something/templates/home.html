@@ -172,7 +172,7 @@
   <script>
     document.querySelectorAll('.calcRisk').forEach(button => {
       button.addEventListener('click', function(event) {
-          event.preventDefault(); // Prevent the form from submitting the traditional way
+          // event.preventDefault(); // Prevent the form from submitting the traditional way
           const drugId = this.getAttribute('data-drug-id');
           const form = document.getElementById(`calcRiskForm${drugId}`);
           const formData = new FormData(form);
