@@ -260,12 +260,17 @@ def home():
     drug_search = ""
     disease_search = "" 
     
+    print("Request method:", request.method)  # Debug print statement
+
+    
     if request.method == 'POST':
         drug_filter = request.form.get('drug_filter')
-        calcRiskButton = request.form.get('calcRiskB')
+        # calcRiskButton = request.form.get('calcRiskB')
+        action = request.form.get('action')  
+        drug_id = request.form.get('drug_id')
 
         print("Form data:", request.form)  # Debug print statement
-        print("calcRiskButton:", calcRiskButton)  # Debug print statement
+        print("calcRiskButton:", action)  # Debug print statement
 
 
         if drug_filter:
@@ -274,8 +279,8 @@ def home():
         if drug_filter == "ALL":
             filtered_drugs = Drugs.query.all()
 
-        if calcRiskButton == 'calcRiskB':
-            print("Calculating Risk")
+        if action == 'calcRisk':
+            print("Calculating risk...")  # Debug print statement
             
             drug_search = request.form.get('drugName')
             disease_search = request.form.get('drugCondition')
@@ -361,7 +366,7 @@ def home():
                 f"Female patients have an additional <b>{R}%</b> risk of developing a reaction compared to male patients.<br>"
             )
             result_string_pred = result_string_pred  
-            # print(result_string_pred)   
+            print(result_string_pred)   
 
         user_agent = request.headers.get('User-Agent').lower()
         if 'mobile' in user_agent:

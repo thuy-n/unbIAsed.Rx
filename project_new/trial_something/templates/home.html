@@ -137,7 +137,7 @@
                           
                           <input type="hidden" name="drugName" id="drugName{{ drug.id }}" value="{{ drug.name }}">
                           <input type="hidden" name="drugCondition" id="drugCondition{{ drug.id }}" value="{{ drug.disease }}">
-                          <button type="submit" name="calcRiskB" data-drug-id = "{{ drug.id }}" class="btn btn-start calcRisk">Calculate Risk</button>  
+                          <button type="submit" name="action" value="calcRisk" data-drug-id = "{{ drug.id }}" class="btn btn-start calcRisk">Calculate Risk</button>  
                           <br><br>
                           <div class="container position-relative rounded " id="resultString{{ drug.id }}">
                             {{ result_string_pred }}
