@@ -247,7 +247,7 @@ def get_model(drug, disease):
     return np.around(prediction[0], 2) 
 
 
-@views.route('/home/calculate-risk', methods=['GET', 'POST'])
+@views.route('/home/calculate-risk', methods=['POST'])
 def calc_risk():
     disease_prevalence = None
     prediction_risk = ""
@@ -265,7 +265,7 @@ def calc_risk():
 
     drugs = Drugs.query.all()
     drug_id = request.form.get('drug_id')
-    drug = Drugs.query.get(drug_id)
+    # drug = Drugs.query.get(drug_id)
 
     if disease_search == None or drug_search == None:
         errorFlash = True
@@ -273,8 +273,8 @@ def calc_risk():
         flash_message_risk = 'Please fill in all fields'
         user_agent = request.headers.get('User-Agent').lower()
         if 'mobile' in user_agent:
-            return render_template("identify-mobile.html", flash_message_risk=flash_message_risk, user=current_user, errorFlash=errorFlash)    
-        return render_template("identify.html", flash_message_risk=flash_message_risk, user=current_user,errorFlash=errorFlash)
+            return render_template("home.html", flash_message_risk=flash_message_risk, user=current_user, errorFlash=errorFlash)    
+        return render_template("home.html", flash_message_risk=flash_message_risk, user=current_user,errorFlash=errorFlash)
 
     drug_search = drug_search.upper()
     disease_search = disease_search.upper()
@@ -359,6 +359,8 @@ def home():
     filtered_drugs = []
     # prediction_risk_male = ""
     result_string_pred = ""
+    result_drug_id = None
+    drug_id = request.form.get('drug_id')
     
     if request.method == 'POST':
         drug_filter = request.form.get('drug_filter')
@@ -371,8 +373,8 @@ def home():
 
         user_agent = request.headers.get('User-Agent').lower()
         if 'mobile' in user_agent:
-            return render_template("home-mobile.html", drugs=filtered_drugs, user=current_user, disease_prevalence=disease_prevalence, result_string_pred=result_string_pred)
-        return render_template("home.html", drugs=filtered_drugs, user=current_user, disease_prevalence=disease_prevalence, result_string_pred=result_string_pred)
+            return render_template("home-mobile.html", result_drug_id=result_drug_id, drugs=filtered_drugs, user=current_user, disease_prevalence=disease_prevalence, result_string_pred=result_string_pred)
+        return render_template("home.html", result_drug_id=result_drug_id, drugs=filtered_drugs, user=current_user, disease_prevalence=disease_prevalence, result_string_pred=result_string_pred)
     
     if not Drugs.query.first():  # Check if the database is empty
         BASE_DIR = os.path.dirname(os.path.abspath(__file__))  # Get the directory of the current file
