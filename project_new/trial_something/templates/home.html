@@ -205,12 +205,7 @@
                     calculatingModal.hide();
                     observer.disconnect();
                     // Scroll to the accordion element
-                    var accordionElement = document.getElementById(`accordionExample${drugId}`);
-                    if (accordionElement) {
-                        accordionElement.scrollIntoView({ behavior: 'smooth' });
-                    } else {
-                        console.error(`Element with ID accordionExample${drugId} not found.`);
-                    }
+                    scrollToAccordion(drugId);
                 }
             });
         });
@@ -219,9 +214,22 @@
         observer.observe(resultDiv, config);
     }
 
+    function scrollToAccordion(drugId) {
+        var accordionElement = document.getElementById(`accordionExample${drugId}`);
+        if (accordionElement) {
+            accordionElement.scrollIntoView({ behavior: 'smooth' });
+        } else {
+            console.error(`Element with ID accordionExample${drugId} not found.`);
+        }
+    }
 
     window.onload = function() {
-        var drugId = "{{ result_drug_id }}";
+        var drugId = "{{ drug.id }}";
+        if (!drugId) {
+            console.error('Drug ID is not available.');
+            return;
+        }
+
         var resultDiv = document.getElementById(`resultString${drugId}`);
         if (!resultDiv.classList.contains('hidden')) {
             var calculatingModal = bootstrap.Modal.getInstance(document.getElementById('calculatingModal'));
@@ -229,8 +237,7 @@
                 calculatingModal.hide();
             }
             // Scroll to the accordion element
-            document.getElementById(`accordionExample${drugId}`).scrollIntoView({ behavior: 'smooth' });
-        }
+            scrollToAccordion(drugId);        }
     };
     
     document.getElementById('saveButton').addEventListener('click', function() {
