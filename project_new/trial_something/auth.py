@@ -309,7 +309,8 @@ def search():
     if disease_search:
         disease_search = disease_search.upper()
 
-    prediction_risk = get_model(drug_search, disease_search)
+    if (drug_search or disease_search):
+        prediction_risk = get_model(drug_search, disease_search)
 
     if prediction_risk is not None:
     # Convert drug_id to integer
