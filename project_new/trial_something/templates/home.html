@@ -149,11 +149,7 @@
                             {% endif %}
                             
                           </div>
-
-                          <div class="container position-relative rounded shadow {{ 'hidden' if result_string is none or result_string|length == 0 }}" 
-                          style="background-color: #CEE3EA; {{ 'padding: 20px;' if result_string is not none and result_string|length > 0 }}" id="result">
-                          {{ result_string | safe}}
-                          </div>
+            
                         </form>
 
                         <!-- Calculating Modal -->
@@ -208,6 +204,8 @@
                     // Once the result is displayed, hide the modal and disconnect the observer
                     calculatingModal.hide();
                     observer.disconnect();
+                    // Scroll to the accordion element
+                    document.getElementById(`accordionExample${drugId}`).scrollIntoView({ behavior: 'smooth' });
                 }
             });
         });
@@ -217,21 +215,16 @@
     }
 
     window.onload = function() {
-        var drugId = "{{ drug_id }}";
+        var drugId = "{{ drug.id }}";
         var resultDiv = document.getElementById(`resultString${drugId}`);
         if (!resultDiv.classList.contains('hidden')) {
             var calculatingModal = bootstrap.Modal.getInstance(document.getElementById('calculatingModal'));
             if (calculatingModal) {
                 calculatingModal.hide();
             }
+            // Scroll to the accordion element
+            document.getElementById(`accordionExample${drugId}`).scrollIntoView({ behavior: 'smooth' });
         }
-    
-        // if (!document.getElementById('flash-messages').classList.contains('hidden')) {
-        //     var calculatingModal = bootstrap.Modal.getInstance(document.getElementById('calculatingModal'));
-        //     if (calculatingModal) {
-        //         calculatingModal.hide();
-        //     }
-        // }
     };
     
     document.getElementById('saveButton').addEventListener('click', function() {
