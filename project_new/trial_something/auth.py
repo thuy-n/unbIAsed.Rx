@@ -174,6 +174,7 @@ def about():
     return render_template('about.html', user=current_user)
 
 
+
 @auth.route('/sign-up', methods=['GET', 'POST'])
 def sign_up():
     if request.method == 'POST':

@@ -144,9 +144,9 @@
                           <br><br>
                           <div class="container position-relative rounded {{ 'hidden' if result_string_pred is none or result_string_pred|length == 0 }}" id="resultString{{ result_drug_id }}">
                             
-                            {% if result_drug_id == drug.id %}
+                            <!-- {% if result_drug_id == drug.id %} -->
                               {{ result_string_pred|safe }}
-                            {% endif %}
+                            <!-- {% endif %} -->
                             
                           </div>
             
@@ -190,9 +190,8 @@
   </div>
 </div>
 
-  
   <script>
-    var drugId = "{{ result_drug_id }}";
+    
     function performPrediction(drugId) {
         var calculatingModal = new bootstrap.Modal(document.getElementById('calculatingModal'));
         calculatingModal.show();
@@ -224,23 +223,34 @@
     }
 
     window.onload = function() {
-
-        
-
-        var resultDiv = document.getElementById(`resultString${drugId}`);
-        if (!resultDiv.classList.contains('hidden')) {
-            var calculatingModal = bootstrap.Modal.getInstance(document.getElementById('calculatingModal'));
-            if (calculatingModal) {
-                calculatingModal.hide();
+      var drugId = "{{ result_drug_id }}";
+      
+      if(window.location.hash) {
+            var hash = window.location.hash.substring(1); // Get the hash, minus the '#'
+            var targetElement = document.getElementById(hash);
+            if(targetElement) {
+                targetElement.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
             }
-            // Scroll to the accordion element
-            scrollToAccordion(drugId);        
-        }
+            history.pushState("", document.title, window.location.pathname + window.location.search);
+      }
 
-        if (resultDiv && !resultDiv.classList.contains('hidden')) {
+      var resultDiv = document.getElementById(`resultString${drugId}`);
+      if (!resultDiv.classList.contains('hidden')) {
+          var calculatingModal = bootstrap.Modal.getInstance(document.getElementById('calculatingModal'));
+          if (calculatingModal) {
+              calculatingModal.hide();
+          }
           // Scroll to the accordion element
-          scrollToAccordion(drugId);
-        }
+          scrollToAccordion(drugId);        
+      }
+
+      if (resultDiv && !resultDiv.classList.contains('hidden')) {
+        // Scroll to the accordion element
+        scrollToAccordion(drugId);
+      }
     };
     
     document.getElementById('saveButton').addEventListener('click', function() {
