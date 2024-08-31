@@ -270,6 +270,7 @@ def calc_risk():
     if not drug_id or not drug_search or not disease_search:
         return redirect(url_for('views.home'))
 
+
     if disease_search == None or drug_search == None:
         errorFlash = True
         # flash('Please fill in all fields', 'error')
@@ -354,6 +355,7 @@ def calc_risk():
     )
     result_string_pred = result_string_pred  
        
+
     user_agent = request.headers.get('User-Agent').lower()
     if 'mobile' in user_agent:
         return render_template("home-mobile.html", drugs=drugs, user=current_user, disease_prevalence=disease_prevalence, result_string_pred=result_string_pred, result_drug_id=drug_id)
@@ -368,10 +370,10 @@ def home():
     result_string_pred = ""
     result_drug_id = None
     drug_id = request.form.get('drug_id')
-    drugs = Drugs.query.all()
     
     if request.method == 'POST':
         drug_filter = request.form.get('drug_filter')
+        drugs = Drugs.query.all()
 
         if drug_filter:
             drugs = Drugs.query.filter(Drugs.disease.ilike(f'%{drug_filter}%')).all()
@@ -381,8 +383,8 @@ def home():
 
         user_agent = request.headers.get('User-Agent').lower()
         if 'mobile' in user_agent:
-            return render_template("home-mobile.html", result_drug_id=result_drug_id, drugs=drugs, user=current_user, disease_prevalence=disease_prevalence, result_string_pred=result_string_pred)
-        return render_template("home.html", result_drug_id=result_drug_id, drugs=drugs, user=current_user, disease_prevalence=disease_prevalence, result_string_pred=result_string_pred)
+            return render_template("home-mobile.html", drug_id=drug_id, result_drug_id=result_drug_id, drugs=drugs, user=current_user, disease_prevalence=disease_prevalence, result_string_pred=result_string_pred)
+        return render_template("home.html", drug_id=drug_id, result_drug_id=result_drug_id, drugs=drugs, user=current_user, disease_prevalence=disease_prevalence, result_string_pred=result_string_pred)
     
     if not Drugs.query.first():  # Check if the database is empty
         BASE_DIR = os.path.dirname(os.path.abspath(__file__))  # Get the directory of the current file
@@ -427,6 +429,8 @@ def home():
             db.session.add(drug)
 
         db.session.commit()
+
+    drugs = Drugs.query.all()
 
     user_agent = request.headers.get('User-Agent').lower()
     if 'mobile' in user_agent:
