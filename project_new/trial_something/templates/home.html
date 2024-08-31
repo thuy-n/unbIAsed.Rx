@@ -142,7 +142,7 @@
                           <input type="hidden" name="drugCondition" id="drugCondition{{ drug.id }}" value="{{ drug.disease }}">
                           <button type="submit" onclick="performPrediction()" id="calcRiskButton{{ drug.id }}" data-drug-id="{{ drug.id }}" class="btn btn-start calcRisk">Calculate Risk</button>
                           <br><br>
-                          <div class="container position-relative rounded {{ 'hidden' if result_string_pred is none or result_string_pred|length == 0 }}" id="resultString{{ drug.id }}">
+                          <div class="container position-relative rounded {{ 'hidden' if result_string_pred is none or result_string_pred|length == 0 }}" id="resultString{{ result_drug_id }}">
                             
                             {% if result_drug_id == drug.id %}
                               {{ result_string_pred|safe }}
