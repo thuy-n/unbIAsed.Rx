@@ -304,8 +304,10 @@ def search():
     #         return render_template("search_results-mobile.html", flash_message_risk=flash_message_risk, user=current_user, errorFlash=errorFlash)    
     #     return render_template("search_results.html", flash_message_risk=flash_message_risk, user=current_user,errorFlash=errorFlash)
 
-    drug_search = drug_search.upper()
-    disease_search = disease_search.upper()
+    if drug_search:
+        drug_search = drug_search.upper()
+    if disease_search:
+        disease_search = disease_search.upper()
 
     prediction_risk = get_model(drug_search, disease_search)
 
