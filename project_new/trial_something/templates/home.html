@@ -234,7 +234,13 @@
                 calculatingModal.hide();
             }
             // Scroll to the accordion element
-            scrollToAccordion(drugId);        }
+            scrollToAccordion(drugId);        
+        }
+
+        if (resultDiv && !resultDiv.classList.contains('hidden')) {
+          // Scroll to the accordion element
+          scrollToAccordion(drugId);
+        }
     };
     
     document.getElementById('saveButton').addEventListener('click', function() {
