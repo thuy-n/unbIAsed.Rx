@@ -368,20 +368,21 @@ def home():
     result_string_pred = ""
     result_drug_id = None
     drug_id = request.form.get('drug_id')
+    drugs = Drugs.query.all()
     
     if request.method == 'POST':
         drug_filter = request.form.get('drug_filter')
 
         if drug_filter:
-            filtered_drugs = Drugs.query.filter(Drugs.disease.ilike(f'%{drug_filter}%')).all()
+            drugs = Drugs.query.filter(Drugs.disease.ilike(f'%{drug_filter}%')).all()
             
         if drug_filter == "ALL":
-            filtered_drugs = Drugs.query.all()
+            drugs = Drugs.query.all()
 
         user_agent = request.headers.get('User-Agent').lower()
         if 'mobile' in user_agent:
-            return render_template("home-mobile.html", result_drug_id=result_drug_id, filtered_drugs=drugs, user=current_user, disease_prevalence=disease_prevalence, result_string_pred=result_string_pred)
-        return render_template("home.html", result_drug_id=result_drug_id, filtered_drugs=drugs, user=current_user, disease_prevalence=disease_prevalence, result_string_pred=result_string_pred)
+            return render_template("home-mobile.html", result_drug_id=result_drug_id, drugs=drugs, user=current_user, disease_prevalence=disease_prevalence, result_string_pred=result_string_pred)
+        return render_template("home.html", result_drug_id=result_drug_id, drugs=drugs, user=current_user, disease_prevalence=disease_prevalence, result_string_pred=result_string_pred)
     
     if not Drugs.query.first():  # Check if the database is empty
         BASE_DIR = os.path.dirname(os.path.abspath(__file__))  # Get the directory of the current file
@@ -426,8 +427,6 @@ def home():
             db.session.add(drug)
 
         db.session.commit()
-
-    drugs = Drugs.query.all()
 
     user_agent = request.headers.get('User-Agent').lower()
     if 'mobile' in user_agent:
