@@ -192,7 +192,7 @@
 
   
   <script>
-    
+    var drugId = "{{ result_drug_id }}";
     function performPrediction(drugId) {
         var calculatingModal = new bootstrap.Modal(document.getElementById('calculatingModal'));
         calculatingModal.show();
@@ -225,7 +225,7 @@
 
     window.onload = function() {
 
-        var drugId = "{{ result_drug_id }}";
+        
 
         var resultDiv = document.getElementById(`resultString${drugId}`);
         if (!resultDiv.classList.contains('hidden')) {
