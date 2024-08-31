@@ -224,23 +224,8 @@
     }
 
     window.onload = function() {
-        if(window.location.hash) {
-            var hash = window.location.hash.substring(1); // Get the hash, minus the '#'
-            var targetElement = document.getElementById(hash);
-            if(targetElement) {
-                targetElement.scrollIntoView({
-                    behavior: 'smooth',
-                    block: 'start'
-                });
-            }
-            history.pushState("", document.title, window.location.pathname + window.location.search);
-        }
-        
+
         var drugId = "{{ result_drug_id }}";
-        if (!drugId) {
-            console.error('Drug ID is not available.');
-            return;
-        }
 
         var resultDiv = document.getElementById(`resultString${drugId}`);
         if (!resultDiv.classList.contains('hidden')) {
