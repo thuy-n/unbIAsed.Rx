@@ -263,57 +263,13 @@ def calc_risk():
     disease_search = request.form.get('drugCondition')
     drug_id = request.form.get('drug_id')
 
-    if not Drugs.query.first():  # Check if the database is empty
-        BASE_DIR = os.path.dirname(os.path.abspath(__file__))  # Get the directory of the current file
-        csv_file = os.path.join(BASE_DIR, 'final_results.csv')  # Join the base directory with the file name
-        df = pd.read_csv(csv_file)  # Use the correct path to your CSV file
-
-        image_dir = os.path.join(BASE_DIR, 'static')
-
-        for index, row in df.iterrows():
-            drug_name = row['Drug'].replace(' ', '_').replace('/', '_')  # Replace spaces and slashes with underscores
-            # fig = plt.figure(facecolor=(206/255, 227/255, 234/255, 1))  # Create a new figure with a light gray background
-            # y = np.array([float(row['Female proportion in studies']), float(row['Male proportion in studies'])])
-            # myLabels = ['Female', 'Male']
-            # mycolors = [(236/255, 142/255, 130/255, 1), (54/255, 74/255, 93/255, 1)]
-            # explode = (0.1, 0)  # explode 1st slice
-            # plt.pie(y, explode=explode, labels=myLabels, colors=mycolors,
-            # shadow=True, startangle=140) #, textprops={'color':"white"}
-            
-            # image_path = os.path.join(image_dir, f'{drug_name}.png')
-            # plt.savefig(image_path, facecolor=fig.get_facecolor())
-            # plt.close(fig)  # Close the figure
-            relative_image_path = f'static/{drug_name}.png'
-
-            # prediction_risk = get_model(drug_name, row['Indication'])
-            # prediction_risk = str(prediction_risk)
-            # result_string = f"The predicted risk for an adverse reaction to {drug_name} given {row['Indication']} is {prediction_risk} %."
-            # print(result_string)
-            # result_strings.append(result_string)
-
-            drug = Drugs(
-                name=drug_name,
-                disease=row['Indication'],
-                female_ratio=row['Female proportion in studies'],
-                male_ratio=row['Male proportion in studies'],
-                prevalence=relative_image_path,
-                path_prevalence = f"static/images/prevalence/{row['Indication'].lower()}.png",
-                prevFemale = round(row['Prevalence Women'],3),
-                prevMale = round(row['Prevalence Men'],3),
-                prevBoth = round(row['Prevalence Both Genders'],3)
-            )
-
-            db.session.add(drug)
-
-        db.session.commit()
-
     drugs = Drugs.query.all()
     drug_id = request.form.get('drug_id')
     # drug = Drugs.query.get(drug_id)
 
-    if drug_id is not None:
-    # Convert drug_id to integer
-        drug_id = int(drug_id)
+    if not drug_id or not drug_search or not disease_search:
+        return redirect(url_for('views.home'))
+
 
     if disease_search == None or drug_search == None:
         errorFlash = True
@@ -328,6 +284,11 @@ def calc_risk():
     disease_search = disease_search.upper()
 
     prediction_risk = get_model(drug_search, disease_search)
+
+    if prediction_risk is not None:
+    # Convert drug_id to integer
+        drug_id = int(drug_id)
+
     F = 0
     M = 0
 
