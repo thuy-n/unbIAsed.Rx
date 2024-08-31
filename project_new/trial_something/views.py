@@ -270,7 +270,6 @@ def calc_risk():
     if not drug_id or not drug_search or not disease_search:
         return redirect(url_for('views.home'))
 
-
     if disease_search == None or drug_search == None:
         errorFlash = True
         # flash('Please fill in all fields', 'error')
