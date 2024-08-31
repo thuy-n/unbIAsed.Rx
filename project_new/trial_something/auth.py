@@ -292,17 +292,17 @@ def search():
     drug_id = request.form.get('drug_id')
     # drug = Drugs.query.get(drug_id)
 
-    if not drug_id or not drug_search or not disease_search:
-        return redirect(url_for('views.home'))
+    # if not drug_id or not drug_search or not disease_search:
+    #     return redirect(url_for('views.home'))
 
-    if disease_search == None or drug_search == None:
-        errorFlash = True
-        # flash('Please fill in all fields', 'error')
-        flash_message_risk = 'Please fill in all fields'
-        user_agent = request.headers.get('User-Agent').lower()
-        if 'mobile' in user_agent:
-            return render_template("search_results-mobile.html", flash_message_risk=flash_message_risk, user=current_user, errorFlash=errorFlash)    
-        return render_template("search_results.html", flash_message_risk=flash_message_risk, user=current_user,errorFlash=errorFlash)
+    # if disease_search == None or drug_search == None:
+    #     errorFlash = True
+    #     # flash('Please fill in all fields', 'error')
+    #     flash_message_risk = 'Please fill in all fields'
+    #     user_agent = request.headers.get('User-Agent').lower()
+    #     if 'mobile' in user_agent:
+    #         return render_template("search_results-mobile.html", flash_message_risk=flash_message_risk, user=current_user, errorFlash=errorFlash)    
+    #     return render_template("search_results.html", flash_message_risk=flash_message_risk, user=current_user,errorFlash=errorFlash)
 
     drug_search = drug_search.upper()
     disease_search = disease_search.upper()
