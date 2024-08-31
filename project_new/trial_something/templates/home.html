@@ -224,7 +224,7 @@
     }
 
     window.onload = function() {
-        var drugId = "{{ drug.id }}";
+        var drugId = "{{ result_drug_id }}";
         if (!drugId) {
             console.error('Drug ID is not available.');
             return;
