@@ -7,7 +7,7 @@
   </div>
    
     <div class="shadow p-3 mb-5 bg-body rounded">
-      <form action="/profile" method="POST" id="myForm">
+      
         <div class="mb-3">
           <label for="email" class="form-label">Email</label>
           <input type="email" class="form-control" readonly="readonly" name="email" value="{{ current_user.email }}" required>   
@@ -78,7 +78,7 @@
           <label for="value" class="form-label" id="label">Age</label>
           <input type="text" class="form-control" id="age-input" name="value" required oninput="showSaveButton()">
         </div> -->
-      
+        <form action="/profile" method="POST" id="myForm">
         <!-- <input type="hidden" id="field" name="field"> -->
         <input type="hidden" id="field" name="field">
         <input type="hidden" id="value" name="value">
@@ -86,7 +86,7 @@
         <div class="mb-3" id="save-button" style="display: none;">
           <input type="submit" class="btn btn-start" id="update" value="Submit">
         </div>
-    </form>
+        </form>
        
   </div>
 
