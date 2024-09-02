@@ -131,9 +131,19 @@
       // document.getElementById("save-button").style.display = "none";
       // updateProfileFields();
 
-      if (document.getElementById('input-value').value !== '') {
-        // Submit the form normally
+      var field = document.getElementById('field').value;
+      var value;
+
+      if (field === '4') {
+        value = document.querySelector('#input-sex select').value;
+      } else {
+        value = document.getElementById('input-value').value;
+      }
+
+      if (value !== '') {
         document.getElementById('myForm').submit();
+      } else {
+        alert('Please fill out the field before submitting.');
       }
     }
 
