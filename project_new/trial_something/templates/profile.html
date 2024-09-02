@@ -44,6 +44,14 @@
       
 
         <br>
+
+        <select class="form-select" aria-label="Default select example" id="input-sex" style="display: none;" onchange="showSaveButton()">
+          <label for="value" class="form-label" id="input-label"></label>
+          <option selected>Select sex</option>
+          <option value="1">Male</option>
+          <option value="2">Female</option>
+          <option value="4">Prefer not to say</option>
+        </select>
         
         <div class="mb-3" id="input-field" style="display: none;">
           <label for="value" class="form-label" id="input-label"></label>
@@ -83,6 +91,7 @@
     function showInputField(value) {
       var label = document.getElementById('input-label');
       var inputField = document.getElementById('input-field');
+      var optionField = document.getElementById('input-sex');
 
       switch(value) {
         case '1':
@@ -99,7 +108,7 @@
           break;
         case '4':
           label.innerText = 'Sex (Male/Female)';
-          inputField.placeholder = 'Enter sex (Male/Female)'; //sex vs gender
+          optionField.placeholder = 'Enter sex (Male/Female)'; //sex vs gender
           break;
         default:
           label.innerText = '';
