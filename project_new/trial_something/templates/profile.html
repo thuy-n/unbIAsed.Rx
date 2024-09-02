@@ -45,7 +45,7 @@
 
         <br>
 
-        <select class="form-select" aria-label="Default select example" id="input-sex" style="display: none;" onchange="showSaveButton()">
+        <select class="form-select" aria-label="Default select example" id="input-sex" style="display: none;" onchange="showSaveButton();showInputField(this.value)">
           <label for="value" class="form-label" id="input-label"></label>
           <option selected>Select sex</option>
           <option value="1">Male</option>
@@ -108,7 +108,6 @@
           break;
         case '4':
           label.innerText = 'Sex (Male/Female)';
-          optionField.placeholder = 'Enter sex (Male/Female)'; //sex vs gender
           break;
         default:
           label.innerText = '';
