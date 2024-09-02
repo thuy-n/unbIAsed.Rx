@@ -39,6 +39,7 @@
           <option selected>Select information</option>
           <option value="1">First Name</option>
           <option value="2">Last Name</option>
+          <option value="3">Age</option>
           <option value="4">Sex</option>
         </select>
       
@@ -80,12 +81,12 @@
         </div> -->
         <form action="/profile" method="POST" id="myForm">
         <!-- <input type="hidden" id="field" name="field"> -->
-        <input type="hidden" id="field" name="field">
-        <input type="hidden" id="value" name="value">
+          <input type="hidden" id="field" name="field">
+          <input type="hidden" id="value" name="value">
 
-        <div class="mb-3" id="save-button" style="display: none;">
-          <input type="submit" class="btn btn-start" id="update" value="Submit">
-        </div>
+          <div class="mb-3" id="save-button" style="display: none;">
+            <input type="submit" class="btn btn-start" id="update" value="Submit">
+          </div>
         </form>
        
   </div>
@@ -120,10 +121,8 @@
           inputField.style.display = 'none';
           inputSex.style.display = 'block';
           break;
-        default:
-          label.innerText = '';
-          inputField.style.display = 'none';
-          inputSex.style.display = 'none';
+        // default:
+        //   label.innerText = '';
       }
     
       document.getElementById('field').value = value;

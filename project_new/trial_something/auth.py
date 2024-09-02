@@ -134,12 +134,12 @@ def profile():
             elif field == '3' and value:  # Age
                 user.age = value
             elif field == '4' and value:  # Sex
-                value = value.capitalize()
-                if value in ['Female', 'Male', 'Prefer not to say']:
-                    user.sexe = value
-                else:
-                    flash('Please select a valid option for the sex field', category='error')
-                    return redirect(request.url)
+                # value = value.capitalize()
+                # if value in ['Female', 'Male', 'Prefer not to say']:
+                user.sexe = value
+                # else:
+                #     flash('Please select a valid option for the sex field', category='error')
+                #     return redirect(request.url)
             
             # Commit the changes to the database
             db.session.commit()
