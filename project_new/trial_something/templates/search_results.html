@@ -130,7 +130,10 @@
             mutations.forEach(function(mutation) {
                 if (!resultDiv.classList.contains('hidden')) {
                     // Once the result is displayed, hide the modal and disconnect the observer
-                    calculatingModal.hide();
+                    // calculatingModal.hide();
+                    setTimeout(function() {
+                      calculatingModal.hide();
+                    }, 5000);
                     observer.disconnect();
                     // Scroll to the accordion element
                     scrollToAccordion(drugId);
@@ -141,9 +144,7 @@
         var config = { attributes: true, childList: false, characterData: false, attributeFilter: ['class'] };
         observer.observe(resultDiv, config);
 
-        setTimeout(function() {
-          calculatingModal.style.display = 'none';
-        }, 3000);
+        
       }
 
     function scrollToAccordion(drugId) {
