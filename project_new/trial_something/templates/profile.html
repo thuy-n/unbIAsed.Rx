@@ -140,13 +140,14 @@
       var value;
 
       if (field === '4') {
-        value = document.querySelector('#input-sex select').value;
+        value = document.querySelector('form-select-sex').value;
       } else {
         value = document.getElementById('input-value').value;
       }
 
       if (value !== '') {
         updateProfileFields();
+        document.getElementById('value').value = value;
         document.getElementById('myForm').submit();
       } else {
         alert('Please fill out the field before submitting.');
