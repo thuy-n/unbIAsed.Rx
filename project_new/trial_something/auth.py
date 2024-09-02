@@ -323,7 +323,7 @@ def search():
     F = 0
     M = 0
 
-    if prediction_risk is not None:
+    if prediction_risk is not (None or ""):
         R = 0
         M = 100 - prediction_risk
         F = prediction_risk
