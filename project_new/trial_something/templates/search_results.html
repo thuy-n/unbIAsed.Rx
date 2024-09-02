@@ -120,6 +120,29 @@
 
 
   <script>
+    document.querySelectorAll('.calcRisk').forEach(button => {
+    button.addEventListener('click', function(event) {
+        event.preventDefault();
+        var drugId = this.getAttribute('data-drug-id');
+        var form = document.getElementById(`calcRiskForm${drugId}`);
+        var formData = new FormData(form);
+
+        fetch('/calculate-risk', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.text())
+        .then(data => {
+            // Update the result div with the response data
+            var resultDiv = document.getElementById(`resultString${drugId}`);
+            resultDiv.innerHTML = data;
+            resultDiv.classList.remove('hidden');
+        })
+        .catch(error => console.error('Error:', error));
+        
+        performPrediction(drugId);
+    });
+});
     
     function performPrediction(drugId) {
         var calculatingModal = new bootstrap.Modal(document.getElementById('calculatingModal'));
