@@ -312,9 +312,14 @@ def search():
     if (drug_search or disease_search):
         prediction_risk = get_model(drug_search, disease_search)
 
-    if prediction_risk is not None:
-    # Convert drug_id to integer
-        drug_id = int(drug_id)
+    # Convert drug_id to integer if it is not None
+    if drug_id is not None:
+        try:
+            drug_id = int(drug_id)
+        except ValueError:
+            flash("Invalid drug ID.", category='error')
+            return redirect(url_for('views.home'))
+
 
     F = 0
     M = 0
