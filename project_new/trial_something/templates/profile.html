@@ -7,7 +7,7 @@
   </div>
    
     <div class="shadow p-3 mb-5 bg-body rounded">
-      
+      <form action="/profile" method="POST" id="myForm" onsubmit="event.preventDefault(); submitForm();">
         <div class="mb-3">
           <label for="email" class="form-label">Email</label>
           <input type="email" class="form-control" readonly="readonly" name="email" value="{{ current_user.email }}" required>   
@@ -39,14 +39,13 @@
           <option selected>Select information</option>
           <option value="1">First Name</option>
           <option value="2">Last Name</option>
-          <option value="3">Age</option>
           <option value="4">Sex</option>
         </select>
       
 
         <br>
         
-        <!-- <div class="mb-3" id="input-field" style="display: none;">
+        <div class="mb-3" id="input-field" style="display: none;">
           <label for="value" class="form-label" id="input-label"></label>
           <input type="text" class="form-control " id="input-value" name="value" required oninput="showSaveButton()">
         </div>
@@ -59,106 +58,24 @@
             <option value="Female">Female</option>
             <option value="Prefer not to say">Prefer not to say</option>
           </select>
-        </div> -->
-
-        <div class="mb-3" id="input-group" style="display: none;">
-          <label id="input-label" class="form-label"></label>
-          <input type="text" class="form-control" id="input-field" placeholder="">
-          <div id="input-sex" style="display: none;">
-            <select class="form-select" id="input-sex-select">
-              <option value="Female">Female</option>
-              <option value="Male">Male</option>
-              <option value="Prefer not to say">Prefer not to say</option>
-            </select>
-          </div>
         </div>
-
-
-
         <!-- <div class="mb-3" id="input-group" style="display: none;">
           <label for="value" class="form-label" id="label">Age</label>
           <input type="text" class="form-control" id="age-input" name="value" required oninput="showSaveButton()">
         </div> -->
-        <form action="/profile" method="POST" id="myForm">
-        <!-- <input type="hidden" id="field" name="field"> -->
-          <input type="hidden" id="field" name="field">
-          <input type="hidden" id="value" name="value">
+      
+        <input type="hidden" id="field" name="field">
 
-          <div class="mb-3" id="save-button" style="display: none;">
-            <input type="submit" class="btn btn-start" id="update" value="Submit">
-          </div>
-        </form>
+        <div class="mb-3" id="save-button" style="display: none;">
+          <input type="submit" class="btn btn-start" id="update" value="Submit">
+        </div>
+    </form>
        
   </div>
 
-  <script>
-    function showInputField(value) {
-      var label = document.getElementById('input-label');
-      var inputField = document.getElementById('input-field');
-      var inputSex = document.getElementById('input-sex');
-    
-      switch(value) {
-        case '1':
-          label.innerText = 'First Name';
-          inputField.placeholder = 'Enter first name';
-          inputField.style.display = 'block';
-          inputSex.style.display = 'none';
-          break;
-        case '2':
-          label.innerText = 'Last Name';
-          inputField.placeholder = 'Enter last name';
-          inputField.style.display = 'block';
-          inputSex.style.display = 'none';
-          break;
-        case '3':
-          label.innerText = 'Age (years)';
-          inputField.placeholder = 'Enter age in years';
-          inputField.style.display = 'block';
-          inputSex.style.display = 'none';
-          break;
-        case '4':
-          label.innerText = 'Sex';
-          inputField.style.display = 'none';
-          inputSex.style.display = 'block';
-          break;
-        // default:
-        //   label.innerText = '';
-      }
-    
-      document.getElementById('field').value = value;
-    }
-    
-    function submitForm() {
-      var field = document.getElementById('field').value;
-      var value;
-    
-      if (field === '4') {
-        value = document.getElementById('input-sex-select').value;
-      } else {
-        value = document.getElementById('input-field').value;
-      }
-    
-      if (value !== '') {
-        document.getElementById('value').value = value;
-        document.getElementById('myForm').submit();
-      } else {
-        alert('Please fill out the field before submitting.');
-      }
-    }
-    
-    function showInput() {
-      document.getElementById('select-group').style.display = 'block';
-    }
-    
-    function confirmDelete() {
-      var confirmDelete = confirm("Are you sure you want to delete your account? This action cannot be undone.");
-      if (confirmDelete) {
-        window.location.href = "/delete_account";
-      }
-    }
-    </script>
 
-  <!-- <script>
+
+  <script>
     function confirmDelete() {
       var confirmDelete = confirm("Are you sure you want to delete your account? This action cannot be undone.");
       if (confirmDelete) {
@@ -262,7 +179,7 @@
 
       if (field === '4') {
         // Get the value from the select form option for sex
-        value = document.querySelector('#form-select-sex select').value;
+        value = document.querySelector('#input-sex select').value;
       } else {
         // Get the value from the input text field
         value = document.getElementById('input-value').value;
@@ -287,6 +204,6 @@
     function resetForm() {
       document.getElementById('myForm').reset();
     }
-  </script> -->
+  </script>
 
 {% endblock %}
