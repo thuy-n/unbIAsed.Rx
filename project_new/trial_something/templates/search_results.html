@@ -130,7 +130,9 @@
             mutations.forEach(function(mutation) {
                 if (!resultDiv.classList.contains('hidden')) {
                     scrollToAccordion(drugId);
-                    calculatingModal.hide();
+                    setTimeout(function() {
+                      calculatingModal.hide();
+                    }, 5000);
                     observer.disconnect();
                     
                 }

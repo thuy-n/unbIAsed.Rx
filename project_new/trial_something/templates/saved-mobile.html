@@ -134,19 +134,74 @@
     </div>
     
    
-    <!-- <script>
-        window.onload = function() {
-          var savedCard = localStorage.getItem('savedCard');
-          if (savedCard) {
-            document.getElementById('savedContainer').innerHTML += savedCard;
-            document.getElementById('unsaveButton').addEventListener('click', function() {
-              document.getElementById('savedContainer').innerHTML = '';
-              localStorage.removeItem('savedCard');
-              document.getElementById('cardContainer').style.display = 'none';
+    <script>
+        function performPrediction(drugId) {
+        var calculatingModal = new bootstrap.Modal(document.getElementById('calculatingModal'));
+        calculatingModal.show();
+        // Set up a MutationObserver to watch for changes in the 'hidden' class of the result div
+        var resultDiv = document.getElementById(`resultString${drugId}`);
+        var observer = new MutationObserver(function(mutations) {
+            mutations.forEach(function(mutation) {
+                if (!resultDiv.classList.contains('hidden')) {
+                    // Once the result is displayed, hide the modal and disconnect the observer
+                    scrollToAccordion(drugId);
+                    setTimeout(function() {
+                      calculatingModal.hide();
+                    }, 5000);
+
+                    observer.disconnect();
+                    // Scroll to the accordion element
+                    
+                }
             });
-          } else {
-            document.getElementById('cardContainer').style.display = 'none';
-          }
-        };
-    </script> -->
+        });
+
+        var config = { attributes: true, childList: false, characterData: false, attributeFilter: ['class'] };
+        observer.observe(resultDiv, config);
+    }
+
+    function scrollToAccordion(drugId) {
+        var accordionElement = document.getElementById(`accordionExample${drugId}`);
+        if (accordionElement) {
+            accordionElement.scrollIntoView({ behavior: 'smooth' });
+        } else {
+            console.error(`Element with ID accordionExample${drugId} not found.`);
+        }
+    }
+
+    window.onload = function() {
+      var drugId = "{{ result_drug_id }}";
+
+      if(window.location.hash) {
+            var hash = window.location.hash.substring(1); // Get the hash, minus the '#'
+            var targetElement = document.getElementById(hash);
+            if(targetElement) {
+                targetElement.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }
+            history.pushState("", document.title, window.location.pathname + window.location.search);
+      }
+
+
+    };
+    
+    document.getElementById('saveButton').addEventListener('click', function() {
+      var cardContainer = document.getElementById('cardContainer');
+      var parser = new DOMParser();
+      var doc = parser.parseFromString(cardContainer.outerHTML, 'text/html');
+      var saveButton = doc.getElementById('saveButton');
+      saveButton.textContent = 'Unsave';
+      saveButton.id = 'unsaveButton';
+      localStorage.setItem('savedCard', doc.body.innerHTML);
+      window.location.href = 'saved';
+    });
+
+    function submitForm() {
+      // Handle form submission here
+      document.getElementById('myForm').submit();
+    }
+
+    </script> 
 {% endblock %}

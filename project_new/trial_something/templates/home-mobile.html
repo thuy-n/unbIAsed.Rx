@@ -187,20 +187,58 @@
 
   
   <script>
-    document.querySelectorAll('.btn.btn-start.calcRisk').forEach(button => {
-      button.addEventListener('click', function() {
-        // Find the parent '.master' container
-        let masterContainer = button.closest('.master');
+    function performPrediction(drugId) {
+        var calculatingModal = new bootstrap.Modal(document.getElementById('calculatingModal'));
+        calculatingModal.show();
+        // Set up a MutationObserver to watch for changes in the 'hidden' class of the result div
+        var resultDiv = document.getElementById(`resultString${drugId}`);
+        var observer = new MutationObserver(function(mutations) {
+            mutations.forEach(function(mutation) {
+                if (!resultDiv.classList.contains('hidden')) {
+                    // Once the result is displayed, hide the modal and disconnect the observer
+                    scrollToAccordion(drugId);
+                    setTimeout(function() {
+                      calculatingModal.hide();
+                    }, 5000);
 
-        // Within the '.master' container, find the 'resultString' div
-        let resultDiv = masterContainer.querySelector('.container.position-relative.rounded');
+                    observer.disconnect();
+                    // Scroll to the accordion element
+                    
+                }
+            });
+        });
 
-        if (resultDiv) {
-          // Toggle the display state between 'block' and 'none'
-          resultDiv.style.display = resultDiv.style.display === 'block' ? 'none' : 'block';
+        var config = { attributes: true, childList: false, characterData: false, attributeFilter: ['class'] };
+        observer.observe(resultDiv, config);
+    }
+
+    function scrollToAccordion(drugId) {
+        var accordionElement = document.getElementById(`accordionExample${drugId}`);
+        if (accordionElement) {
+            accordionElement.scrollIntoView({ behavior: 'smooth' });
+        } else {
+            console.error(`Element with ID accordionExample${drugId} not found.`);
         }
-      });
-    });
+    }
+
+    window.onload = function() {
+      var drugId = "{{ result_drug_id }}";
+
+      if(window.location.hash) {
+            var hash = window.location.hash.substring(1); // Get the hash, minus the '#'
+            var targetElement = document.getElementById(hash);
+            if(targetElement) {
+                targetElement.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }
+            history.pushState("", document.title, window.location.pathname + window.location.search);
+      }
+
+
+    };
+    
     document.getElementById('saveButton').addEventListener('click', function() {
       var cardContainer = document.getElementById('cardContainer');
       var parser = new DOMParser();
