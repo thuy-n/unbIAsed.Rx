@@ -141,6 +141,7 @@
       }
 
       if (value !== '') {
+        updateProfileFields();
         document.getElementById('myForm').submit();
       } else {
         alert('Please fill out the field before submitting.');
@@ -149,19 +150,26 @@
 
 
     function showSaveButton() {
-      // if (document.getElementById('input-value').value !== '') {
-      //   document.getElementById('save-button').style.display = 'block';
-      // } else {
-      //   document.getElementById('save-button').style.display = 'none';
-      // }
-      var saveButton = document.getElementById('save-button');
-      saveButton.style.display = 'block';
+      var field = document.getElementById('field').value;
+      var value;
+
+      if (field === '4') {
+        value = document.querySelector('#input-sex select').value;
+      } else {
+        value = document.getElementById('input-value').value;
+      }
+
+      if (value !== '') {
+        document.getElementById('save-button').style.display = 'block';
+      } else {
+        document.getElementById('save-button').style.display = 'none';
+      }
      
     }
 
 
     function updateProfileFields() {
-      var value = document.getElementById('input-value').value;
+      var value;
       var field = document.getElementById('field').value;
 
       if (field === '4') {
@@ -182,8 +190,8 @@
         case '3':  // Age
           document.getElementById('age-display').value = value;
           break;
-        case '4':  // sexe
-          document.getElementById('sexe-display').value = value;
+        case '4':  // Sex
+          document.getElementById('sex-display').value = value;
           break;
       }
     }
