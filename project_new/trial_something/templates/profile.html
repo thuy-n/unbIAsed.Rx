@@ -108,7 +108,6 @@
           inputField.placeholder = 'Enter age in years';
           break;
         case '4':
-          label.innerText = 'Sex (Male/Female)';
           inputField.style.display = 'none';
           inputSex.style.display = 'block';
           break;
@@ -140,11 +139,13 @@
 
 
     function showSaveButton() {
-      if (document.getElementById('input-value').value !== '') {
-        document.getElementById('save-button').style.display = 'block';
-      } else {
-        document.getElementById('save-button').style.display = 'none';
-      }
+      // if (document.getElementById('input-value').value !== '') {
+      //   document.getElementById('save-button').style.display = 'block';
+      // } else {
+      //   document.getElementById('save-button').style.display = 'none';
+      // }
+      var saveButton = document.getElementById('save-button');
+      saveButton.style.display = 'block';
      
     }
 
@@ -152,6 +153,14 @@
     function updateProfileFields() {
       var value = document.getElementById('input-value').value;
       var field = document.getElementById('field').value;
+
+      if (field === '4') {
+        // Get the value from the select form option for sex
+        value = document.querySelector('#input-sex select').value;
+      } else {
+        // Get the value from the input text field
+        value = document.getElementById('input-value').value;
+      }
 
       switch(field) {
         case '1':  // First Name
