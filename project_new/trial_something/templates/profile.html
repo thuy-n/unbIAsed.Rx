@@ -98,28 +98,33 @@
         case '1':
           label.innerText = 'First Name';
           inputField.placeholder = 'Enter first name';
+          inputSex.style.display = 'none';
+          inputField.style.display = 'block';
           break;
         case '2':
           label.innerText = 'Last Name';
           inputField.placeholder = 'Enter last name';
+          inputSex.style.display = 'none';
+          inputField.style.display = 'block';
           break;
         case '3':
           label.innerText = 'Age (years)';
           inputField.placeholder = 'Enter age in years';
+          inputSex.style.display = 'none';
+          inputField.style.display = 'block';
           break;
         case '4':
+          label.innerText = 'Sex';
           inputField.style.display = 'none';
           inputSex.style.display = 'block';
           break;
         default:
           label.innerText = '';
+          inputSex.style.display = 'none';
+          inputField.style.display = 'none';
       }
 
-      if (label.innerText !== '') {
-        inputField.style.display = 'block';
-      } else {
-        inputField.style.display = 'none';
-      }
+      
       document.getElementById('field').value = value;
     }
 
