@@ -388,8 +388,8 @@ def search():
     
     user_agent = request.headers.get('User-Agent').lower()
     if 'mobile' in user_agent:
-        return render_template("search_results-mobile.html", results=results, user=current_user, disease_prevalence=disease_prevalence, result_string_pred=result_string_pred, result_drug_id=drug_id)
-    return render_template("search_results.html", results=results, user=current_user, disease_prevalence=disease_prevalence, result_string_pred=result_string_pred, result_drug_id=drug_id)
+        return render_template("search_results-mobile.html", search_term=search_term, results=results, user=current_user, disease_prevalence=disease_prevalence, result_string_pred=result_string_pred, result_drug_id=drug_id)
+    return render_template("search_results.html",  search_term=search_term, results=results, user=current_user, disease_prevalence=disease_prevalence, result_string_pred=result_string_pred, result_drug_id=drug_id)
 
 def preprocess(sentence):
     # Remove punctuation

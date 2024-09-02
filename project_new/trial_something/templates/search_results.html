@@ -76,7 +76,7 @@
                 
               </form>
 
-              <form method="post" id="calcRiskForm{{ result.id }}" class="mt-3" action="/search?query={{ result.name }}#accordionExample{{ result.id }}">
+              <form method="post" id="calcRiskForm{{ result.id }}" class="mt-3" action="/search?query={{ search_term }}#accordionExample{{ result.id }}">
                 <input type="hidden" name="drug_id" value="{{ result.id }}">
                 <input type="hidden" name="drugName" id="drugName{{ result.id }}" value="{{ result.name }}">
                 <input type="hidden" name="drugCondition" id="drugCondition{{ result.id }}" value="{{ result.disease }}">
