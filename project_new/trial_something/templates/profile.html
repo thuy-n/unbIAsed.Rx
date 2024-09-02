@@ -44,20 +44,21 @@
       
 
         <br>
-
-        <select class="form-select" aria-label="Default select example" id="input-sex" style="display: none;" onchange="showSaveButton();showInputField(this.value)">
-          <label for="value" class="form-label" id="input-label"></label>
-          <option selected>Select sex</option>
-          <option value="1">Male</option>
-          <option value="2">Female</option>
-          <option value="4">Prefer not to say</option>
-        </select>
         
         <div class="mb-3" id="input-field" style="display: none;">
           <label for="value" class="form-label" id="input-label"></label>
           <input type="text" class="form-control " id="input-value" name="value" required oninput="showSaveButton()">
         </div>
 
+        <div class="mb-3" id="input-sex" style="display: none;">
+          <label for="value" class="form-label">Sex</label>
+          <select class="form-select" aria-label="Default select example" name="value" onchange="showSaveButton()">
+            <option selected>Select sex</option>
+            <option value="1">Male</option>
+            <option value="2">Female</option>
+            <option value="4">Prefer not to say</option>
+          </select>
+        </div>
         <!-- <div class="mb-3" id="input-group" style="display: none;">
           <label for="value" class="form-label" id="label">Age</label>
           <input type="text" class="form-control" id="age-input" name="value" required oninput="showSaveButton()">
@@ -91,7 +92,7 @@
     function showInputField(value) {
       var label = document.getElementById('input-label');
       var inputField = document.getElementById('input-field');
-      var optionField = document.getElementById('input-sex');
+      var inputSex = document.getElementById('input-sex');
 
       switch(value) {
         case '1':
@@ -108,6 +109,8 @@
           break;
         case '4':
           label.innerText = 'Sex (Male/Female)';
+          inputField.style.display = 'none';
+          inputSex.style.display = 'block';
           break;
         default:
           label.innerText = '';
