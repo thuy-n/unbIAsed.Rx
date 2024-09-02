@@ -202,7 +202,10 @@
                 if (!resultDiv.classList.contains('hidden')) {
                     // Once the result is displayed, hide the modal and disconnect the observer
                     scrollToAccordion(drugId);
-                    calculatingModal.hide();
+                    setTimeout(function() {
+                      calculatingModal.hide();
+                    }, 5000);
+
                     observer.disconnect();
                     // Scroll to the accordion element
                     
