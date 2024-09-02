@@ -139,12 +139,7 @@ def profile():
             elif field == '1' and value:  # First Name
                 user.first_name = value
             elif field =='4' and value: #Sexe
-                value = value.capitalize()
-                if value == 'Female' or value == 'Male':
-                    user.sexe = value
-                elif value != 'Female' or value != 'Male':
-                    flash('Please enter a valid answer for the sexe field', category='error')
-
+                user.sexe = value
 
             # Commit the changes to the database
             db.session.commit()
