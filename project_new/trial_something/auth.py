@@ -127,20 +127,20 @@ def profile():
             field = request.form.get('field')
             value = request.form.get('value')
 
-            if field == '3' and value:  # Age
-                user.age = value
+            if field == '1' and value:  # First Name
+                user.first_name = value
             elif field == '2' and value:  # Last Name
                 user.last_name = value
-            elif field == '1' and value:  # First Name
-                user.first_name = value
-            elif field =='4' and value: #Sexe
+            elif field == '3' and value:  # Age
+                user.age = value
+            elif field == '4' and value:  # Sex
                 value = value.capitalize()
                 if value in ['Female', 'Male', 'Prefer not to say']:
                     user.sexe = value
                 else:
                     flash('Please select a valid option for the sex field', category='error')
-                    
-
+                    return redirect(request.url)
+            
             # Commit the changes to the database
             db.session.commit()
             flash('Profile updated successfully!', category='success')
