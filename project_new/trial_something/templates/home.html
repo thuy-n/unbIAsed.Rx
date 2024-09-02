@@ -201,10 +201,11 @@
             mutations.forEach(function(mutation) {
                 if (!resultDiv.classList.contains('hidden')) {
                     // Once the result is displayed, hide the modal and disconnect the observer
+                    scrollToAccordion(drugId);
                     calculatingModal.hide();
                     observer.disconnect();
                     // Scroll to the accordion element
-                    scrollToAccordion(drugId);
+                    
                 }
             });
         });
@@ -237,20 +238,20 @@
             history.pushState("", document.title, window.location.pathname + window.location.search);
       }
 
-      var resultDiv = document.getElementById(`resultString${drugId}`);
-      if (!resultDiv.classList.contains('hidden')) {
-          var calculatingModal = bootstrap.Modal.getInstance(document.getElementById('calculatingModal'));
-          if (calculatingModal) {
-              calculatingModal.hide();
-          }
-          // Scroll to the accordion element
-          scrollToAccordion(drugId);        
-      }
+      // var resultDiv = document.getElementById(`resultString${drugId}`);
+      // if (!resultDiv.classList.contains('hidden')) {
+      //     var calculatingModal = bootstrap.Modal.getInstance(document.getElementById('calculatingModal'));
+      //     if (calculatingModal) {
+      //         calculatingModal.hide();
+      //     }
+      //     // Scroll to the accordion element
+      //     scrollToAccordion(drugId);        
+      // }
 
-      if (resultDiv && !resultDiv.classList.contains('hidden')) {
-        // Scroll to the accordion element
-        scrollToAccordion(drugId);
-      }
+      // if (resultDiv && !resultDiv.classList.contains('hidden')) {
+      //   // Scroll to the accordion element
+      //   scrollToAccordion(drugId);
+      // }
     };
     
     document.getElementById('saveButton').addEventListener('click', function() {
