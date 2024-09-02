@@ -140,7 +140,11 @@
 
         var config = { attributes: true, childList: false, characterData: false, attributeFilter: ['class'] };
         observer.observe(resultDiv, config);
-    }
+
+        setTimeout(function() {
+          calculatingModal.style.display = 'none';
+        }, 3000);
+      }
 
     function scrollToAccordion(drugId) {
         var accordionElement = document.getElementById(`accordionExample${drugId}`);
