@@ -127,11 +127,6 @@ def profile():
             field = request.form.get('field')
             value = request.form.get('value')
 
-            # Update the selected field of the user
-
-            # Commit the changes to the database
-            db.session.commit()
-
             if field == '3' and value:  # Age
                 user.age = value
             elif field == '2' and value:  # Last Name
@@ -139,10 +134,16 @@ def profile():
             elif field == '1' and value:  # First Name
                 user.first_name = value
             elif field =='4' and value: #Sexe
-                user.sexe = value
+                value = value.capitalize()
+                if value in ['Female', 'Male', 'Prefer not to say']:
+                    user.sexe = value
+                else:
+                    flash('Please select a valid option for the sex field', category='error')
+                    
 
             # Commit the changes to the database
             db.session.commit()
+            flash('Profile updated successfully!', category='success')
 
         except Exception as e:
             print("Error updating user age: ", e)
