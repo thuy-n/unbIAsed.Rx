@@ -52,11 +52,11 @@
 
         <div class="mb-3" id="input-sex" style="display: none;">
           <label for="value" class="form-label">Sex</label>
-          <select class="form-select" aria-label="Default select example" name="value" onchange="showSaveButton()">
+          <select class="form-select" id="form-select-sex" name="value" onchange="showSaveButton()">
             <option selected>Select sex</option>
-            <option value="1">Male</option>
-            <option value="2">Female</option>
-            <option value="4">Prefer not to say</option>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+            <option value="Prefer not to say">Prefer not to say</option>
           </select>
         </div>
         <!-- <div class="mb-3" id="input-group" style="display: none;">
@@ -179,7 +179,7 @@
 
       if (field === '4') {
         // Get the value from the select form option for sex
-        value = document.querySelector('#input-sex select').value;
+        value = document.querySelector('#form-select-sex select').value;
       } else {
         // Get the value from the input text field
         value = document.getElementById('input-value').value;
