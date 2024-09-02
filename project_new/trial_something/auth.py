@@ -320,7 +320,7 @@ def search():
             flash("Invalid drug ID.", category='error')
             return redirect(url_for('views.home'))
 
-
+    prediction_risk = int(prediction_risk) if prediction_risk is not None else None
     F = 0
     M = 0
 
