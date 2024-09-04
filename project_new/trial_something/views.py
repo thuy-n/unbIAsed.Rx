@@ -454,4 +454,5 @@ def unsave_drug():
     drug.user_id = None
     drug.is_saved = False
     db.session.commit()
+    print(drug.is_saved)
     return redirect(url_for('views.home'))
