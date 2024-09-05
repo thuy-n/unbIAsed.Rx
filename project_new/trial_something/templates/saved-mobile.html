@@ -1,10 +1,10 @@
 {% extends "base-mobile.html" %} {% block title %}Saved{% endblock %} 
 {% block content %}
+    
+    {% if drugs %}
     <div class="display-6 my-3" align="center">
-        Saved Page
+      Saved Page
     </div>
-
-
     <div class="container">
       <div class="row">
         {% for drug in drugs %}
@@ -129,7 +129,12 @@
       </div>
     </div>
     
-   
+    {% else %}
+    <div class="display-6 my-3" align="center">
+        No saved drugs
+    </div>
+    {% endif %}
+    
     <script>
         function performPrediction(drugId) {
         var calculatingModal = new bootstrap.Modal(document.getElementById('calculatingModal'));

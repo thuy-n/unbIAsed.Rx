@@ -1,11 +1,11 @@
 {% extends "base.html" %} {% block title %}Saved{% endblock %} 
 
 {% block content %}
-    <div class="display-6 my-3" align="center">
-        Saved Page
-    </div>
 
     {% if drugs %}
+    <div class="display-6 my-3" align="center">
+      Saved Page
+    </div>
     <div class="container">
       <div class="row">
         {% for drug in drugs %}
