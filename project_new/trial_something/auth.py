@@ -156,7 +156,10 @@ def profile():
 @auth.route('/saved')
 @login_required
 def saved():
-    drugs = Drugs.query.filter_by(is_saved=True, user_id=current_user.id).all() #user_id=current_user.id
+    drugs = Drugs.query.all()
+    for drug in drugs:
+        drug.is_saved = drug in current_user.drugs
+
     user_agent = request.headers.get('User-Agent').lower()
     if 'mobile' in user_agent:
         return render_template("saved-mobile.html", drugs=drugs, user=current_user)
