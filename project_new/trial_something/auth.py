@@ -208,8 +208,6 @@ def sign_up():
             flash('Account created!', category='success')
             return redirect(url_for('views.home'))
             
-            
-
     user_agent = request.headers.get('User-Agent').lower()
     if 'mobile' in user_agent:
         return render_template("sign_up-mobile.html", user=current_user)

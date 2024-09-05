@@ -2,6 +2,12 @@ from . import db
 from flask_login import UserMixin
 from sqlalchemy.sql import func
 
+# Association table for the many-to-many relationship between User and Drug
+user_drug = db.Table('user_drug',
+    db.Column('user_id', db.Integer, db.ForeignKey('user.id'), primary_key=True),
+    db.Column('drug_id', db.Integer, db.ForeignKey('drug.id'), primary_key=True)
+)
+
 class Info(db.Model):
     #info for studies
     id = db.Column(db.Integer, primary_key=True)
@@ -40,7 +46,7 @@ class User(db.Model, UserMixin):
     notes = db.relationship('Note')
     age = db.Column(db.String(50))
     sexe = db.Column(db.String(50))
-    drugs = db.relationship('Drugs', backref='user', lazy=True)
+    drugs = db.relationship('Drugs', secondary=user_drug, backref=db.backref('users', lazy='dynamic'))
     info = db.relationship('Info', backref='user', lazy=True)
     
     
