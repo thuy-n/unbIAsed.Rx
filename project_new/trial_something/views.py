@@ -429,7 +429,12 @@ def home():
 
         db.session.commit()
 
+    saved_drugs = current_user.drugs if current_user.is_authenticated else []  # Retrieve saved drugs if user is authenticated
     drugs = Drugs.query.all()
+
+    # Set the is_saved attribute for each drug
+    for drug in drugs:
+        drug.is_saved = drug in saved_drugs
 
     user_agent = request.headers.get('User-Agent').lower()
     if 'mobile' in user_agent:

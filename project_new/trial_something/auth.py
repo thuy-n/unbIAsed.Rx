@@ -160,11 +160,16 @@ def saved():
     # for drug in drugs:
     #     drug.is_saved = drug in current_user.drugs
     drugs = current_user.drugs
+    all_drugs = Drugs.query.all()  # Retrieve all drugs
+
+    # Set the is_saved attribute for each drug
+    for drug in all_drugs:
+        drug.is_saved = drug in drugs
 
     user_agent = request.headers.get('User-Agent').lower()
     if 'mobile' in user_agent:
-        return render_template("saved-mobile.html", drugs=drugs, user=current_user)
-    return render_template("saved.html", drugs=drugs, user=current_user)
+        return render_template("saved-mobile.html", drugs=all_drugs, user=current_user)
+    return render_template("saved.html", drugs=all_drugs, user=current_user)
  
 @auth.route('/about')
 def about():
