@@ -156,9 +156,10 @@ def profile():
 @auth.route('/saved')
 @login_required
 def saved():
-    drugs = Drugs.query.all()
-    for drug in drugs:
-        drug.is_saved = drug in current_user.drugs
+    # drugs = Drugs.query.all()
+    # for drug in drugs:
+    #     drug.is_saved = drug in current_user.drugs
+    drugs = current_user.drugs
 
     user_agent = request.headers.get('User-Agent').lower()
     if 'mobile' in user_agent:
