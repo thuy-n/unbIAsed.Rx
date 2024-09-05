@@ -443,6 +443,7 @@ def save_drug():
     drug = Drugs.query.get(drug_id)
 
     if drug and drug not in current_user.drugs:
+        drug.is_saved = True
         current_user.drugs.append(drug)
         db.session.commit()
 
@@ -458,9 +459,10 @@ def unsave_drug():
     drug = Drugs.query.get(drug_id)
 
     if drug and drug in current_user.drugs:
+        drug.is_saved = False
         current_user.drugs.remove(drug)
         db.session.commit()
-        
+
     # drug.user_id = None
     # drug.is_saved = False
     # db.session.commit()
