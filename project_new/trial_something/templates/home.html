@@ -189,6 +189,7 @@
   <script>
     
     function performPrediction(event, drugId) {
+      event.preventDefault(); // Prevent the default form submission
       var calculatingModal = new bootstrap.Modal(document.getElementById('calculatingModal'));
       calculatingModal.show();
 
