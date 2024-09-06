@@ -219,7 +219,7 @@
       const form = document.getElementById(`calcRiskForm${drugId}`);
       const formData = new FormData(form);
 
-      fetch('/calculate-risk', {
+      fetch('/calculate-risk#accordionExample${drugId}', {
           method: 'POST',
           body: formData
       })
