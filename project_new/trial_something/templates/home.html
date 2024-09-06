@@ -238,6 +238,16 @@
 
 
     };
+    document.addEventListener('DOMContentLoaded', function() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const drugId = urlParams.get('drug_id');
+      if (drugId) {
+        const element = document.getElementById(`accordionExample${drugId}`);
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth' });
+        }
+      }
+    });
     
     document.getElementById('saveButton').addEventListener('click', function() {
       var cardContainer = document.getElementById('cardContainer');
