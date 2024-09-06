@@ -10,6 +10,7 @@
 
 <div class="container">
   <div class="row">
+    {% if results %}
   {% for result in results %}
   <div class="col-sm-12 col-md-6">
     <div class="card-wrapper ">
@@ -118,6 +119,9 @@
 
 <br>
 {% endfor %} 
+{% else %}
+    <p>No results found.</p>
+{% endif %}
 
 
   <script>
