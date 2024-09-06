@@ -404,8 +404,23 @@ def calc_risk():
         #         else:
         #             flash("No drug found with that name.", category='error')
         #             return redirect(url_for('views.home'))
-        drug = Drugs.query.get(drug_id)
-        results = [drug]
+        results = Drugs.query.filter(or_(Drugs.name.ilike(drug_search), Drugs.disease.ilike(drug_search))).all()
+        
+        if not results:
+        # If no exact match is found, find the closest match
+            all_drugs = Drugs.query.all()
+            all_drug_names = [drug.name for drug in all_drugs]
+            closest_match_result = process.extractOne(drug_search, all_drug_names)
+            if closest_match_result:  # Check if closest_match_result is not None
+                closest_match_name = closest_match_result[0]
+                closest_match = Drugs.query.filter_by(name=closest_match_name).first()
+                if closest_match:
+                    results = [closest_match]
+            else:
+                flash("No drug found with that name.", category='error')
+                return redirect(url_for('views.home'))
+        # drug = Drugs.query.get(drug_id)
+        # results = [drug]
 
         user_agent = request.headers.get('User-Agent').lower()
         if 'mobile' in user_agent:
