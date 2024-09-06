@@ -59,7 +59,7 @@
             <input type="hidden" name="drug_id" value="{{ result.id }}">   
             {% if current_user.is_authenticated %}
             <!-- If user is logged in, show the save/unsave button -->
-              {% if drug.is_saved %}
+              {% if result.is_saved %}
                   <button type = "submit" class="unsave-drug btn btn-start" data-drug="{{ result.id }}">Unsave</button>
               {% else %}
                   <button type = "submit" class="save-drug btn btn-start" data-drug="{{ result.id }}">Save</button>
