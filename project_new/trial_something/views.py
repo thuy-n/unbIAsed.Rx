@@ -264,7 +264,6 @@ def calc_risk():
     drug_id = request.form.get('drug_id')
     from_saved_page = request.form.get('from_saved_page')  # Get the value of the hidden input field
 
-
     drugs = Drugs.query.all()
     drug_id = request.form.get('drug_id')
     # drug = Drugs.query.get(drug_id)
@@ -356,7 +355,7 @@ def calc_risk():
     )
     result_string_pred = result_string_pred  
        
-    if prediction_risk is not None and current_user.is_authenticated and from_saved_page == 'True':
+    if current_user.is_authenticated and from_saved_page == 'True':
         drugs = current_user.drugs
         user_agent = request.headers.get('User-Agent').lower()
         if 'mobile' in user_agent:
