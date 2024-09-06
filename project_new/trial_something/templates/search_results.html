@@ -84,8 +84,9 @@
                   <button type="submit" onclick="performPrediction()" id="calcRiskButton{{ result.id }}" data-drug-id="{{ result.id }}" class="btn btn-start calcRisk">Calculate Risk</button>
                   <br><br>
                   <div class="container position-relative rounded {{ 'hidden' if result_string_pred is none or result_string_pred|length == 0 }}" id="resultString{{ result_drug_id }}">
-                    
+                    {% if result_drug_id == result.id %}
                       {{ result_string_pred|safe }}
+                      {% endif %}
                     
                   </div>
     
@@ -120,7 +121,9 @@
 <br>
 {% endfor %} 
 {% else %}
-    <p>No results found.</p>
+<div class="display-6 my-3" align="center">
+    No results found
+</div>
 {% endif %}
 
 
