@@ -356,6 +356,7 @@ def calc_risk():
     result_string_pred = result_string_pred  
        
     if prediction_risk is not None and current_user.is_authenticated:
+        drugs = current_user.drugs
         user_agent = request.headers.get('User-Agent').lower()
         if 'mobile' in user_agent:
             return render_template("saved-mobile.html", drugs=drugs, user=current_user, disease_prevalence=disease_prevalence, result_string_pred=result_string_pred, result_drug_id=drug_id)
