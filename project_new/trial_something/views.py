@@ -376,35 +376,37 @@ def calc_risk():
 
        
     if prediction_risk is not None and from_search_page == 'true':
-        if from_search_page == 'true':
-            if request.method == 'POST':
-                search_term = request.form.get('query')
-            else:
-                search_term = request.args.get('query')
+        # if from_search_page == 'true':
+        #     if request.method == 'POST':
+        #         search_term = request.form.get('query')
+        #     else:
+        #         search_term = request.args.get('query')
 
-            if search_term == "":
-                flash("Please enter a search term.", category='error')
-                return redirect(url_for('views.home')) 
+        #     if search_term == "":
+        #         flash("Please enter a search term.", category='error')
+        #         return redirect(url_for('views.home')) 
             
-            search_term = str(search_term) if search_term is not None else ''
-            search_term = '%' + search_term + '%'
-            # results = Drugs.query.filter(Drugs.name.ilike(search_term)).all()
-            results = Drugs.query.filter(or_(Drugs.name.ilike(search_term), Drugs.disease.ilike(search_term))).all()
+        #     search_term = str(search_term) if search_term is not None else ''
+        #     search_term = '%' + search_term + '%'
+        #     # results = Drugs.query.filter(Drugs.name.ilike(search_term)).all()
+        #     results = Drugs.query.filter(or_(Drugs.name.ilike(search_term), Drugs.disease.ilike(search_term))).all()
 
-            if not results:
-            # If no exact match is found, find the closest match
-                all_drugs = Drugs.query.all()
-                all_drug_names = [drug.name for drug in all_drugs]
-                closest_match_result = process.extractOne(search_term, all_drug_names)
-                if closest_match_result:  # Check if closest_match_result is not None
-                    closest_match_name = closest_match_result[0]
-                    closest_match = Drugs.query.filter_by(name=closest_match_name).first()
-                    if closest_match:
-                        results = [closest_match]
-                else:
-                    flash("No drug found with that name.", category='error')
-                    return redirect(url_for('views.home'))
-        print(results)
+        #     if not results:
+        #     # If no exact match is found, find the closest match
+        #         all_drugs = Drugs.query.all()
+        #         all_drug_names = [drug.name for drug in all_drugs]
+        #         closest_match_result = process.extractOne(search_term, all_drug_names)
+        #         if closest_match_result:  # Check if closest_match_result is not None
+        #             closest_match_name = closest_match_result[0]
+        #             closest_match = Drugs.query.filter_by(name=closest_match_name).first()
+        #             if closest_match:
+        #                 results = [closest_match]
+        #         else:
+        #             flash("No drug found with that name.", category='error')
+        #             return redirect(url_for('views.home'))
+        drug = Drugs.query.get(drug_id)
+        results = [drug]
+
         user_agent = request.headers.get('User-Agent').lower()
         if 'mobile' in user_agent:
             return render_template("search_results-mobile.html", results=results, user=current_user, disease_prevalence=disease_prevalence, result_string_pred=result_string_pred, result_drug_id=drug_id)
