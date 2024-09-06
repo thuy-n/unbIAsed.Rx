@@ -325,9 +325,9 @@ def calc_risk():
             flash("Invalid drug ID.", category='error')
             # return redirect(url_for('views.home'))
 
-    if prediction_risk is not None:
-    # Convert drug_id to integer
-        drug_id = int(drug_id)
+    # if prediction_risk is not None:
+    # # Convert drug_id to integer
+    #     drug_id = int(drug_id)
 
     F = 0
     M = 0
@@ -403,11 +403,13 @@ def calc_risk():
                 return render_template("saved-mobile.html", drugs=drugs, user=current_user, disease_prevalence=disease_prevalence, result_string_pred=result_string_pred, result_drug_id=drug_id)
             return render_template("saved.html", drugs=drugs, user=current_user, disease_prevalence=disease_prevalence, result_string_pred=result_string_pred, result_drug_id=drug_id)
 
-        if from_search_page == 'true':   
-            user_agent = request.headers.get('User-Agent').lower()
-            if 'mobile' in user_agent:
-                return render_template("search_results-mobile.html", results=results, user=current_user, disease_prevalence=disease_prevalence, result_string_pred=result_string_pred, result_drug_id=drug_id)
-            return render_template("search_results.html", results=results, user=current_user, disease_prevalence=disease_prevalence, result_string_pred=result_string_pred, result_drug_id=drug_id)
+       
+    if prediction_risk is not None and from_search_page == 'true':
+        user_agent = request.headers.get('User-Agent').lower()
+        if 'mobile' in user_agent:
+            return render_template("search_results-mobile.html", results=results, user=current_user, disease_prevalence=disease_prevalence, result_string_pred=result_string_pred, result_drug_id=drug_id)
+        return render_template("search_results.html", results=results, user=current_user, disease_prevalence=disease_prevalence, result_string_pred=result_string_pred, result_drug_id=drug_id)
+
 
     user_agent = request.headers.get('User-Agent').lower()
     if 'mobile' in user_agent:
