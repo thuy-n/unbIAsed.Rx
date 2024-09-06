@@ -356,7 +356,16 @@ def calc_risk():
         f"The predicted risk for female patients of developing an adverse drug reaction to {drug_search} given the condition {disease_search} is <b>{F}%</b>. <br><br>"
         f"Female patients have an additional <b>{R}%</b> risk of developing a reaction compared to male patients.<br>"
     )
-    result_string_pred = result_string_pred  
+    result_string_pred = result_string_pred 
+
+    if request.method == 'POST':
+        search_term = request.form.get('query')
+    else:
+        search_term = request.args.get('query')
+
+    if search_term == "":
+        flash("Please enter a search term.", category='error')
+        return redirect(url_for('views.home')) 
        
     if prediction_risk is not None and current_user.is_authenticated:
         if from_saved_page == 'true':
