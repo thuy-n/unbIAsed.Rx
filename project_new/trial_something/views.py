@@ -263,6 +263,7 @@ def calc_risk():
     disease_search = request.form.get('drugCondition')
     drug_id = request.form.get('drug_id')
 
+
     drugs = Drugs.query.all()
     drug_id = request.form.get('drug_id')
     # drug = Drugs.query.get(drug_id)
@@ -354,6 +355,11 @@ def calc_risk():
     )
     result_string_pred = result_string_pred  
        
+    if prediction_risk is not None and current_user.is_authenticated:
+        user_agent = request.headers.get('User-Agent').lower()
+        if 'mobile' in user_agent:
+            return render_template("saved-mobile.html", drugs=drugs, user=current_user, disease_prevalence=disease_prevalence, result_string_pred=result_string_pred, result_drug_id=drug_id)
+        return render_template("saved.html", drugs=drugs, user=current_user, disease_prevalence=disease_prevalence, result_string_pred=result_string_pred, result_drug_id=drug_id)
 
     user_agent = request.headers.get('User-Agent').lower()
     if 'mobile' in user_agent:
