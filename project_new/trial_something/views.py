@@ -1,5 +1,6 @@
 from flask import Blueprint, redirect, render_template, request, flash, jsonify, url_for
 from flask_login import login_required, current_user
+from sqlalchemy import or_
 from .models import Drugs, Info
 from . import db
 import json
@@ -13,6 +14,7 @@ import pickle
 import requests
 from pytrials.client import ClinicalTrials
 import re
+from fuzzywuzzy import process
 from requests.exceptions import ChunkedEncodingError, ConnectionError, Timeout
 import time
 
@@ -263,6 +265,7 @@ def calc_risk():
     disease_search = request.form.get('drugCondition')
     drug_id = request.form.get('drug_id')
     from_saved_page = request.form.get('from_saved_page') 
+    from_search_page = request.form.get('from_search_page')
 
     drugs = Drugs.query.all()
     drug_id = request.form.get('drug_id')
@@ -362,6 +365,32 @@ def calc_risk():
             if 'mobile' in user_agent:
                 return render_template("saved-mobile.html", drugs=drugs, user=current_user, disease_prevalence=disease_prevalence, result_string_pred=result_string_pred, result_drug_id=drug_id)
             return render_template("saved.html", drugs=drugs, user=current_user, disease_prevalence=disease_prevalence, result_string_pred=result_string_pred, result_drug_id=drug_id)
+
+        if from_search_page == 'true':
+            search_term = str(search_term) if search_term is not None else ''
+            search_term = '%' + search_term + '%'
+            # results = Drugs.query.filter(Drugs.name.ilike(search_term)).all()
+            results = Drugs.query.filter(or_(Drugs.name.ilike(search_term), Drugs.disease.ilike(search_term))).all()
+
+            if not results:
+            # If no exact match is found, find the closest match
+                all_drugs = Drugs.query.all()
+                all_drug_names = [drug.name for drug in all_drugs]
+                closest_match_result = process.extractOne(search_term, all_drug_names)
+                if closest_match_result:  # Check if closest_match_result is not None
+                    closest_match_name = closest_match_result[0]
+                    closest_match = Drugs.query.filter_by(name=closest_match_name).first()
+                    if closest_match:
+                        results = [closest_match]
+                else:
+                    flash("No drug found with that name.", category='error')
+                    return redirect(url_for('views.home'))
+            drugs=results
+            user_agent = request.headers.get('User-Agent').lower()
+            if 'mobile' in user_agent:
+                return render_template("search-mobile.html", drugs=drugs, user=current_user, disease_prevalence=disease_prevalence, result_string_pred=result_string_pred, result_drug_id=drug_id)
+            return render_template("search.html", drugs=drugs, user=current_user, disease_prevalence=disease_prevalence, result_string_pred=result_string_pred, result_drug_id=drug_id)
+
 
     user_agent = request.headers.get('User-Agent').lower()
     if 'mobile' in user_agent:

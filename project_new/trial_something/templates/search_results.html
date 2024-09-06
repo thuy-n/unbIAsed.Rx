@@ -77,6 +77,7 @@
 
                 <form method="post" id="calcRiskForm{{ result.id }}" class="mt-3" action="/calculate-risk#accordionExample{{ result.id }}">
                   <input type="hidden" name="drug_id" value="{{ result.id }}">
+                  <input type="hidden" name="from_search_page" value="true"> 
                   <input type="hidden" name="drugName" id="drugName{{ result.id }}" value="{{ result.name }}">
                   <input type="hidden" name="drugCondition" id="drugCondition{{ result.id }}" value="{{ result.disease }}">
                   <button type="submit" onclick="performPrediction()" id="calcRiskButton{{ result.id }}" data-drug-id="{{ result.id }}" class="btn btn-start calcRisk">Calculate Risk</button>
