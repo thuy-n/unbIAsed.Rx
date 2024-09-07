@@ -122,19 +122,11 @@ def update_profile():
     first_name = request.form.get('first_name')
     last_name = request.form.get('last_name')
     sexe = request.form.get('sexe')
-    email = request.form.get('email')
-    
-    if email == '':  # Check if the email field is empty
-        flash('Please enter an email.', category='error')
 
-    if User.query.filter_by(email=email).first():
-        flash('Email already exists.', category='error')
-
-    else:
-        current_user.first_name = first_name
-        current_user.last_name = last_name
-        current_user.sexe = sexe
-        db.session.commit()
+    current_user.first_name = first_name
+    current_user.last_name = last_name
+    current_user.sexe = sexe
+    db.session.commit()
 
     return redirect(url_for('auth.profile'))  # Redirect to the profile page
 
