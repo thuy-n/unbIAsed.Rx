@@ -132,11 +132,11 @@
                           {% endif %}
                       </form>
 
-                        <form method="post" id="calcRiskForm{{ drug.id }}" class="mt-3" onsubmit="performPrediction(event, {{ drug.id }})">
+                        <form method="post" id="calcRiskForm{{ drug.id }}" class="mt-3" action="/calculate-risk#accordionExample{{ drug.id }}">
                           <input type="hidden" name="drug_id" value="{{ drug.id }}">
                           <input type="hidden" name="drugName" id="drugName{{ drug.id }}" value="{{ drug.name }}">
                           <input type="hidden" name="drugCondition" id="drugCondition{{ drug.id }}" value="{{ drug.disease }}">
-                          <button type="submit" id="calcRiskButton{{ drug.id }}" data-drug-id="{{ drug.id }}" class="btn btn-start calcRisk">Calculate Risk</button>
+                          <button type="submit" onclick="performPrediction()" id="calcRiskButton{{ drug.id }}" data-drug-id="{{ drug.id }}" class="btn btn-start calcRisk">Calculate Risk</button>
                           <br><br>
                           <div class="container position-relative rounded {{ 'hidden' if result_string_pred is none or result_string_pred|length == 0 }}" id="resultString{{ result_drug_id }}">
                             
@@ -188,51 +188,29 @@
 
   <script>
     
-    function performPrediction(event, drugId) {
-      event.preventDefault(); // Prevent the default form submission
-      var calculatingModal = new bootstrap.Modal(document.getElementById('calculatingModal'));
-      calculatingModal.show();
+    function performPrediction(drugId) {
+        var calculatingModal = new bootstrap.Modal(document.getElementById('calculatingModal'));
+        calculatingModal.show();
+        // Set up a MutationObserver to watch for changes in the 'hidden' class of the result div
+        var resultDiv = document.getElementById(`resultString${drugId}`);
+        var observer = new MutationObserver(function(mutations) {
+            mutations.forEach(function(mutation) {
+                if (!resultDiv.classList.contains('hidden')) {
+                    // Once the result is displayed, hide the modal and disconnect the observer
+                    scrollToAccordion(drugId);
+                    
+                    calculatingModal.hide();
+                    
 
-      // Set up a MutationObserver to watch for changes in the 'hidden' class of the result div
-      var resultDiv = document.getElementById(`resultString${drugId}`);
-      var observer = new MutationObserver(function(mutations) {
-          mutations.forEach(function(mutation) {
-              if (!resultDiv.classList.contains('hidden')) {
-                  // Once the result is displayed, hide the modal and disconnect the observer
-                  scrollToAccordion(drugId);
-                  observer.disconnect();
-                  calculatingModal.hide();
-              
-              }
-          });
-      });
+                    observer.disconnect();
+                    // Scroll to the accordion element
+                    
+                }
+            });
+        });
 
-      var config = { attributes: true, attributeFilter: ['class'] };
-      observer.observe(resultDiv, config);
-
-      submitRiskForm(event, drugId);
-    }
-
-    function submitRiskForm(event, drugId) {
-      event.preventDefault(); // Prevent the default form submission
-
-      const form = document.getElementById(`calcRiskForm${drugId}`);
-      const formData = new FormData(form);
-
-      fetch('/calculate-risk#accordionExample${drugId}', {
-          method: 'POST',
-          body: formData
-      })
-      .then(response => response.text())
-      .then(data => {
-          const resultContainer = document.getElementById(`resultString${drugId}`);
-          resultContainer.innerHTML = data;
-          resultContainer.classList.remove('hidden'); // Ensure the result is visible
-      })
-      .catch(error => {
-          console.error('Error:', error);
-          alert('Error calculating risk');
-      });
+        var config = { attributes: true, childList: false, characterData: false, attributeFilter: ['class'] };
+        observer.observe(resultDiv, config);
     }
 
     function scrollToAccordion(drugId) {
@@ -245,7 +223,7 @@
     }
 
     window.onload = function() {
-      var drugId = "{{ drug_id }}";
+      var drugId = "{{ result_drug_id }}";
 
       if(window.location.hash) {
             var hash = window.location.hash.substring(1); // Get the hash, minus the '#'
@@ -261,7 +239,6 @@
 
 
     };
-    
     
     document.getElementById('saveButton').addEventListener('click', function() {
       var cardContainer = document.getElementById('cardContainer');
@@ -279,30 +256,6 @@
       document.getElementById('myForm').submit();
     }
 
-    // function submitRiskForm(event, drugId) {
-    //   event.preventDefault(); // Prevent the default form submission
-
-    //   const form = document.getElementById(`calcRiskForm${drugId}`);
-    //   const formData = new FormData(form);
-
-    //   fetch('/calculate-risk', {
-    //     method: 'POST',
-    //     body: formData
-    //   })
-    //   .then(response => response.text())
-    //   .then(data => {
-        
-    //     const resultContainer = document.getElementById(`resultString${drugId}`);
-    //     resultContainer.innerHTML = data;
-    //     resultContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    //   })
-    //   .catch(error => {
-    //     console.error('Error:', error);
-    //     alert('Error calculating risk');
-    //   });
-    // }
-
-   
   </script>
 
   {% endblock %}
