@@ -10,6 +10,9 @@
       <form action="/update-profile" method="POST" id="myForm" onsubmit="submitForm();">
         <div class="mb-3">
           <label for="email" class="form-label">Email</label>
+          <div class="text-secondary fst-italic" style="font-size:80%">
+            * Note that you cannot change your email address 
+          </div>
           <input type="email" class="form-control" name="email" value="{{ current_user.email }}" oninput="checkForChanges()" readonly>   
         </div>  
         
@@ -26,7 +29,11 @@
 
         <div class="mb-3" id="sexe">
           <label for="sexe" class="form-label" >Sex</label>
-          <input type="text" class="form-control" id="sexe-display" name="sexe" value="{{ current_user.sexe }}" oninput="checkForChanges()">
+          <select class="form-control" id="sexe-display" name="sexe" oninput="checkForChanges()">
+            <option value="Male" {% if current_user.sexe == 'Male' %}selected{% endif %}>Male</option>
+            <option value="Female" {% if current_user.sexe == 'Female' %}selected{% endif %}>Female</option>
+            <option value="Other" {% if current_user.sexe == 'Other' %}selected{% endif %}>Other</option>
+          </select>
         </div>
 
         <div class="mb-3">
