@@ -32,7 +32,7 @@
           <select class="form-control" id="sexe-display" name="sexe" oninput="checkForChanges()">
             <option value="Male" {% if current_user.sexe == 'Male' %}selected{% endif %}>Male</option>
             <option value="Female" {% if current_user.sexe == 'Female' %}selected{% endif %}>Female</option>
-            <option value="Other" {% if current_user.sexe == 'Other' %}selected{% endif %}>Other</option>
+            <option value="none" {% if current_user.sexe == 'none' %}selected{% endif %}>Prefer not to say</option>
           </select>
         </div>
 
