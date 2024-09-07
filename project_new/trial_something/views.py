@@ -453,6 +453,9 @@ def home():
         if drug_filter == "ALL":
             drugs = Drugs.query.all()
 
+        for drug in drugs:
+            drug.is_saved = Drugs.query.filter_by(user_id=current_user.id, drug_id=drug.id).first() is not None
+
         user_agent = request.headers.get('User-Agent').lower()
         if 'mobile' in user_agent:
             return render_template("home-mobile.html", drug_id=drug_id, result_drug_id=result_drug_id, drugs=drugs, user=current_user, disease_prevalence=disease_prevalence, result_string_pred=result_string_pred)
@@ -507,7 +510,8 @@ def home():
 
     # Set the is_saved attribute for each drug
     for drug in drugs:
-        drug.is_saved = drug in saved_drugs
+        drug.is_saved = Drugs.query.filter_by(user_id=current_user.id, drug_id=drug.id).first() is not None
+        # drug.is_saved = drug in saved_drugs
 
     user_agent = request.headers.get('User-Agent').lower()
     if 'mobile' in user_agent:
