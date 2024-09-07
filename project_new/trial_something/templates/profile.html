@@ -7,43 +7,43 @@
   </div>
    
     <div class="shadow p-3 mb-5 bg-body rounded">
-      <form action="/profile" method="POST" id="myForm" onsubmit="event.preventDefault(); submitForm();">
+      <form action="/update-profile" method="POST" id="myForm" onsubmit="submitForm();">
         <div class="mb-3">
           <label for="email" class="form-label">Email</label>
-          <input type="email" class="form-control" readonly="readonly" name="email" value="{{ current_user.email }}" required>   
+          <input type="email" class="form-control" name="email" value="{{ current_user.email }}" oninput="showUpdateButton()" >   
         </div>  
         
         <div class="mb-3">
           <label for="email" class="form-label">First Name</label>
-          <input type="text" class="form-control" readonly="readonly" id="first_name" name="first_name" value="{{ current_user.first_name }}" required>
+          <input type="text" class="form-control" id="first_name" name="first_name" value="{{ current_user.first_name }}" oninput="showUpdateButton()">
         </div>
 
         <div class="mb-3">
           <label for="email" class="form-label">Last Name</label>
-          <input type="text" class="form-control" readonly="readonly" id="last_name" name="last_name" value="{{ current_user.last_name }}" required>
+          <input type="text" class="form-control" id="last_name" name="last_name" value="{{ current_user.last_name }}" oninput="showUpdateButton()">
         </div>
 
 
         <div class="mb-3" id="sexe">
           <label for="sexe" class="form-label" >Sex</label>
-          <input type="text" class="form-control" readonly="readonly" id="sexe-display" name="sexe" value="{{ current_user.sexe }}" required>
+          <input type="text" class="form-control" id="sexe-display" name="sexe" value="{{ current_user.sexe }}" oninput="showUpdateButton()">
         </div>
 
         <div class="mb-3">
-          <button type="button" class="btn btn-start" id="update" aria-controls="collapseExample" onclick="showInput()">Add/update information</button>
+          <button type="submit" class="btn btn-start" id="update" aria-controls="collapseExample" style="display:hidden" onclick="updateInfo()">Update information</button>
           <button type="button" class="btn btn-delete" id="delete" onclick="confirmDelete()">Delete Account</button>
         </div>
 
         
-        <select class="form-select" aria-label="Default select example" id="select-group" style="display: none;" onchange="showInputField(this.value)">
+        <!-- <select class="form-select" aria-label="Default select example" id="select-group" style="display: none;" onchange="showInputField(this.value)">
           <option selected>Select information</option>
           <option value="1">First Name</option>
           <option value="2">Last Name</option>
           <option value="4">Sex</option>
-        </select>
+        </select> -->
       
 
-        <br>
+        <!-- <br>
         
         <div class="mb-3" id="input-field" style="display: none;">
           <label for="value" class="form-label" id="input-label"></label>
@@ -58,17 +58,18 @@
             <option value="Female">Female</option>
             <option value="Prefer not to say">Prefer not to say</option>
           </select>
-        </div>
+        </div> -->
+
         <!-- <div class="mb-3" id="input-group" style="display: none;">
           <label for="value" class="form-label" id="label">Age</label>
           <input type="text" class="form-control" id="age-input" name="value" required oninput="showSaveButton()">
         </div> -->
       
-        <input type="hidden" id="field" name="field">
+        <!-- <input type="hidden" id="field" name="field">
 
         <div class="mb-3" id="save-button" style="display: none;">
           <input type="submit" class="btn btn-start" id="update" value="Submit">
-        </div>
+        </div> -->
     </form>
        
   </div>
@@ -76,6 +77,10 @@
 
 
   <script>
+    function showUpdateButton() {
+      document.getElementById('update').style.display = 'block';
+    }
+
     function confirmDelete() {
       var confirmDelete = confirm("Are you sure you want to delete your account? This action cannot be undone.");
       if (confirmDelete) {
@@ -84,127 +89,127 @@
     }
     
 
-    function showInput() {
-      document.getElementById('select-group').style.display = 'block';
-    }
+    // function showInput() {
+    //   document.getElementById('select-group').style.display = 'block';
+    // }
     
 
-    function showInputField(value) {
-      var label = document.getElementById('input-label');
-      var inputField = document.getElementById('input-field');
-      var inputSex = document.getElementById('input-sex');
+    // function showInputField(value) {
+    //   var label = document.getElementById('input-label');
+    //   var inputField = document.getElementById('input-field');
+    //   var inputSex = document.getElementById('input-sex');
 
-      switch(value) {
-        case '1':
-          label.innerText = 'First Name';
-          inputField.placeholder = 'Enter first name';
-          inputSex.style.display = 'none';
-          inputField.style.display = 'block';
-          break;
-        case '2':
-          label.innerText = 'Last Name';
-          inputField.placeholder = 'Enter last name';
-          inputSex.style.display = 'none';
-          inputField.style.display = 'block';
-          break;
-        case '3':
-          label.innerText = 'Age (years)';
-          inputField.placeholder = 'Enter age in years';
-          inputSex.style.display = 'none';
-          inputField.style.display = 'block';
-          break;
-        case '4':
-          label.innerText = 'Sex';
-          inputField.style.display = 'none';
-          inputSex.style.display = 'block';
-          break;
-        default:
-          label.innerText = '';
-          inputSex.style.display = 'none';
-          inputField.style.display = 'none';
-      }
+    //   switch(value) {
+    //     case '1':
+    //       label.innerText = 'First Name';
+    //       inputField.placeholder = 'Enter first name';
+    //       inputSex.style.display = 'none';
+    //       inputField.style.display = 'block';
+    //       break;
+    //     case '2':
+    //       label.innerText = 'Last Name';
+    //       inputField.placeholder = 'Enter last name';
+    //       inputSex.style.display = 'none';
+    //       inputField.style.display = 'block';
+    //       break;
+    //     case '3':
+    //       label.innerText = 'Age (years)';
+    //       inputField.placeholder = 'Enter age in years';
+    //       inputSex.style.display = 'none';
+    //       inputField.style.display = 'block';
+    //       break;
+    //     case '4':
+    //       label.innerText = 'Sex';
+    //       inputField.style.display = 'none';
+    //       inputSex.style.display = 'block';
+    //       break;
+    //     default:
+    //       label.innerText = '';
+    //       inputSex.style.display = 'none';
+    //       inputField.style.display = 'none';
+    //   }
 
       
-      document.getElementById('field').value = value;
-    }
+    //   document.getElementById('field').value = value;
+    // }
 
 
-    function submitForm() {
-      // Handle form submission here
-      // After form is submitted, hide the input group
-      // document.getElementById("input-group").style.display = "none";
-      // document.getElementById("save-button").style.display = "none";
-      // updateProfileFields();
+    // function submitForm() {
+    //   // Handle form submission here
+    //   // After form is submitted, hide the input group
+    //   // document.getElementById("input-group").style.display = "none";
+    //   // document.getElementById("save-button").style.display = "none";
+    //   // updateProfileFields();
 
-      var field = document.getElementById('field').value;
-      var value;
+    //   var field = document.getElementById('field').value;
+    //   var value;
 
-      if (field === '4') {
-        value = document.getElementById('form-select-sex').value;
-      } else {
-        value = document.getElementById('input-value').value;
-      }
+    //   if (field === '4') {
+    //     value = document.getElementById('form-select-sex').value;
+    //   } else {
+    //     value = document.getElementById('input-value').value;
+    //   }
 
-      if (value !== '') {
-        updateProfileFields();
-        document.getElementById('value').value = value;
-        document.getElementById('myForm').submit();
-      } else {
-        alert('Please fill out the field before submitting.');
-      }
-    }
+    //   if (value !== '') {
+    //     updateProfileFields();
+    //     document.getElementById('value').value = value;
+    //     document.getElementById('myForm').submit();
+    //   } else {
+    //     alert('Please fill out the field before submitting.');
+    //   }
+    // }
 
 
-    function showSaveButton() {
-      var field = document.getElementById('field').value;
-      var value;
+    // function showSaveButton() {
+    //   var field = document.getElementById('field').value;
+    //   var value;
 
-      if (field === '4') {
-        value = document.querySelector('#input-sex select').value;
-      } else {
-        value = document.getElementById('input-value').value;
-      }
+    //   if (field === '4') {
+    //     value = document.querySelector('#input-sex select').value;
+    //   } else {
+    //     value = document.getElementById('input-value').value;
+    //   }
 
-      if (value !== '') {
-        document.getElementById('save-button').style.display = 'block';
-      } else {
-        document.getElementById('save-button').style.display = 'none';
-      }
+    //   if (value !== '') {
+    //     document.getElementById('save-button').style.display = 'block';
+    //   } else {
+    //     document.getElementById('save-button').style.display = 'none';
+    //   }
      
-    }
+    // }
 
 
-    function updateProfileFields() {
-      var value;
-      var field = document.getElementById('field').value;
+    // function updateProfileFields() {
+    //   var value;
+    //   var field = document.getElementById('field').value;
 
-      if (field === '4') {
-        // Get the value from the select form option for sex
-        value = document.querySelector('#input-sex select').value;
-      } else {
-        // Get the value from the input text field
-        value = document.getElementById('input-value').value;
-      }
+    //   if (field === '4') {
+    //     // Get the value from the select form option for sex
+    //     value = document.querySelector('#input-sex select').value;
+    //   } else {
+    //     // Get the value from the input text field
+    //     value = document.getElementById('input-value').value;
+    //   }
 
-      switch(field) {
-        case '1':  // First Name
-          document.getElementById('first_name').value = value;
-          break;
-        case '2':  // Last Name
-          document.getElementById('last_name').value = value;
-          break;
-        case '3':  // Age
-          document.getElementById('age-display').value = value;
-          break;
-        case '4':  // Sex
-          document.getElementById('sex-display').value = value;
-          break;
-      }
-    }
+    //   switch(field) {
+    //     case '1':  // First Name
+    //       document.getElementById('first_name').value = value;
+    //       break;
+    //     case '2':  // Last Name
+    //       document.getElementById('last_name').value = value;
+    //       break;
+    //     case '3':  // Age
+    //       document.getElementById('age-display').value = value;
+    //       break;
+    //     case '4':  // Sex
+    //       document.getElementById('sex-display').value = value;
+    //       break;
+    //   }
+    // }
 
-    function resetForm() {
-      document.getElementById('myForm').reset();
-    }
+    // function resetForm() {
+    //   document.getElementById('myForm').reset();
+    // }
   </script>
 
 {% endblock %}

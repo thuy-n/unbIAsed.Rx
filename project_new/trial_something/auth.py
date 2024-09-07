@@ -116,38 +116,32 @@ class UpdateUserForm(FlaskForm):
         if User.query.filter_by(email=email.data).first():
             raise ValidationError('This email has been registered already!')
 
+@auth.route('/update-profile', methods=['POST'])
+@login_required
+def update_profile():
+    first_name = request.form.get('first_name')
+    last_name = request.form.get('last_name')
+    sexe = request.form.get('sexe')
+    email = request.form.get('email')
+    
+    if email == '':  # Check if the email field is empty
+        flash('Please enter an email.', category='error')
+
+    if User.query.filter_by(email=email).first():
+        flash('Email already exists.', category='error')
+
+    else:
+        current_user.first_name = first_name
+        current_user.last_name = last_name
+        current_user.sexe = sexe
+        db.session.commit()
+
+    return redirect(url_for('profile'))  # Redirect to the profile page
+
+
 @auth.route('/profile', methods=['GET', 'POST'])
 @login_required
 def profile():
-    if request.method == 'POST':
-        try:
-            user = User.query.filter_by(id=current_user.id).first()
-
-            # Get the field and value from the form data
-            field = request.form.get('field')
-            value = request.form.get('value')
-
-            if field == '1' and value:  # First Name
-                user.first_name = value
-            elif field == '2' and value:  # Last Name
-                user.last_name = value
-            elif field == '3' and value:  # Age
-                user.age = value
-            elif field == '4' and value:  # Sex
-                value = value.capitalize()
-                if value in ['Female', 'Male', 'Prefer not to say']:
-                    user.sexe = value
-                else:
-                    flash('Please select a valid option for the sex field', category='error')
-                    return redirect(request.url)
-            
-            # Commit the changes to the database
-            db.session.commit()
-            flash('Profile updated successfully!', category='success')
-
-        except Exception as e:
-            print("Error updating user age: ", e)
-
     user_agent = request.headers.get('User-Agent').lower()
     if 'mobile' in user_agent:
         return render_template("profile-mobile.html", user=current_user)
