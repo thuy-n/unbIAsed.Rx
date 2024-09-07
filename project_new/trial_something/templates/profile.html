@@ -10,9 +10,9 @@
       <form action="/update-profile" method="POST" id="myForm" onsubmit="submitForm();">
         <div class="mb-3">
           <label for="email" class="form-label">Email</label>
-          <div class="text-secondary fst-italic" style="font-size:80%">
+          <p class="text-secondary fst-italic" style="font-size:80%">
             * Note that you cannot change your email address 
-          </div>
+          </p>
           <input type="email" class="form-control" name="email" value="{{ current_user.email }}" oninput="checkForChanges()" readonly>   
         </div>  
         
