@@ -84,8 +84,7 @@
       fetch('/check-email', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json',
-          'X-CSRFToken': '{{ csrf_token() }}'  // Include CSRF token for security
+          'Content-Type': 'application/json'
         },
         body: JSON.stringify({ email: email })
       })
