@@ -10,7 +10,10 @@
       <form action="/update-profile" method="POST" id="myForm" >
         <div class="mb-3">
           <label for="email" class="form-label">Email</label>
-          <input type="email" class="form-control" name="email" value="{{ current_user.email }}" oninput="checkForChanges()" readonly>   
+          <p class="text-secondary fst-italic" style="font-size:80%">
+            * Note that you cannot change your email address after signing up.
+          </p>
+          <input type="email" class="form-control" name="email" value="{{ current_user.email }}" readonly>   
         </div>  
         
         <div class="mb-3">
@@ -75,9 +78,6 @@
         window.location.href = "/delete_account";
       }
     }
-
-    
-    
 
   </script>
 
