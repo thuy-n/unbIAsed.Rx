@@ -30,7 +30,7 @@
         </div>
 
         <div class="mb-3">
-          <button type="submit" class="btn btn-start inactive" id="update" aria-controls="collapseExample" >Update information</button>
+          <button type="submit" class="btn btn-start inactive" id="update" aria-controls="collapseExample" disabled>Update information</button>
           <button type="button" class="btn btn-delete" id="delete" onclick="confirmDelete()">Delete Account</button>
         </div>
 
@@ -80,9 +80,9 @@
     function showUpdateButton() {
       const updateButton = document.getElementById('update');
 
-      updateButton.classList.remove('active');
-      updateButton.classList.add('inactive');
-      updateButton.disabled = true;
+      updateButton.classList.remove('inactive');
+      updateButton.classList.add('active');
+      updateButton.disabled = false;
     }
 
     function confirmDelete() {
