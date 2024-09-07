@@ -7,10 +7,10 @@
   </div>
    
     <div class="shadow p-3 mb-5 bg-body rounded">
-      <form action="/update-profile" method="POST" id="myForm" onsubmit="submitForm(event);">
+      <form action="/update-profile" method="POST" id="myForm" >
         <div class="mb-3">
           <label for="email" class="form-label">Email</label>
-          <input type="email" class="form-control" name="email" value="{{ current_user.email }}" oninput="checkForChanges()" >   
+          <input type="email" class="form-control" name="email" value="{{ current_user.email }}" oninput="checkForChanges()" readonly>   
         </div>  
         
         <div class="mb-3">
@@ -46,21 +46,19 @@
 
   <script>
     const originalValues = {
-      email: document.getElementById('email').value,
       first_name: document.getElementById('first_name').value,
       last_name: document.getElementById('last_name').value,
       sexe: document.getElementById('sexe-display').value
     };
 
      function checkForChanges() {
-      const email = document.getElementById('email').value;
       const firstName = document.getElementById('first_name').value;
       const lastName = document.getElementById('last_name').value;
       const sexe = document.getElementById('sexe-display').value;
 
       const updateButton = document.getElementById('update');
 
-      if (email !== originalValues.email || firstName !== originalValues.first_name || lastName !== originalValues.last_name || sexe !== originalValues.sexe) {
+      if (firstName !== originalValues.first_name || lastName !== originalValues.last_name || sexe !== originalValues.sexe) {
         // updateButton.classList.remove('inactive');
         // updateButton.classList.add('active');
         updateButton.disabled = false;
@@ -78,29 +76,7 @@
       }
     }
 
-    function submitForm(event) {
-      event.preventDefault();  // Prevent form submission
-      const email = document.getElementById('email').value;
-      fetch('/check-email', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ email: email })
-      })
-      .then(response => response.json())
-      .then(data => {
-        if (data.exists) {
-          alert('Email already exists. Please choose a different email.');
-        } else {
-          document.getElementById('myForm').submit();
-        }
-      })
-      .catch(error => {
-        console.error('Error:', error);
-        alert('Error checking email.');
-      });
-    }
+    
     
 
   </script>
