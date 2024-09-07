@@ -136,7 +136,7 @@ def update_profile():
         current_user.sexe = sexe
         db.session.commit()
 
-    return redirect(url_for('profile'))  # Redirect to the profile page
+    return redirect(url_for('auth.profile'))  # Redirect to the profile page
 
 
 @auth.route('/profile', methods=['GET', 'POST'])
