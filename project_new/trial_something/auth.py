@@ -116,6 +116,16 @@ class UpdateUserForm(FlaskForm):
         if User.query.filter_by(email=email.data).first():
             raise ValidationError('This email has been registered already!')
 
+@auth.route('/check-email', methods=['POST'])
+@login_required
+def check_email():
+    data = request.get_json()
+    email = data.get('email')
+    user = User.query.filter_by(email=email).first()
+    if user and user.id != current_user.id:
+        return jsonify({'exists': True})
+    return jsonify({'exists': False})
+
 @auth.route('/update-profile', methods=['POST'])
 @login_required
 def update_profile():
@@ -124,10 +134,11 @@ def update_profile():
     sexe = request.form.get('sexe')
     email = request.form.get('email')
 
-    user = User.query.filter_by(email=email).first()
-    if user and user.id != current_user.id:
-        flash('Email already exists.', category='error')
-        return redirect(url_for('auth.profile'))
+    if email != current_user.email:
+        existing_user = User.query.filter_by(email=email).first()
+        if existing_user:
+            flash('Email already exists.', category='error')
+            return redirect(url_for('auth.profile'))
 
     current_user.email = email
     current_user.first_name = first_name

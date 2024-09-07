@@ -7,7 +7,7 @@
   </div>
    
     <div class="shadow p-3 mb-5 bg-body rounded">
-      <form action="/update-profile" method="POST" id="myForm" onsubmit="submitForm();">
+      <form action="/update-profile" method="POST" id="myForm" onsubmit="submitForm(event);">
         <div class="mb-3">
           <label for="email" class="form-label">Email</label>
           <input type="email" class="form-control" name="email" value="{{ current_user.email }}" oninput="checkForChanges()" >   
@@ -76,6 +76,31 @@
       if (confirmDelete) {
         window.location.href = "/delete_account";
       }
+    }
+
+    function submitForm(event) {
+      event.preventDefault();  // Prevent form submission
+      const email = document.getElementById('email').value;
+      fetch('/check-email', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-CSRFToken': '{{ csrf_token() }}'  // Include CSRF token for security
+        },
+        body: JSON.stringify({ email: email })
+      })
+      .then(response => response.json())
+      .then(data => {
+        if (data.exists) {
+          alert('Email already exists. Please choose a different email.');
+        } else {
+          document.getElementById('myForm').submit();
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        alert('Error checking email.');
+      });
     }
     
 
