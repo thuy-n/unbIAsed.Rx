@@ -160,6 +160,9 @@
                                   </div>
                                   <div class="modal-body">
                                       <p>Thank you for your patience.</p>
+                                      <br>
+                                      <p>Once this message dissapears, there will be a slight delay loading the results. 
+                                        Our appologies for the inconvenience </p>
                                   </div>
                               </div>
                           </div>
@@ -197,7 +200,7 @@
             mutations.forEach(function(mutation) {
                 if (!resultDiv.classList.contains('hidden')) {
                     // Once the result is displayed, hide the modal and disconnect the observer
-                    scrollToAccordion(drugId);
+                    // scrollToAccordion(drugId);
                     
                     calculatingModal.hide();
                     
@@ -213,17 +216,24 @@
         observer.observe(resultDiv, config);
     }
 
-    function scrollToAccordion(drugId) {
-        var accordionElement = document.getElementById(`accordionExample${drugId}`);
-        if (accordionElement) {
-            accordionElement.scrollIntoView({ behavior: 'smooth' });
-        } else {
-            console.error(`Element with ID accordionExample${drugId} not found.`);
-        }
-    }
+    
 
     window.onload = function() {
       var drugId = "{{ result_drug_id }}";
+
+      if (!document.getElementById(`resultString${drugId}`).classList.contains('hidden')) {
+          var calculatingModal = bootstrap.Modal.getInstance(document.getElementById('calculatingModal'));
+          if (calculatingModal) {
+              calculatingModal.hide();
+          }
+      }
+
+      if (!document.getElementById('flash-messages').classList.contains('hidden')) {
+          var calculatingModal = bootstrap.Modal.getInstance(document.getElementById('calculatingModal'));
+          if (calculatingModal) {
+              calculatingModal.hide();
+          }
+      }
 
       if(window.location.hash) {
             var hash = window.location.hash.substring(1); // Get the hash, minus the '#'
