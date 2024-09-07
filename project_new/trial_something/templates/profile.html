@@ -10,10 +10,7 @@
       <form action="/update-profile" method="POST" id="myForm" onsubmit="submitForm();">
         <div class="mb-3">
           <label for="email" class="form-label">Email</label>
-          <p class="text-secondary fst-italic" style="font-size:80%">
-            * Note that you cannot change your email address 
-          </p>
-          <input type="email" class="form-control" name="email" value="{{ current_user.email }}" oninput="checkForChanges()" readonly>   
+          <input type="email" class="form-control" name="email" value="{{ current_user.email }}" oninput="checkForChanges()" >   
         </div>  
         
         <div class="mb-3">
@@ -49,19 +46,21 @@
 
   <script>
     const originalValues = {
+      email: document.getElementById('email').value,
       first_name: document.getElementById('first_name').value,
       last_name: document.getElementById('last_name').value,
       sexe: document.getElementById('sexe-display').value
     };
 
      function checkForChanges() {
+      const email = document.getElementById('email').value;
       const firstName = document.getElementById('first_name').value;
       const lastName = document.getElementById('last_name').value;
       const sexe = document.getElementById('sexe-display').value;
 
       const updateButton = document.getElementById('update');
 
-      if (firstName !== originalValues.first_name || lastName !== originalValues.last_name || sexe !== originalValues.sexe) {
+      if (email !== originalValues.email || firstName !== originalValues.first_name || lastName !== originalValues.last_name || sexe !== originalValues.sexe) {
         // updateButton.classList.remove('inactive');
         // updateButton.classList.add('active');
         updateButton.disabled = false;
