@@ -159,10 +159,7 @@
                                       </div>
                                   </div>
                                   <div class="modal-body">
-                                      <p>Thank you for your patience.</p>
-                                      <br>
-                                      <p>Once this message dissapears, there will be a slight delay loading the results. 
-                                        Our appologies for the inconvenience </p>
+                                      <p>Please wait while we process the results. Thank you for your patience.</p>
                                   </div>
                               </div>
                           </div>
@@ -199,15 +196,9 @@
         var observer = new MutationObserver(function(mutations) {
             mutations.forEach(function(mutation) {
                 if (!resultDiv.classList.contains('hidden')) {
-                    // Once the result is displayed, hide the modal and disconnect the observer
-                    // scrollToAccordion(drugId);
-                    
                     calculatingModal.hide();
-                    
-
                     observer.disconnect();
-                    // Scroll to the accordion element
-                    
+
                 }
             });
         });
