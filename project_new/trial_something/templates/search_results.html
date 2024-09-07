@@ -104,7 +104,7 @@
                               </div>
                           </div>
                           <div class="modal-body">
-                              <p>Thank you for your patience.</p>
+                              <p>Please wait while we process the results. Thank you for your patience.</p>
                           </div>
                       </div>
                   </div>
@@ -137,32 +137,35 @@
         var observer = new MutationObserver(function(mutations) {
             mutations.forEach(function(mutation) {
                 if (!resultDiv.classList.contains('hidden')) {
-                    scrollToAccordion(drugId);
                     calculatingModal.hide();
-                    
                     observer.disconnect();
-                    
+
                 }
             });
         });
 
         var config = { attributes: true, childList: false, characterData: false, attributeFilter: ['class'] };
         observer.observe(resultDiv, config);
-
-        
-      }
-
-    function scrollToAccordion(drugId) {
-        var accordionElement = document.getElementById(`accordionExample${drugId}`);
-        if (accordionElement) {
-            accordionElement.scrollIntoView({ behavior: 'smooth' });
-        } else {
-            console.error(`Element with ID accordionExample${drugId} not found.`);
-        }
     }
+
+    
 
     window.onload = function() {
       var drugId = "{{ result_drug_id }}";
+
+      if (!document.getElementById(`resultString${drugId}`).classList.contains('hidden')) {
+          var calculatingModal = bootstrap.Modal.getInstance(document.getElementById('calculatingModal'));
+          if (calculatingModal) {
+              calculatingModal.hide();
+          }
+      }
+
+      if (!document.getElementById('flash-messages').classList.contains('hidden')) {
+          var calculatingModal = bootstrap.Modal.getInstance(document.getElementById('calculatingModal'));
+          if (calculatingModal) {
+              calculatingModal.hide();
+          }
+      }
 
       if(window.location.hash) {
             var hash = window.location.hash.substring(1); // Get the hash, minus the '#'
@@ -176,20 +179,7 @@
             history.pushState("", document.title, window.location.pathname + window.location.search);
       }
 
-      // var resultDiv = document.getElementById(`resultString${drugId}`);
-      // if (!resultDiv.classList.contains('hidden')) {
-      //     var calculatingModal = bootstrap.Modal.getInstance(document.getElementById('calculatingModal'));
-      //     if (calculatingModal) {
-      //         calculatingModal.hide();
-      //     }
-      //     // Scroll to the accordion element
-      //     scrollToAccordion(drugId);        
-      // }
 
-      // if (resultDiv && !resultDiv.classList.contains('hidden')) {
-      //   // Scroll to the accordion element
-      //   scrollToAccordion(drugId);
-      // }
     };
     
     document.getElementById('saveButton').addEventListener('click', function() {
