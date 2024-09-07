@@ -453,8 +453,13 @@ def home():
         if drug_filter == "ALL":
             drugs = Drugs.query.all()
 
+        saved_drugs = current_user.drugs if current_user.is_authenticated else []  # Retrieve saved drugs if user is authenticated
         for drug in drugs:
-            drug.is_saved = Drugs.query.filter_by(user_id=current_user.id, id=drug.id).first() is not None
+        # drug.is_saved = Drugs.query.filter_by(user_id=current_user.id, id=drug.id).first() is not None
+            drug.is_saved = drug in saved_drugs
+
+        # for drug in drugs:
+        #     drug.is_saved = Drugs.query.filter_by(user_id=current_user.id, id=drug.id).first() is not None
 
         user_agent = request.headers.get('User-Agent').lower()
         if 'mobile' in user_agent:
@@ -510,8 +515,8 @@ def home():
 
     # Set the is_saved attribute for each drug
     for drug in drugs:
-        drug.is_saved = Drugs.query.filter_by(user_id=current_user.id, id=drug.id).first() is not None
-        # drug.is_saved = drug in saved_drugs
+        # drug.is_saved = Drugs.query.filter_by(user_id=current_user.id, id=drug.id).first() is not None
+        drug.is_saved = drug in saved_drugs
 
     user_agent = request.headers.get('User-Agent').lower()
     if 'mobile' in user_agent:
