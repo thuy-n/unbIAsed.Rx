@@ -320,7 +320,7 @@ def calc_risk():
                         f"The predicted risk for male patients of developing an adverse drug reaction to {drug_search} given the condition {disease_search} is <b>{M}%</b>. <br><br>"
                         f"Male patients have a <b>{R}%</b> lower risk of developing a reaction compared to female patients. <br>"
                     )
-                if M > F:
+                else:
                     R = F - M
                     R = str(round(R,2))
                     M = str(round(M,2))
@@ -339,7 +339,7 @@ def calc_risk():
                         f"Female patients have a <b>{R}%</b> lower risk of developing a reaction compared to male patients. <br>"
                         
                     )
-                if F > M:
+                else:
                     R = M - F
                     R = str(round(R,2))
                     F = str(round(F,2))
@@ -356,7 +356,7 @@ def calc_risk():
                     f"The predicted risk for female patients of developing an adverse drug reaction to {drug_search} given the condition {disease_search} is <b>{F}%</b>. <br><br>"
                     f"Female patients have a <b>{R}%</b> lower risk of developing a reaction compared to male patients.<br>"
                 )
-            if F > M:
+            else:
                 R = M - F
                 R = str(round(R,2))
                 F = str(round(F,2))
