@@ -312,58 +312,58 @@ def calc_risk():
             
             if current_user.sexe.lower() == 'male':
 
+                if M < F:
+                    R = M - F
+                    R = str(round(R,2))
+                    M = str(round(M,2))
+                    result_string_pred = (
+                        f"The predicted risk for male patients of developing an adverse drug reaction to {drug_search} given the condition {disease_search} is <b>{M}%</b>. <br><br>"
+                        f"Male patients have a <b>{R}%</b> lower risk of developing a reaction compared to female patients. <br>"
+                    )
                 if M > F:
-                    R = M - F
-                    R = str(round(R,2))
-                    M = str(round(M,2))
-                    result_string_pred = (
-        f"The predicted risk for male patients of developing an adverse drug reaction to {drug_search} given the condition {disease_search} is <b>{M}%</b>. <br><br>"
-        f"Male patients have a <b>{R}%</b> lower risk of developing a reaction compared to female patients. <br>"
-    )
-                else:
                     R = F - M
                     R = str(round(R,2))
                     M = str(round(M,2))
                     result_string_pred = (
-        f"The predicted risk for male patients of developing an adverse drug reaction to {drug_search} given the condition {disease_search} is <b>{M}%</b>. <br><br>"
-        f"Male patients have an additional <b>{R}%</b> risk of developing a reaction compared to female patients.<br> "
-    
-    )
+                        f"The predicted risk for male patients of developing an adverse drug reaction to {drug_search} given the condition {disease_search} is <b>{M}%</b>. <br><br>"
+                        f"Male patients have an additional <b>{R}%</b> risk of developing a reaction compared to female patients.<br> "
+                    
+                    )
             elif current_user.sexe.lower() == 'female':
-                if F > M:
+                if F < M:
                     R = F - M
                     R = str(round(R,2))
                     F = str(round(F,2))
                     result_string_pred = (
-        f"The predicted risk for female patients of developing an adverse drug reaction to {drug_search} given the condition {disease_search} is <b>{F}%</b>. <br><br>"
-        f"Female patients have a <b>{R}%</b> lower risk of developing a reaction compared to male patients. <br>"
-        
-    )
-                else:
+                        f"The predicted risk for female patients of developing an adverse drug reaction to {drug_search} given the condition {disease_search} is <b>{F}%</b>. <br><br>"
+                        f"Female patients have a <b>{R}%</b> lower risk of developing a reaction compared to male patients. <br>"
+                        
+                    )
+                if F > M:
                     R = M - F
                     R = str(round(R,2))
                     F = str(round(F,2))
                     result_string_pred = (
-        f"The predicted risk for female patients of developing an adverse drug reaction to {drug_search} given the condition {disease_search} is <b>{F}%</b>. <br><br>"
-        f"Female patients have an additional <b>{R}%</b> risk of developing a reaction compared to male patients. <br>"
-    )
+                        f"The predicted risk for female patients of developing an adverse drug reaction to {drug_search} given the condition {disease_search} is <b>{F}%</b>. <br><br>"
+                        f"Female patients have an additional <b>{R}%</b> risk of developing a reaction compared to male patients. <br>"
+                    )
         else:
-            if F > M:
+            if F < M:
                 R = F - M
                 R = str(round(R,2))
                 F = str(round(F,2))
                 result_string_pred = (
-        f"The predicted risk for female patients of developing an adverse drug reaction to {drug_search} given the condition {disease_search} is <b>{F}%</b>. <br><br>"
-        f"Female patients have a <b>{R}%</b> lower risk of developing a reaction compared to male patients.<br>"
-    )
-            else:
+                    f"The predicted risk for female patients of developing an adverse drug reaction to {drug_search} given the condition {disease_search} is <b>{F}%</b>. <br><br>"
+                    f"Female patients have a <b>{R}%</b> lower risk of developing a reaction compared to male patients.<br>"
+                )
+            if F > M:
                 R = M - F
                 R = str(round(R,2))
                 F = str(round(F,2))
                 result_string_pred = (
-        f"The predicted risk for female patients of developing an adverse drug reaction to {drug_search} given the condition {disease_search} is <b>{F}%</b>. <br><br>"
-        f"Female patients have an additional <b>{R}%</b> risk of developing a reaction compared to male patients.<br>"
-    )
+                    f"The predicted risk for female patients of developing an adverse drug reaction to {drug_search} given the condition {disease_search} is <b>{F}%</b>. <br><br>"
+                    f"Female patients have an additional <b>{R}%</b> risk of developing a reaction compared to male patients.<br>"
+                )
     result_string_pred = result_string_pred 
        
     if prediction_risk is not None and current_user.is_authenticated:
