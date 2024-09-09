@@ -20,10 +20,6 @@ import time
 
 views = Blueprint('views', __name__)
 
-@views.errorhandler(503)
-def error_503(error):
-    return render_template("App_Offline.htm") 
-
 @views.route('/')
 def opening():
     logged_in = False
