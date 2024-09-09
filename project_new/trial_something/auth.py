@@ -144,6 +144,7 @@ def profile():
 @login_required
 def saved():
     # drugs = Drugs.query.all()
+
     # for drug in drugs:
     #     drug.is_saved = drug in current_user.drugs
     drugs = current_user.drugs

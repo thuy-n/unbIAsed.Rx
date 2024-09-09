@@ -530,8 +530,8 @@ def save_drug():
     drug = Drugs.query.get(drug_id)
 
     if drug and drug not in current_user.drugs:
-        drug.is_saved = True
         current_user.drugs.append(drug)
+        drug.is_saved = True
         db.session.commit()
 
     # drug.user_id = current_user.id
