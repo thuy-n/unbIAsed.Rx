@@ -636,7 +636,7 @@ def identify():
                     if current_user.sexe.lower() == 'male':
 
                         if M < F:
-                            R = M - F
+                            R = F-M
                             R = str(round(R,2))
                             M = str(round(M,2))
                             result_string = (
@@ -644,7 +644,7 @@ def identify():
                                 f"Male patients have a <b>{R}%</b> lower risk of developing a reaction compared to female patients. <br>"
                             )
                         else:
-                            R = F - M
+                            R = M-F
                             R = str(round(R,2))
                             M = str(round(M,2))
                             result_string = (
@@ -654,7 +654,7 @@ def identify():
                             )
                     elif current_user.sexe.lower() == 'female':
                         if F < M:
-                            R = F - M
+                            R = M-F
                             R = str(round(R,2))
                             F = str(round(F,2))
                             result_string = (
@@ -663,7 +663,7 @@ def identify():
                                 
                             )
                         else:
-                            R = M - F
+                            R = F-M
                             R = str(round(R,2))
                             F = str(round(F,2))
                             result_string = (
@@ -672,7 +672,7 @@ def identify():
                             )
                 else:
                     if F < M:
-                        R = F - M
+                        R = M-F
                         R = str(round(R,2))
                         F = str(round(F,2))
                         result_string = (
@@ -680,7 +680,7 @@ def identify():
                             f"Female patients have a <b>{R}%</b> lower risk of developing a reaction compared to male patients.<br>"
                         )
                     else:
-                        R = M - F
+                        R = F-M
                         R = str(round(R,2))
                         F = str(round(F,2))
                         result_string = (
