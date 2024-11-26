@@ -141,8 +141,8 @@ def cse_release_variables(r, e):
     # sort e so those with most sub-expressions appear first
     e = [(e[i], syms[i]) for i in range(len(e))]
     e, syms = zip(*sorted(e,
-        key=lambda x: -sum([p[s.index(i)].count_ops()
-        for i in x[0].free_symbols & in_use])))
+        key=lambda x: -sum(p[s.index(i)].count_ops()
+        for i in x[0].free_symbols & in_use)))
     syms = list(syms)
     p += e
     rv = []
@@ -621,7 +621,7 @@ def tree_cse(exprs, symbols, opt_subs=None, order='canonical', ignore=()):
                 expr.is_Order or
                 isinstance(expr, (MatrixSymbol, MatrixElement))):
             if expr.is_Symbol:
-                excluded_symbols.add(expr)
+                excluded_symbols.add(expr.name)
             return
 
         if iterable(expr):
@@ -652,7 +652,7 @@ def tree_cse(exprs, symbols, opt_subs=None, order='canonical', ignore=()):
     ## Rebuild tree
 
     # Remove symbols from the generator that conflict with names in the expressions.
-    symbols = (symbol for symbol in symbols if symbol not in excluded_symbols)
+    symbols = (_ for _ in symbols if _.name not in excluded_symbols)
 
     replacements = []
 

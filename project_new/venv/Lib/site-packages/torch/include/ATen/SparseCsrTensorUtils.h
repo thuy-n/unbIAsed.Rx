@@ -139,6 +139,21 @@
 
 namespace at::sparse_csr {
 
+// Implements RAII object to manage checking sparse tensor invariants:
+class CheckSparseTensorInvariants {
+  bool old_state;
+
+ public:
+  CheckSparseTensorInvariants(bool state) {
+    old_state = at::globalContext().checkSparseTensorInvariants();
+    at::globalContext().setCheckSparseTensorInvariants(state);
+  }
+
+  ~CheckSparseTensorInvariants() {
+    at::globalContext().setCheckSparseTensorInvariants(old_state);
+  }
+};
+
 using SparseCsrTensor = Tensor;
 
 inline bool is_sparse_compressed(const Layout& layout) {
@@ -283,6 +298,21 @@ inline std::pair<Tensor, Tensor> getCompressedPlainIndices(Tensor const& self) {
       [&self] {
         return std::make_pair(self.ccol_indices(), self.row_indices());
       });
+}
+
+inline ScalarType getIndexDtype(Tensor const& self) {
+  switch (self.layout()) {
+    case kSparseCsr:
+    case kSparseBsr:
+      return self.crow_indices().scalar_type();
+    case kSparseCsc:
+    case kSparseBsc:
+      return self.ccol_indices().scalar_type();
+    case kSparse:
+      return self._indices().scalar_type();
+    default:
+      return ScalarType::Long;
+  }
 }
 
 inline Layout flip_compressed_layout(Layout layout) {

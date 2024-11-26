@@ -8,7 +8,7 @@
 
 #if IS_PYTHON_3_11_PLUS
 
-#include <internal/pycore_frame.h>
+typedef struct _PyInterpreterFrame _PyInterpreterFrame;
 
 int THP_PyFrame_FastToLocalsWithError(
     _PyInterpreterFrame* frame,
@@ -19,5 +19,26 @@ PyFunctionObject* _PyFunction_CopyWithNewCode(
     PyCodeObject* code);
 
 void THP_PyFrame_Clear(_PyInterpreterFrame* frame);
+
+_PyInterpreterFrame* THP_PyThreadState_BumpFramePointerSlow(
+    PyThreadState* tstate,
+    size_t size);
+
+void THP_PyThreadState_PopFrame(
+    PyThreadState* tstate,
+    _PyInterpreterFrame* frame);
+
+#endif
+
+// pointers to _PyOpcode_Caches for C++
+#ifdef __cplusplus
+
+extern "C" const uint8_t* THP_PyOpcode_Caches;
+extern "C" const int THP_PyOpcode_Caches_size;
+
+#else
+
+extern const uint8_t* THP_PyOpcode_Caches;
+extern const int THP_PyOpcode_Caches_size;
 
 #endif

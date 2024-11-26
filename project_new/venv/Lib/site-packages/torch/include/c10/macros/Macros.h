@@ -64,6 +64,25 @@
 #define C10_ASAN_ENABLED 0
 #endif
 
+// Detect undefined-behavior sanitizer (UBSAN)
+#undef C10_UBSAN_ENABLED
+
+// for clang or gcc >= 14
+// NB: gcc 14 adds support for Clang's __has_feature
+//   https://gcc.gnu.org/gcc-14/changes.html
+//   gcc < 14 doesn't have a macro for UBSAN
+//   (e.g. __SANITIZE_UNDEFINED__ does not exist in gcc)
+//   https://github.com/google/sanitizers/issues/765
+#if defined(__has_feature)
+#if ((__has_feature(undefined_behavior_sanitizer)))
+#define C10_UBSAN_ENABLED 1
+#endif
+#endif
+
+#if !defined(C10_UBSAN_ENABLED)
+#define C10_UBSAN_ENABLED 0
+#endif
+
 // Disable the copy and assignment operator for a class. Note that this will
 // disable the usage of the class in std containers.
 #define C10_DISABLE_COPY_AND_ASSIGN(classname) \
@@ -79,8 +98,8 @@
 #define C10_STRINGIZE(x) C10_STRINGIZE_IMPL(x)
 
 /**
- * C10_ANONYMOUS_VARIABLE(str) introduces an identifier starting with
- * str and ending with a number that varies with the line.
+ * C10_ANONYMOUS_VARIABLE(str) introduces a new identifier which starts with
+ * str and ends with a unique number.
  */
 #ifdef __COUNTER__
 #define C10_UID __COUNTER__
@@ -323,10 +342,10 @@ constexpr uint32_t CUDA_THREADS_PER_BLOCK_FALLBACK = 256;
 // CUDA_KERNEL_ASSERT checks the assertion
 // even when NDEBUG is defined. This is useful for important assertions in CUDA
 // code that would otherwise be suppressed when building Release.
-#if defined(__ANDROID__) || defined(__APPLE__) || defined(__FreeBSD__) || \
-    (defined(USE_ROCM) && ROCM_VERSION < 40100)
+#if defined(__ANDROID__) || defined(__APPLE__) || defined(__FreeBSD__)
 // Those platforms do not support assert()
 #define CUDA_KERNEL_ASSERT(cond)
+#define CUDA_KERNEL_ASSERT_MSG(cond, msg)
 #define SYCL_KERNEL_ASSERT(cond)
 #elif defined(_MSC_VER)
 #if defined(NDEBUG)
@@ -347,6 +366,16 @@ __host__ __device__
 }
 #endif // NDEBUG
 #define CUDA_KERNEL_ASSERT(cond)                 \
+  if (C10_UNLIKELY(!(cond))) {                   \
+    (void)(_wassert(                             \
+               _CRT_WIDE(#cond),                 \
+               _CRT_WIDE(__FILE__),              \
+               static_cast<unsigned>(__LINE__)), \
+           0);                                   \
+  }
+// TODO: This doesn't assert the message because I (chilli) couldn't figure out
+// a nice way to convert a char* to a wchar_t*
+#define CUDA_KERNEL_ASSERT_MSG(cond, msg)        \
   if (C10_UNLIKELY(!(cond))) {                   \
     (void)(_wassert(                             \
                _CRT_WIDE(#cond),                 \
@@ -395,12 +424,18 @@ __host__ __device__
 // ROCm disable kernel assert by default
 #if !defined(C10_USE_ROCM_KERNEL_ASSERT) and defined(USE_ROCM)
 #define CUDA_KERNEL_ASSERT(cond)
+#define CUDA_KERNEL_ASSERT_MSG(cond, msg)
 #define SYCL_KERNEL_ASSERT(cond)
 #else
 #define CUDA_KERNEL_ASSERT(cond)                                         \
   if (C10_UNLIKELY(!(cond))) {                                           \
     __assert_fail(                                                       \
         #cond, __FILE__, static_cast<unsigned int>(__LINE__), __func__); \
+  }
+#define CUDA_KERNEL_ASSERT_MSG(cond, msg)                              \
+  if (C10_UNLIKELY(!(cond))) {                                         \
+    __assert_fail(                                                     \
+        msg, __FILE__, static_cast<unsigned int>(__LINE__), __func__); \
   }
 #define SYCL_KERNEL_ASSERT(cond)                                         \
   if (C10_UNLIKELY(!(cond))) {                                           \
