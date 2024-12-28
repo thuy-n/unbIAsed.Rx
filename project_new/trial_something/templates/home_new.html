@@ -1,0 +1,54 @@
+{% extends "base.html" %} {% block title %}Identify{% endblock %} 
+{% block content %}
+<style>
+    .container2 {
+        background-color: #CEE3EA;
+        padding: 20px;
+        border-radius: 10px;
+        overflow: hidden;
+    }
+    pre {
+        white-space: pre-wrap; /* CSS3 */
+        white-space: -moz-pre-wrap; /* Firefox */
+        white-space: -pre-wrap; /* Opera <7 */
+        white-space: -o-pre-wrap; /* Opera 7 */
+        word-wrap: break-word; /* IE */
+        margin: 0; /* Remove default margin */
+    }
+</style>
+
+<div class="container">
+    <br>
+
+    <form id="label-identify-form" enctype="multipart/form-data" method="POST" action="#label-identify-form" class="mb-3">
+        <div>
+            <h2 class="display-6 text-center my-3">Risk Calculator</h2>
+
+            <div class="mb-3">
+                <label for="label-image" class="form-label">Input Information Below:</label>
+                <input class="form-control" type="text" id="Medication" name="Medication" placeholder="Medication" required><br>
+                <input class="form-control" type="text" id="Age" name="Age" placeholder="Age" required><br>
+                <input class="form-control" type="text" id="Sex" name="Sex" placeholder="Sex" required><br>
+                <input class="form-control" type="text" id="Disease" name="Disease" placeholder="Disease" required><br>
+                <input class="form-control" type="text" id="Ethnicity" name="Ethnicity" placeholder="Ethnicity" required>
+
+            </div>
+
+            <button type="submit" class="btn btn-start" name="submit-button1" value="label" onclick="">Submit</button>
+            <br><br>
+            <div class="container container2 position-relative rounded shadow {{ 'hidden' if result is none or result|length == 0 }}" 
+            style="background-color: #CEE3EA; {{ 'padding: 20px;' if result is not none and result|length > 0 }}" id="result">
+            <pre>{{ result | safe }}<br><br>{{ trials | safe }}<br><br>{{ source | safe }}</pre>
+            </div>
+            
+        </div>
+    </form>   
+
+    <br>
+
+    
+    
+</div>
+
+
+{% endblock %}
