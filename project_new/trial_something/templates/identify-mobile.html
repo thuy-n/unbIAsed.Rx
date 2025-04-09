@@ -9,6 +9,30 @@
          images uploaded for medicine identification are stored or saved after the analysis is 
          complete
     </div>
+    <form id="risk-form" enctype="multipart/form-data" method="POST" action="#risk-form" class="mb-3">
+        <div>
+            <h2 class="display-6 text-center my-3">Identify Risk</h2>
+
+            <div class="mb-3">
+                <label for="label-image" class="form-label">Input Information Below:</label>
+                <input class="form-control" type="text" id="Medication" name="Medication" placeholder="Medication" required><br>
+                <input class="form-control" type="text" id="Age" name="Age" placeholder="Age" required><br>
+                <input class="form-control" type="text" id="Sex" name="Sex" placeholder="Sex" required><br>
+                <input class="form-control" type="text" id="Disease" name="Disease" placeholder="Disease" required><br>
+                <input class="form-control" type="text" id="Ethnicity" name="Ethnicity" placeholder="Ethnicity" required>
+
+            </div>
+
+            <button type="submit" class="btn btn-start" name="submit-button2" value="risk-btn" onclick="">Submit</button>
+            <br><br>
+            <div class="container container2 position-relative rounded shadow {{ 'hidden' if result is none or result|length == 0 }}" 
+            style="background-color: #CEE3EA; {{ 'padding: 20px;' if result is not none and result|length > 0 }}" id="result">
+            <pre>{{ result | safe }}<br><br>{{ trials | safe }}<br><br>{{ source | safe }}</pre>
+            </div>
+            
+        </div>
+    </form>   
+    <br>
 
     <form id="label-identify-form" enctype="multipart/form-data" method="POST" action="#label-identify-form" class="mb-3">
         <div>
@@ -43,9 +67,9 @@
     <form id="pill-identify-form" enctype="multipart/form-data" method="POST" action="#pill-identify-form" class="mb-3">
         <div>
             <h2 class="display-6 text-center my-3">Identify Pill</h2>
-            <!-- <div id="flash-messages" class=" {{ 'hidden' if flash_message is none or flash_message|length == 0 }}" style="background-color: #CEE3EA; {{ 'padding: 20px;' if flash_message is not none and flash_message|length > 0 }}">
+            <div id="flash-messages" class=" {{ 'hidden' if flash_message is none or flash_message|length == 0 }}" style="background-color: #CEE3EA; {{ 'padding: 20px;' if flash_message is not none and flash_message|length > 0 }}">
                 {{ flash_message_pill }}
-            </div> -->
+            </div> 
 
             <div id="flash-messages" class="alert alert-danger alter-dismissable fade show {{ 'hidden' if flash_message_pill is none or flash_message_pill|length == 0 }}" role="alert" >
                 {{ flash_message_pill }}
@@ -53,7 +77,7 @@
                 </button>
             </div>
             <div class="text-secondary fst-italic" style="font-size:80%">
-                * Please note that this pill recognition tool is a prototype designed to facilitate your search for drug information. Always double-check your medicine.
+                * Please note that this pill recognition tool is a <b>prototype</b> designed to facilitate your search for drug information. Always double-check your medicine.
             </div>
             <br>
             <div class="mb-3">
@@ -76,9 +100,7 @@
     <form id="identify-risk-form" enctype="multipart/form-data" method="POST"  action="#identify-risk-form" class="mb-3">
         <div>
             <h2 class="display-6 text-center my-3">Identify Risk</h2>
-            <!-- <div id="flash-messages" class=" {{ 'hidden' if flash_message is none or flash_message|length == 0 }}" style="background-color: #CEE3EA; {{ 'padding: 20px;' if flash_message is not none and flash_message|length > 0 }}">
-                {{ flash_message_risk }}
-            </div> -->
+           
 
             <div id="flash-messages" class="alert alert-danger alter-dismissable fade show {{ 'hidden' if flash_message_risk is none or flash_message_risk|length == 0 }}" role="alert" >
                 {{ flash_message_risk }}
@@ -125,7 +147,6 @@
                         <option value="CHRONIC OBSTRUCTIVE PULMONARY DISEASE">Chronic Obstructive Pulmonary Disease</option>
                     
                 </select>
-                <!-- <input type="text" class="form-control" id="diseaseRisk" name="diseaseRisk" placeholder="Enter Condition" required> -->
             </div>
             <button type="submit" class="btn btn-start" name="submit-button3" value="risk" onclick="performPrediction()">Calculate Risk</button>
             <br><br>
